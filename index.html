@@ -208,12 +208,12 @@
   .hero__inner {
     max-width: 1280px; margin: 0 auto;
     display: grid;
-    grid-template-columns: 1.4fr 1fr;
-    gap: 40px;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 50px;
     align-items: center;
   }
-  @media (max-width: 900px) {
-    .hero__inner { grid-template-columns: 1fr; gap: 30px; }
+  @media (max-width: 980px) {
+    .hero__inner { grid-template-columns: 1fr; gap: 40px; }
   }
   .eyebrow {
     font-family: 'Caveat', cursive;
@@ -275,73 +275,259 @@
   .btn:hover { transform: translate(-2px, -2px); box-shadow: 7px 7px 0 var(--ink); }
   .btn--primary:hover { box-shadow: 7px 7px 0 var(--tangerine); }
 
-  /* hero collage */
-  .collage {
+  /* ─── HERO PIPELINE COLLAGE ───────────────────────── */
+  /* Tells the workflow story top→bottom:
+     1) IDEA / CONCEPT  →  2) CREATIVE & BRAND CONTROL  →  3) FINISHED EPISODE  */
+  .pipeline {
     position: relative;
-    height: 520px;
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+    padding: 8px 4px;
   }
-  @media (max-width: 900px) { .collage { height: 380px; margin-top: 20px; } }
-  @media (max-width: 480px) { .collage { height: 320px; } }
 
-  .polaroid {
+  .pipeline__stage {
+    position: relative;
+  }
+
+  .pipeline__connector {
+    position: relative;
+    height: 32px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    pointer-events: none;
+  }
+  .pipeline__connector::before {
+    content: '';
     position: absolute;
+    left: 50%;
+    top: 0; bottom: 0;
+    width: 0;
+    border-left: 3px dashed var(--ink);
+    transform: translateX(-50%);
+  }
+  .pipeline__connector::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: -2px;
+    width: 0; height: 0;
+    border-left: 9px solid transparent;
+    border-right: 9px solid transparent;
+    border-top: 12px solid var(--ink);
+    transform: translateX(-50%);
+  }
+
+  /* Stage 1 + 3: polaroid frames (reused styling) */
+  .stage-polaroid {
+    position: relative;
     background: var(--paper);
-    padding: 12px 12px 50px;
-    border: 2px solid var(--ink);
+    padding: 12px 12px 46px;
+    border: 2.5px solid var(--ink);
     box-shadow: 8px 8px 0 var(--ink);
     transition: transform 0.3s ease;
+    width: 100%;
+    max-width: 460px;
   }
-  .polaroid__img {
+  .stage-polaroid--idea {
+    transform: rotate(-3deg);
+    margin-left: auto;
+    margin-right: 8%;
+  }
+  .stage-polaroid--idea:hover { transform: rotate(-1deg) scale(1.02); }
+  .stage-polaroid--final {
+    transform: rotate(2.5deg);
+    margin-right: auto;
+    margin-left: 4%;
+  }
+  .stage-polaroid--final:hover { transform: rotate(0.5deg) scale(1.02); }
+  .stage-polaroid__img {
     display: block;
     width: 100%;
-    height: 100%;
+    aspect-ratio: 16 / 10;
     object-fit: cover;
     background: #2a1f3d;
+    border: 1px solid rgba(0,0,0,0.15);
   }
-  .polaroid__caption {
+  .stage-polaroid__caption {
     position: absolute;
-    bottom: 12px; left: 0; right: 0;
+    bottom: 10px; left: 0; right: 0;
     text-align: center;
     font-family: 'Caveat', cursive;
     font-size: 22px;
     color: var(--ink);
   }
-  .polaroid--1 {
-    top: 10px; left: 6%;
-    width: 320px; height: 220px;
-    transform: rotate(-6deg);
-    z-index: 3;
-  }
-  .polaroid--1:hover { transform: rotate(-3deg) scale(1.03); }
-  .polaroid--2 {
-    bottom: 10px; right: 8%;
-    width: 280px; height: 280px;
-    transform: rotate(5deg);
-    z-index: 2;
-  }
-  .polaroid--2:hover { transform: rotate(2deg) scale(1.03); }
-  @media (max-width: 480px) {
-    .polaroid--1 { width: 65%; height: 60%; left: 2%; }
-    .polaroid--2 { width: 60%; height: 70%; right: 2%; }
-  }
 
-  .sticker {
+  /* Pipeline stickers (reused vibe from original) */
+  .pipeline-sticker {
     position: absolute;
     background: var(--acid);
-    border: 2px solid var(--ink);
-    padding: 8px 14px;
-    font-family: 'Caveat', cursive;
-    font-weight: 700;
-    font-size: 22px;
-    box-shadow: 3px 3px 0 var(--ink);
-    z-index: 4;
+    border: 2.5px solid var(--ink);
+    padding: 6px 14px 8px;
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 13px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    box-shadow: 4px 4px 0 var(--ink);
+    z-index: 5;
+    white-space: nowrap;
   }
-  .sticker--top { top: 30px; right: 20%; transform: rotate(8deg); background: var(--tangerine); color: var(--paper); }
-  .sticker--bot { bottom: 100px; left: 20%; transform: rotate(-7deg); }
-  @media (max-width: 480px) {
-    .sticker { font-size: 16px; padding: 6px 10px; }
-    .sticker--top { top: 5px; right: 5%; }
-    .sticker--bot { bottom: 5px; left: 5%; }
+  .pipeline-sticker--idea {
+    top: -16px; left: 6%;
+    background: var(--tangerine);
+    color: var(--paper);
+    transform: rotate(-5deg);
+  }
+  .pipeline-sticker--control {
+    top: -22px; right: 6%;
+    transform: rotate(4deg);
+  }
+  .pipeline-sticker--final {
+    top: -14px; right: 6%;
+    background: var(--ink);
+    color: var(--acid);
+    transform: rotate(3deg);
+    font-size: 11px;
+    padding: 5px 11px 6px;
+  }
+
+  /* Stage 2: Creative & Brand Control "bible card" */
+  .control-card {
+    background: var(--paper);
+    border: 2.5px solid var(--ink);
+    box-shadow: 9px 9px 0 var(--ink);
+    padding: 18px 18px 16px;
+    position: relative;
+    width: 100%;
+    max-width: 520px;
+    margin: 0 auto;
+    transform: rotate(-0.6deg);
+  }
+  .control-card__head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    border-bottom: 2px solid var(--ink);
+    padding-bottom: 10px;
+    margin-bottom: 14px;
+  }
+  .control-card__title {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 14px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .control-card__meta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--orchid-deep);
+    letter-spacing: 0.05em;
+  }
+
+  .control-card__grid {
+    display: grid;
+    grid-template-columns: 0.85fr 1fr;
+    gap: 12px;
+  }
+
+  .control-tile {
+    position: relative;
+    border: 2px solid var(--ink);
+    background: #2a1f3d;
+    overflow: hidden;
+    aspect-ratio: 1 / 1;
+  }
+  .control-tile--env {
+    aspect-ratio: 16 / 10;
+    grid-column: 1 / -1;
+  }
+  .control-tile img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .control-tile__label {
+    position: absolute;
+    top: 6px; left: 6px;
+    background: var(--ink);
+    color: var(--acid);
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 9px;
+    letter-spacing: 0.08em;
+    padding: 3px 6px 4px;
+    text-transform: uppercase;
+  }
+  .control-tile--char img {
+    object-position: center 30%;
+  }
+
+  .control-specs {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 4px 2px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    line-height: 1.4;
+  }
+  .control-specs__row {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px dashed var(--ink);
+    padding-bottom: 3px;
+  }
+  .control-specs__row span:first-child {
+    color: var(--orchid-deep);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  .control-specs__row span:last-child {
+    font-weight: 700;
+    color: var(--ink);
+  }
+
+  .swatch-row {
+    display: flex;
+    gap: 6px;
+    margin-top: 12px;
+    align-items: center;
+  }
+  .swatch {
+    width: 26px;
+    height: 26px;
+    border: 2px solid var(--ink);
+    flex-shrink: 0;
+  }
+  .swatch--ink { background: var(--ink); }
+  .swatch--paper { background: var(--paper); }
+  .swatch--orchid { background: var(--orchid); }
+  .swatch--acid { background: var(--acid); }
+  .swatch--tangerine { background: var(--tangerine); }
+  .swatch--plum { background: var(--plum); }
+  .swatch__caption {
+    font-family: 'Caveat', cursive;
+    font-size: 18px;
+    margin-left: 4px;
+    color: var(--ink);
+  }
+
+  /* mobile: tighten the stage layouts */
+  @media (max-width: 720px) {
+    .stage-polaroid--idea,
+    .stage-polaroid--final {
+      margin: 0 auto;
+      max-width: 92%;
+    }
+    .stage-polaroid--idea { transform: rotate(-2deg); }
+    .stage-polaroid--final { transform: rotate(1.5deg); }
+    .control-card { max-width: 100%; }
+    .pipeline-sticker { font-size: 11px; padding: 5px 10px 6px; }
+    .pipeline-sticker--final { font-size: 10px; }
+    .pipeline { gap: 22px; }
+    .pipeline__connector { height: 26px; }
   }
 
   .spark {
@@ -352,30 +538,6 @@
   }
   @media (max-width: 720px) {
     .spark { display: none; }
-  }
-
-  /* ─── MARQUEE ─────────────────────────────────────── */
-  .marquee {
-    background: var(--ink);
-    color: var(--acid);
-    border-bottom: var(--rule) solid var(--ink);
-    padding: 18px 0;
-    overflow: hidden;
-    white-space: nowrap;
-  }
-  .marquee__track {
-    display: inline-flex;
-    gap: 48px;
-    animation: scroll 28s linear infinite;
-    font-family: 'Archivo Black', sans-serif;
-    font-size: clamp(16px, 2vw, 22px);
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-  }
-  .marquee__track span { display: inline-flex; align-items: center; gap: 48px; }
-  @keyframes scroll {
-    from { transform: translateX(0); }
-    to { transform: translateX(-50%); }
   }
 
   /* ─── SECTIONS ────────────────────────────────────── */
@@ -1098,34 +1260,78 @@
       </p>
       <div class="hero__cta">
         <a href="#work" class="btn btn--primary">See the Work</a>
-        <a href="#contact" class="btn btn--ghost">Hire the Studio</a>
+        <a href="#contact" class="btn btn--ghost">Contact the Studio</a>
       </div>
     </div>
 
-    <div class="collage" aria-hidden="true">
-      <div class="sticker sticker--top">NEW EPISODE ↓</div>
-      <div class="polaroid polaroid--1">
-        <img class="polaroid__img" src="img-hero-hallway.jpg" alt="Robo Jr. pilot still">
-        <span class="polaroid__caption">Robo Jr., Pilot</span>
+    <!-- ─── PIPELINE COLLAGE ─────────────────────────── -->
+    <!-- Three-stage visual story of the rapid mid-funnel content workflow:
+         1) IDEA / CONCEPT → 2) CREATIVE & BRAND CONTROL → 3) FINISHED EPISODE -->
+    <div class="pipeline" aria-label="The LarryDoJo content pipeline: idea, brand controls, finished episode">
+
+      <!-- STAGE 1: IDEA / CONCEPT -->
+      <div class="pipeline__stage">
+        <div class="pipeline-sticker pipeline-sticker--idea">IDEA ↓</div>
+        <div class="stage-polaroid stage-polaroid--idea">
+          <img class="stage-polaroid__img" src="00_Lab_01.jpg" alt="Early concept image: characters in a lab environment" />
+          <span class="stage-polaroid__caption">Concept · "The Lab"</span>
+        </div>
       </div>
-      <div class="polaroid polaroid--2">
-        <img class="polaroid__img" src="img-lab.jpg" alt="RoboNoir pilot still">
-        <span class="polaroid__caption">RoboNoir, Pilot</span>
+
+      <div class="pipeline__connector" aria-hidden="true"></div>
+
+      <!-- STAGE 2: CREATIVE & BRAND CONTROL -->
+      <div class="pipeline__stage">
+        <div class="pipeline-sticker pipeline-sticker--control">Creative &amp; Brand Control</div>
+        <div class="control-card" role="figure" aria-label="Brand bible with character profile, environment plate, and style swatches">
+          <div class="control-card__head">
+            <span class="control-card__title">// Brand Bible</span>
+            <span class="control-card__meta">v1.0 · locked</span>
+          </div>
+
+          <div class="control-card__grid">
+            <div class="control-tile control-tile--char">
+              <span class="control-tile__label">Char · 01</span>
+              <img src="img-hero-hallway.jpg" alt="Character profile reference" />
+            </div>
+            <div class="control-specs" aria-hidden="true">
+              <div class="control-specs__row"><span>Tone</span><span>Noir / Pop</span></div>
+              <div class="control-specs__row"><span>Era</span><span>1987</span></div>
+              <div class="control-specs__row"><span>Lens</span><span>35mm</span></div>
+              <div class="control-specs__row"><span>Cast</span><span>2 leads</span></div>
+            </div>
+            <div class="control-tile control-tile--env">
+              <span class="control-tile__label">Env · Plate</span>
+              <img src="00_Lab_01.jpg" alt="Environment plate reference" />
+            </div>
+          </div>
+
+          <div class="swatch-row" aria-label="Brand color palette">
+            <span class="swatch swatch--ink"></span>
+            <span class="swatch swatch--paper"></span>
+            <span class="swatch swatch--orchid"></span>
+            <span class="swatch swatch--acid"></span>
+            <span class="swatch swatch--tangerine"></span>
+            <span class="swatch swatch--plum"></span>
+            <span class="swatch__caption">palette locked</span>
+          </div>
+        </div>
       </div>
-      <div class="sticker sticker--bot">↑ AI-native IP</div>
+
+      <div class="pipeline__connector" aria-hidden="true"></div>
+
+      <!-- STAGE 3: FINISHED EPISODE -->
+      <div class="pipeline__stage">
+        <div class="pipeline-sticker pipeline-sticker--final">Mid-funnel · shipped ↓</div>
+        <div class="stage-polaroid stage-polaroid--final">
+          <img class="stage-polaroid__img" src="img-hero-hallway.jpg" alt="Finished episode still: Robo Jr. pilot" />
+          <span class="stage-polaroid__caption">Robo Jr., Pilot · Ep. 01</span>
+        </div>
+      </div>
+
     </div>
   </div>
 </header>
-
-<!-- ─── MARQUEE ─────────────────────────────────────── -->
-<div class="marquee" aria-hidden="true">
-  <div class="marquee__track">
-    <span>
-      AI Content&nbsp;★&nbsp;Rapid Web&nbsp;★&nbsp;eCommerce&nbsp;★&nbsp;Custom Apps&nbsp;★&nbsp;Episodic IP&nbsp;★&nbsp;Consulting&nbsp;★&nbsp;
-      AI Content&nbsp;★&nbsp;Rapid Web&nbsp;★&nbsp;eCommerce&nbsp;★&nbsp;Custom Apps&nbsp;★&nbsp;Episodic IP&nbsp;★&nbsp;Consulting&nbsp;★&nbsp;
-    </span>
-  </div>
-</div>
 
 <!-- ─── ABOUT ───────────────────────────────────────── -->
 <section class="about" id="about">
@@ -1137,9 +1343,9 @@
 
     <div class="about__grid">
       <div class="about__text">
-        <p>The major studios have stopped placing bets on original IP. <strong>61% of Gen Z animation fans</strong> say they prefer independent YouTube series over anything coming out of the legacy houses.</p>
-        <p>LarryDoJo is built for that shift. We make episodic AI content that earns its own audience. We ship websites in days, not quarters. And we build the custom apps that let small operators look like big ones.</p>
-        <p>Every project doubles as a public POC. Proof, in market, that this way of working actually works.</p>
+        <p>We bring your ideas and brand to life through <strong>rapid, on-demand content</strong>. Reach your customers on every channel, the moment they're looking.</p>
+        <p>Customers stopped searching. They expect immediate answers. Our workflows balance <strong>brand control with speed to market</strong>, so your content shows up where AI and search send people now.</p>
+        <p>The old digital agency model is dead. Six-month builds and bloated retainers waste budget. Ship today's playbook for a fraction of the cost.</p>
       </div>
 
       <div class="pillars">
@@ -1158,6 +1364,9 @@
           <h3>Custom Apps</h3>
           <p>The plumbing behind the marketing. Automation, analytics, and AI tooling tailored to your stack and your team's actual workflow.</p>
         </div>
+      </div>
+    </div>
+
     <!-- PDF download card -->
     <a href="youtube-animation-trends-2026.pdf" download class="download-card">
       <div class="download-card__icon" aria-hidden="true">
