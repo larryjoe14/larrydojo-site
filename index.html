@@ -6,6 +6,84 @@
 <title>LarryDoJo. An AI Studio for the New Showrunner Era.</title>
 <meta name="description" content="LarryDoJo is an AI studio building episodic content, rapid websites, and custom apps for the post-studio era." />
 
+<!-- Canonical URL -->
+<link rel="canonical" href="https://larrydojo.com/" />
+
+<!-- Open Graph (Facebook, LinkedIn, iMessage, Slack, Discord) -->
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://larrydojo.com/" />
+<meta property="og:title" content="LarryDoJo. An AI Studio for the New Showrunner Era." />
+<meta property="og:description" content="AI content, rapid websites, and custom apps. Built fast, updated weekly, optimized always." />
+<meta property="og:image" content="https://larrydojo.com/img-hero-hallway.jpg" />
+<meta property="og:site_name" content="LarryDoJo" />
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:url" content="https://larrydojo.com/" />
+<meta name="twitter:title" content="LarryDoJo. An AI Studio for the New Showrunner Era." />
+<meta name="twitter:description" content="AI content, rapid websites, and custom apps. Built fast, updated weekly, optimized always." />
+<meta name="twitter:image" content="https://larrydojo.com/img-hero-hallway.jpg" />
+
+<!-- JSON-LD: Organization (for AEO and search engines) -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "LarryDoJo",
+  "alternateName": "LarryDoJo LLC",
+  "url": "https://larrydojo.com",
+  "logo": "https://larrydojo.com/img-hero-hallway.jpg",
+  "description": "An AI studio building episodic content, rapid websites, and custom apps for the post-studio era.",
+  "sameAs": [
+    "https://www.tiktok.com/@larrydojo_noir",
+    "https://www.youtube.com/@larrydojo",
+    "https://www.instagram.com/larrydojo/"
+  ]
+}
+</script>
+
+<!-- JSON-LD: Services -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ProfessionalService",
+  "name": "LarryDoJo",
+  "url": "https://larrydojo.com",
+  "description": "AI-native content production, rapid website and eCommerce builds, and custom MarTech and AI consulting.",
+  "areaServed": "Worldwide",
+  "hasOfferCatalog": {
+    "@type": "OfferCatalog",
+    "name": "LarryDoJo Services",
+    "itemListElement": [
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "AI-Native Content",
+          "description": "Original characters and serialized shows produced with AI pipelines."
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Rapid Web and eCommerce",
+          "description": "Sites built, deployed, and iterated on a tight loop. GitHub-backed, Netlify-hosted, AEO and SEO baked in."
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Custom Apps and AI Consulting",
+          "description": "Pipeline architecture, AI tooling, automation strategy, and fractional consulting."
+        }
+      }
+    ]
+  }
+}
+</script>
+
 <!-- Plausible Analytics -->
 <script defer data-domain="larrydojo.com" src="https://plausible.io/js/script.js"></script>
 
@@ -272,6 +350,9 @@
     z-index: 1;
     pointer-events: none;
   }
+  @media (max-width: 720px) {
+    .spark { display: none; }
+  }
 
   /* ─── MARQUEE ─────────────────────────────────────── */
   .marquee {
@@ -378,6 +459,89 @@
   .pillar:nth-child(1) { transform: rotate(-1deg); }
   .pillar:nth-child(2) { transform: rotate(0.5deg); }
   .pillar:nth-child(3) { transform: rotate(-0.5deg); }
+
+  /* PDF download card */
+  .download-card {
+    margin-top: 60px;
+    background: var(--ink);
+    color: var(--paper);
+    border: 3px solid var(--ink);
+    box-shadow: 10px 10px 0 var(--acid);
+    padding: 32px;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 28px;
+    align-items: center;
+    transform: rotate(-0.4deg);
+  }
+  @media (max-width: 720px) {
+    .download-card {
+      grid-template-columns: 1fr;
+      text-align: center;
+      gap: 18px;
+      padding: 24px;
+    }
+  }
+  .download-card__icon {
+    width: 72px;
+    height: 88px;
+    background: var(--acid);
+    color: var(--ink);
+    border: 2.5px solid var(--paper);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 13px;
+    letter-spacing: 0.08em;
+    position: relative;
+    flex-shrink: 0;
+  }
+  @media (max-width: 720px) { .download-card__icon { margin: 0 auto; } }
+  .download-card__icon::after {
+    content: '';
+    position: absolute;
+    top: -2.5px; right: -2.5px;
+    width: 18px; height: 18px;
+    background: var(--ink);
+    border-left: 2.5px solid var(--paper);
+    border-bottom: 2.5px solid var(--paper);
+  }
+  .download-card__copy h4 {
+    font-family: 'Caveat', cursive;
+    font-size: 24px;
+    color: var(--acid);
+    margin-bottom: 4px;
+    line-height: 1;
+  }
+  .download-card__copy h3 {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: clamp(20px, 3vw, 28px);
+    text-transform: uppercase;
+    line-height: 1.05;
+    margin-bottom: 8px;
+  }
+  .download-card__copy p {
+    font-size: 15px;
+    color: var(--orchid);
+    margin: 0;
+  }
+  .download-card__btn {
+    background: var(--tangerine);
+    color: var(--paper);
+    border: 2.5px solid var(--paper);
+    padding: 16px 24px;
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    text-decoration: none;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+    box-shadow: 4px 4px 0 var(--acid);
+    white-space: nowrap;
+  }
+  .download-card__btn:hover { transform: translate(-2px, -2px); box-shadow: 6px 6px 0 var(--acid); }
 
   /* ─── WORK / AI CONTENT ───────────────────────────── */
   .work { background: var(--plum); color: var(--paper); }
@@ -994,12 +1158,21 @@
           <h3>Custom Apps</h3>
           <p>The plumbing behind the marketing. Automation, analytics, and AI tooling tailored to your stack and your team's actual workflow.</p>
         </div>
+    <!-- PDF download card -->
+    <a href="youtube-animation-trends-2026.pdf" download class="download-card">
+      <div class="download-card__icon" aria-hidden="true">
+        <span>PDF</span>
       </div>
-    </div>
+      <div class="download-card__copy">
+        <h4>↓ free download</h4>
+        <h3>YouTube Culture &amp; Trends Report: Animation's New Wave</h3>
+        <p>The 13-page report from Google &amp; YouTube on how independent animators are reshaping entertainment. Read the data behind the playbook.</p>
+      </div>
+      <span class="download-card__btn">Download PDF →</span>
+    </a>
+
   </div>
 </section>
-
-<!-- ─── WORK / AI CONTENT ───────────────────────────── -->
 <section class="work" id="work">
   <div class="container">
     <div class="section-head">
@@ -1034,35 +1207,40 @@
 
     <div class="show-stack">
 
-      <!-- Card 1: One-Off Drops (YouTube Short) -->
+      <!-- Card 1: Frame-by-Frame Continuity (TikTok: Dick Tracy) -->
       <article class="show-card">
         <div class="show-card__media">
-          <span class="show-card__tag">One-Off</span>
-          <div class="yt-frame">
-            <iframe
-              src="https://www.youtube.com/embed/RyYVlkZaaD8"
-              title="Jack's last laugh - LarryDoJo"
-              frameborder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-              referrerpolicy="strict-origin-when-cross-origin"
-              allowfullscreen></iframe>
+          <span class="show-card__tag">Frame-by-Frame</span>
+          <div class="tt-frame">
+            <div class="tt-fallback" aria-hidden="true">
+              <span>Loading TikTok…</span>
+              <a href="https://www.tiktok.com/@larrydojo_noir/video/7619144493178096909" target="_blank" rel="noopener" class="show-card__link show-card__link--primary">Open in TikTok ↗</a>
+            </div>
+            <blockquote class="tiktok-embed"
+              cite="https://www.tiktok.com/@larrydojo_noir/video/7619144493178096909"
+              data-video-id="7619144493178096909"
+              style="max-width: 605px; min-width: 325px;">
+              <section>
+                <a target="_blank" title="@larrydojo_noir" href="https://www.tiktok.com/@larrydojo_noir?refer=embed">@larrydojo_noir</a>
+              </section>
+            </blockquote>
           </div>
         </div>
         <div class="show-card__body">
-          <h3>One-Off Drops</h3>
-          <div class="show-card__meta">// format: short-form vertical · platform: YouTube + TikTok</div>
-          <p>Standalone moments. Concept-driven, fast to produce, designed to test characters and visual worlds in-market before committing to a full series.</p>
+          <h3>Frame-by-Frame Continuity</h3>
+          <div class="show-card__meta">// case: Dick Tracy original comic strip · technique: character profiles + environment plates</div>
+          <p>The classic Dick Tracy comic strip recreated frame by frame. Character profiles lock the look. Environment plates lock the world. The result is shot-to-shot continuity that AI alone can't hold.</p>
           <div class="show-card__links">
-            <a href="https://www.youtube.com/@larrydojo" target="_blank" rel="noopener" class="show-card__link show-card__link--primary">More on YouTube ↗</a>
-            <a href="https://www.tiktok.com/@larrydojo_noir" target="_blank" rel="noopener" class="show-card__link">@larrydojo_noir</a>
+            <a href="https://www.tiktok.com/@larrydojo_noir" target="_blank" rel="noopener" class="show-card__link show-card__link--primary">Watch on TikTok ↗</a>
+            <a href="https://www.youtube.com/@larrydojo" target="_blank" rel="noopener" class="show-card__link">YouTube</a>
           </div>
         </div>
       </article>
 
-      <!-- Card 2: Design Continuity (TikTok embed) -->
+      <!-- Card 2: Episodic (TikTok: Robo Jr.) -->
       <article class="show-card">
         <div class="show-card__media">
-          <span class="show-card__tag">Design Continuity</span>
+          <span class="show-card__tag">Episodic</span>
           <div class="tt-frame">
             <div class="tt-fallback" aria-hidden="true">
               <span>Loading TikTok…</span>
@@ -1080,7 +1258,7 @@
           </div>
         </div>
         <div class="show-card__body">
-          <h3>Design Continuity</h3>
+          <h3>Episodic</h3>
           <div class="show-card__meta">// format: serialized · platform: TikTok + cross-post</div>
           <p>Recurring characters. Episode-to-episode continuity. The same playbook independent animators use to build fan communities, applied to AI-native production.</p>
           <div class="show-card__links">
