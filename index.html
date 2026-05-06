@@ -1,0 +1,1203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>LarryDoJo — An AI Studio for the New Showrunner Era</title>
+<meta name="description" content="LarryDoJo is an AI studio building episodic content, rapid websites, and custom apps for the post-studio era." />
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo+Black&family=Caveat:wght@500;700&family=JetBrains+Mono:wght@400;700&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --ink: #0a0a0a;
+    --paper: #f4eee4;
+    --plum: #1a0d2e;
+    --orchid: #c9b8e8;
+    --orchid-deep: #7c5cb8;
+    --acid: #ffe000;
+    --tangerine: #ff5b1f;
+    --punch: #ff2a6d;
+    --mint: #b8f2c9;
+    --rule: 3px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Space Grotesk', system-ui, sans-serif;
+    background: var(--paper);
+    color: var(--ink);
+    line-height: 1.5;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3CfeColorMatrix values='0 0 0 0 0.05 0 0 0 0 0.05 0 0 0 0 0.05 0 0 0 0.18 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    opacity: .35;
+    pointer-events: none;
+    mix-blend-mode: multiply;
+    z-index: 1;
+  }
+
+  main, header, footer, section { position: relative; z-index: 2; }
+
+  /* ─── NAV ─────────────────────────────────────────── */
+  .nav {
+    position: sticky; top: 0; z-index: 50;
+    background: var(--ink);
+    color: var(--paper);
+    border-bottom: var(--rule) solid var(--ink);
+    padding: 14px 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+  }
+  .nav__brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+    color: var(--paper);
+  }
+  .nav__logo-mark {
+    width: 40px; height: 40px;
+    background: var(--acid);
+    color: var(--ink);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 18px;
+    border: 2px solid var(--paper);
+    position: relative;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+  .nav__logo-mark::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent 0px,
+      transparent 3px,
+      rgba(0,0,0,0.12) 3px,
+      rgba(0,0,0,0.12) 4px
+    );
+    pointer-events: none;
+  }
+  .nav__logo-mark span {
+    position: relative;
+    z-index: 2;
+    letter-spacing: -0.02em;
+  }
+  .nav__logo {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 22px;
+    letter-spacing: -0.01em;
+    text-transform: uppercase;
+  }
+  .nav__logo em { color: var(--acid); font-style: normal; }
+  .nav__links { display: flex; gap: 28px; }
+  .nav__links a {
+    color: var(--paper);
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 14px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    position: relative;
+    padding-bottom: 3px;
+  }
+  .nav__links a::after {
+    content: '';
+    position: absolute; left: 0; bottom: 0;
+    width: 0; height: 2px;
+    background: var(--acid);
+    transition: width 0.25s ease;
+  }
+  .nav__links a:hover::after { width: 100%; }
+  .nav__cta {
+    background: var(--acid);
+    color: var(--ink);
+    padding: 10px 18px;
+    border: 2px solid var(--acid);
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 13px;
+    text-transform: uppercase;
+    text-decoration: none;
+    letter-spacing: 0.05em;
+    transition: transform 0.15s ease;
+    display: inline-block;
+    cursor: pointer;
+  }
+  .nav__cta:hover { transform: rotate(-2deg) scale(1.04); }
+  @media (max-width: 720px) {
+    .nav__links { display: none; }
+    .nav__logo { font-size: 18px; }
+  }
+
+  /* ─── HERO ────────────────────────────────────────── */
+  .hero {
+    background: var(--orchid);
+    padding: 80px 28px 120px;
+    border-bottom: var(--rule) solid var(--ink);
+    overflow: hidden;
+  }
+  .hero__inner {
+    max-width: 1280px; margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: 40px;
+    align-items: center;
+  }
+  @media (max-width: 900px) {
+    .hero__inner { grid-template-columns: 1fr; }
+  }
+  .eyebrow {
+    font-family: 'Caveat', cursive;
+    font-size: 28px;
+    color: var(--ink);
+    background: var(--acid);
+    display: inline-block;
+    padding: 4px 14px 6px;
+    transform: rotate(-2deg);
+    border: 2px solid var(--ink);
+    margin-bottom: 24px;
+    box-shadow: 4px 4px 0 var(--ink);
+  }
+  .hero h1 {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: clamp(56px, 9vw, 132px);
+    line-height: 0.88;
+    letter-spacing: -0.03em;
+    text-transform: uppercase;
+    color: var(--ink);
+    margin-bottom: 28px;
+  }
+  .hero h1 em {
+    font-style: normal;
+    color: var(--tangerine);
+    -webkit-text-stroke: 2px var(--ink);
+    text-shadow: 6px 6px 0 var(--ink);
+  }
+  .hero__lead {
+    font-size: 19px;
+    max-width: 560px;
+    margin-bottom: 32px;
+    color: var(--ink);
+  }
+  .hero__lead strong { background: var(--acid); padding: 0 4px; }
+
+  .hero__cta { display: flex; gap: 14px; flex-wrap: wrap; }
+
+  .btn {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 16px 26px;
+    text-decoration: none;
+    border: 2.5px solid var(--ink);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+    display: inline-block;
+    cursor: pointer;
+    background: transparent;
+  }
+  .btn--primary { background: var(--ink); color: var(--paper); box-shadow: 5px 5px 0 var(--tangerine); }
+  .btn--ghost { color: var(--ink); box-shadow: 5px 5px 0 var(--ink); }
+  .btn:hover { transform: translate(-2px, -2px); box-shadow: 7px 7px 0 var(--ink); }
+  .btn--primary:hover { box-shadow: 7px 7px 0 var(--tangerine); }
+
+  /* hero collage */
+  .collage {
+    position: relative;
+    height: 520px;
+  }
+  @media (max-width: 900px) { .collage { height: 420px; margin-top: 40px; } }
+
+  .polaroid {
+    position: absolute;
+    background: var(--paper);
+    padding: 12px 12px 50px;
+    border: 2px solid var(--ink);
+    box-shadow: 8px 8px 0 var(--ink);
+    transition: transform 0.3s ease;
+  }
+  .polaroid__img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    background: #2a1f3d;
+  }
+  .polaroid__caption {
+    position: absolute;
+    bottom: 12px; left: 0; right: 0;
+    text-align: center;
+    font-family: 'Caveat', cursive;
+    font-size: 22px;
+    color: var(--ink);
+  }
+  .polaroid--1 {
+    top: 10px; left: 6%;
+    width: 320px; height: 220px;
+    transform: rotate(-6deg);
+    z-index: 3;
+  }
+  .polaroid--1:hover { transform: rotate(-3deg) scale(1.03); }
+  .polaroid--2 {
+    bottom: 10px; right: 8%;
+    width: 280px; height: 280px;
+    transform: rotate(5deg);
+    z-index: 2;
+  }
+  .polaroid--2:hover { transform: rotate(2deg) scale(1.03); }
+
+  .sticker {
+    position: absolute;
+    background: var(--acid);
+    border: 2px solid var(--ink);
+    padding: 8px 14px;
+    font-family: 'Caveat', cursive;
+    font-weight: 700;
+    font-size: 22px;
+    box-shadow: 3px 3px 0 var(--ink);
+    z-index: 4;
+  }
+  .sticker--top { top: 30px; right: 20%; transform: rotate(8deg); background: var(--tangerine); color: var(--paper); }
+  .sticker--bot { bottom: 100px; left: 20%; transform: rotate(-7deg); }
+
+  .spark {
+    position: absolute;
+    color: var(--ink);
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  /* ─── MARQUEE ─────────────────────────────────────── */
+  .marquee {
+    background: var(--ink);
+    color: var(--acid);
+    border-bottom: var(--rule) solid var(--ink);
+    padding: 18px 0;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+  .marquee__track {
+    display: inline-flex;
+    gap: 48px;
+    animation: scroll 28s linear infinite;
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 22px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .marquee__track span { display: inline-flex; align-items: center; gap: 48px; }
+  @keyframes scroll {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  /* ─── SECTIONS ────────────────────────────────────── */
+  section {
+    padding: 100px 28px;
+    border-bottom: var(--rule) solid var(--ink);
+  }
+  .container { max-width: 1280px; margin: 0 auto; }
+
+  .section-head {
+    margin-bottom: 60px;
+    position: relative;
+  }
+  .section-head__kicker {
+    font-family: 'Caveat', cursive;
+    font-size: 32px;
+    color: var(--tangerine);
+    margin-bottom: 8px;
+    transform: rotate(-1deg);
+    display: inline-block;
+  }
+  .section-head h2 {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: clamp(44px, 7vw, 96px);
+    line-height: 0.9;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+  }
+  .section-head__desc {
+    font-size: 18px;
+    max-width: 620px;
+    margin-top: 24px;
+  }
+
+  /* ─── ABOUT ───────────────────────────────────────── */
+  .about { background: var(--paper); }
+  .about__grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: start;
+  }
+  @media (max-width: 900px) { .about__grid { grid-template-columns: 1fr; } }
+
+  .about__text p {
+    font-size: 18px;
+    margin-bottom: 20px;
+  }
+  .about__text p:first-of-type {
+    font-size: 24px;
+    font-weight: 500;
+    line-height: 1.4;
+  }
+  .about__text p strong { background: var(--acid); padding: 0 4px; }
+
+  .pillars { display: grid; gap: 20px; }
+  .pillar {
+    background: var(--paper);
+    border: 2.5px solid var(--ink);
+    padding: 24px;
+    box-shadow: 6px 6px 0 var(--ink);
+    transition: transform 0.2s ease;
+  }
+  .pillar:hover { transform: translate(-3px, -3px); box-shadow: 9px 9px 0 var(--ink); }
+  .pillar__num {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 56px;
+    color: var(--tangerine);
+    line-height: 1;
+    -webkit-text-stroke: 2px var(--ink);
+  }
+  .pillar h3 {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 22px;
+    margin: 12px 0 8px;
+    text-transform: uppercase;
+  }
+  .pillar p { font-size: 15px; }
+  .pillar:nth-child(1) { transform: rotate(-1deg); }
+  .pillar:nth-child(2) { transform: rotate(0.5deg); }
+  .pillar:nth-child(3) { transform: rotate(-0.5deg); }
+
+  /* ─── WORK / AI CONTENT ───────────────────────────── */
+  .work { background: var(--plum); color: var(--paper); }
+  .work .section-head h2 { color: var(--paper); }
+  .work .section-head__kicker { color: var(--acid); }
+  .work .section-head__desc { color: var(--orchid); }
+
+  .stat-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    margin: 48px 0 60px;
+  }
+  @media (max-width: 720px) { .stat-row { grid-template-columns: 1fr; } }
+
+  .stat {
+    background: var(--paper);
+    color: var(--ink);
+    border: 2.5px solid var(--ink);
+    padding: 28px;
+    transition: transform 0.25s ease;
+  }
+  .stat:hover { transform: translateY(-4px); }
+  .stat__num {
+    font-family: 'Anton', sans-serif;
+    font-size: 88px;
+    line-height: 0.9;
+    color: var(--tangerine);
+    -webkit-text-stroke: 2.5px var(--ink);
+  }
+  .stat__label {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-top: 8px;
+  }
+  .stat__src {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--orchid-deep);
+    margin-top: 16px;
+  }
+  .stat:nth-child(1) { transform: rotate(-1deg); }
+  .stat:nth-child(2) { transform: rotate(0.5deg); }
+  .stat:nth-child(3) { transform: rotate(-0.7deg); }
+
+  .work__intro {
+    background: var(--paper);
+    color: var(--ink);
+    padding: 32px;
+    border: 2.5px solid var(--ink);
+    box-shadow: 8px 8px 0 var(--acid);
+    margin-bottom: 60px;
+    font-size: 18px;
+    line-height: 1.5;
+  }
+  .work__intro strong { background: var(--acid); padding: 0 4px; }
+
+  .show-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+  }
+  @media (max-width: 900px) { .show-grid { grid-template-columns: 1fr; } }
+
+  .show-card {
+    background: var(--paper);
+    color: var(--ink);
+    border: 2.5px solid var(--ink);
+    box-shadow: 8px 8px 0 var(--ink);
+    overflow: hidden;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    display: flex;
+    flex-direction: column;
+  }
+  .show-card:hover {
+    transform: translate(-4px, -4px);
+    box-shadow: 12px 12px 0 var(--ink);
+  }
+  .show-card__video {
+    aspect-ratio: 16/9;
+    overflow: hidden;
+    border-bottom: 2.5px solid var(--ink);
+    position: relative;
+    background: #000;
+  }
+  .show-card__video iframe {
+    width: 100%;
+    height: 100%;
+    border: 0;
+    display: block;
+  }
+  .show-card__video--vertical {
+    aspect-ratio: 9/16;
+    max-height: 540px;
+  }
+  .show-card__tag {
+    position: absolute;
+    top: 14px; left: 14px;
+    background: var(--acid);
+    border: 2px solid var(--ink);
+    padding: 4px 10px;
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    z-index: 5;
+  }
+  .show-card__body { padding: 24px; flex: 1; display: flex; flex-direction: column; }
+  .show-card h3 {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 28px;
+    text-transform: uppercase;
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+  .show-card__meta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--orchid-deep);
+    margin-bottom: 14px;
+  }
+  .show-card p { font-size: 15px; margin-bottom: 18px; flex: 1; }
+  .show-card__links { display: flex; gap: 10px; flex-wrap: wrap; }
+  .show-card__link {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--ink);
+    border: 2px solid var(--ink);
+    padding: 8px 14px;
+    text-decoration: none;
+    background: var(--paper);
+    transition: background 0.15s ease, color 0.15s ease;
+  }
+  .show-card__link:hover { background: var(--ink); color: var(--acid); }
+  .show-card__link--primary { background: var(--tangerine); color: var(--paper); }
+  .show-card__link--primary:hover { background: var(--ink); color: var(--acid); }
+
+  /* ─── DIGITAL AGENCY ──────────────────────────────── */
+  .agency { background: var(--paper); }
+  .agency__grid {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: 60px;
+    align-items: center;
+  }
+  @media (max-width: 900px) { .agency__grid { grid-template-columns: 1fr; } }
+
+  .workflow {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 32px;
+    border: 2.5px solid var(--ink);
+    box-shadow: 10px 10px 0 var(--tangerine);
+  }
+  .workflow__title {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 22px;
+    text-transform: uppercase;
+    color: var(--acid);
+    margin-bottom: 4px;
+  }
+  .workflow__sub {
+    font-family: 'Caveat', cursive;
+    font-size: 22px;
+    color: var(--orchid);
+    margin-bottom: 24px;
+  }
+  .workflow ol { list-style: none; counter-reset: step; }
+  .workflow li {
+    counter-increment: step;
+    padding: 14px 0 14px 56px;
+    border-bottom: 1px dashed var(--orchid-deep);
+    position: relative;
+    font-size: 15px;
+  }
+  .workflow li:last-child { border-bottom: none; }
+  .workflow li::before {
+    content: counter(step);
+    position: absolute;
+    left: 0; top: 14px;
+    width: 38px; height: 38px;
+    background: var(--acid);
+    color: var(--ink);
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid var(--paper);
+  }
+  .workflow li strong { color: var(--acid); }
+
+  .agency__copy h3 {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 36px;
+    text-transform: uppercase;
+    line-height: 0.95;
+    margin-bottom: 20px;
+  }
+  .agency__copy h3 span { color: var(--tangerine); }
+  .agency__copy p { font-size: 17px; margin-bottom: 16px; }
+  .agency__copy strong { background: var(--acid); padding: 0 4px; }
+
+  .feature-list { list-style: none; margin-top: 24px; }
+  .feature-list li {
+    padding: 14px 0;
+    border-top: 2px solid var(--ink);
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+  }
+  .feature-list li:last-child { border-bottom: 2px solid var(--ink); }
+  .feature-list__icon {
+    flex-shrink: 0;
+    width: 32px; height: 32px;
+    background: var(--ink);
+    color: var(--acid);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 16px;
+  }
+  .feature-list__text strong {
+    display: block;
+    font-family: 'Archivo Black', sans-serif;
+    text-transform: uppercase;
+    margin-bottom: 2px;
+    background: none;
+    padding: 0;
+  }
+
+  /* ─── SPECIAL PROJECTS ────────────────────────────── */
+  .special { background: var(--ink); color: var(--paper); overflow: hidden; }
+  .special .section-head h2 { color: var(--paper); }
+  .special .section-head h2 em { color: var(--acid); font-style: normal; }
+  .special .section-head__kicker { color: var(--tangerine); }
+  .special .section-head__desc { color: var(--orchid); max-width: 720px; }
+
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+  @media (max-width: 900px) { .services-grid { grid-template-columns: 1fr; } }
+
+  .service {
+    border: 2.5px solid var(--paper);
+    padding: 28px;
+    transition: background 0.2s ease, color 0.2s ease;
+    background: transparent;
+    cursor: pointer;
+    text-decoration: none;
+    color: var(--paper);
+    display: block;
+  }
+  .service:hover { background: var(--acid); color: var(--ink); }
+  .service:hover .service__num { color: var(--ink); -webkit-text-stroke-color: var(--ink); }
+  .service:hover .service__cta { color: var(--ink); }
+  .service__num {
+    font-family: 'Anton', sans-serif;
+    font-size: 64px;
+    color: transparent;
+    -webkit-text-stroke: 2px var(--acid);
+    line-height: 1;
+    margin-bottom: 16px;
+  }
+  .service h3 {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 22px;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    line-height: 1;
+  }
+  .service p { font-size: 15px; margin-bottom: 20px; }
+  .service ul { list-style: none; margin-bottom: 20px; }
+  .service ul li {
+    padding: 6px 0;
+    font-size: 13px;
+    font-family: 'JetBrains Mono', monospace;
+    border-bottom: 1px dashed currentColor;
+    opacity: 0.85;
+  }
+  .service__cta {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--acid);
+  }
+
+  /* ─── CONTACT ─────────────────────────────────────── */
+  .contact {
+    background: var(--tangerine);
+    color: var(--ink);
+    padding: 100px 28px;
+    overflow: hidden;
+  }
+  .contact__head { text-align: center; margin-bottom: 50px; }
+  .contact h2 {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: clamp(56px, 12vw, 180px);
+    line-height: 0.85;
+    letter-spacing: -0.03em;
+    text-transform: uppercase;
+    margin-bottom: 24px;
+  }
+  .contact h2 em {
+    font-style: normal;
+    -webkit-text-stroke: 3px var(--ink);
+    color: transparent;
+  }
+  .contact__lead {
+    font-size: 22px;
+    max-width: 640px;
+    margin: 0 auto;
+    font-weight: 500;
+  }
+
+  .form-card {
+    max-width: 760px;
+    margin: 0 auto;
+    background: var(--paper);
+    border: 3px solid var(--ink);
+    padding: 40px;
+    box-shadow: 12px 12px 0 var(--ink);
+  }
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 20px;
+  }
+  @media (max-width: 600px) { .form-row { grid-template-columns: 1fr; } }
+  .form-field { display: flex; flex-direction: column; }
+  .form-field--full { margin-bottom: 20px; }
+  .form-field label {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 6px;
+    color: var(--ink);
+  }
+  .form-field label .req { color: var(--tangerine); }
+  .form-field input,
+  .form-field textarea,
+  .form-field select {
+    background: var(--paper);
+    border: 2.5px solid var(--ink);
+    padding: 12px 14px;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 16px;
+    color: var(--ink);
+    width: 100%;
+    transition: box-shadow 0.15s ease, transform 0.15s ease;
+  }
+  .form-field input:focus,
+  .form-field textarea:focus,
+  .form-field select:focus {
+    outline: none;
+    box-shadow: 4px 4px 0 var(--tangerine);
+    transform: translate(-2px, -2px);
+  }
+  .form-field textarea { resize: vertical; min-height: 140px; font-family: 'Space Grotesk', sans-serif; }
+
+  .form-submit {
+    width: 100%;
+    background: var(--ink);
+    color: var(--acid);
+    padding: 18px 32px;
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 18px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    border: 3px solid var(--ink);
+    cursor: pointer;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+    box-shadow: 6px 6px 0 var(--paper), 6px 6px 0 3px var(--ink);
+  }
+  .form-submit:hover { transform: translate(-3px, -3px); }
+
+  .form-success {
+    text-align: center;
+    padding: 40px 20px;
+  }
+  .form-success h3 {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 36px;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    color: var(--ink);
+  }
+  .form-success p { font-size: 18px; }
+
+  .contact__socials {
+    margin-top: 60px;
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .contact__socials a {
+    background: var(--paper);
+    border: 2.5px solid var(--ink);
+    padding: 12px 22px;
+    color: var(--ink);
+    text-decoration: none;
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    transition: transform 0.15s ease, background 0.15s ease, color 0.15s ease;
+  }
+  .contact__socials a:hover { transform: rotate(-2deg) scale(1.04); background: var(--ink); color: var(--acid); }
+
+  /* ─── FOOTER ──────────────────────────────────────── */
+  footer {
+    background: var(--ink);
+    color: var(--orchid);
+    padding: 40px 28px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  footer span { color: var(--acid); }
+
+  .scribble { position: relative; display: inline-block; }
+  .scribble::after {
+    content: '';
+    position: absolute;
+    left: -4px; right: -4px; bottom: -8px;
+    height: 14px;
+    background: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 14' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M2 8 Q 50 2, 100 8 T 198 8' stroke='%23ff5b1f' stroke-width='4' fill='none' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat center / 100% 100%;
+  }
+
+</style>
+</head>
+<body>
+
+<!-- ─── NAV ─────────────────────────────────────────── -->
+<nav class="nav">
+  <a href="#top" class="nav__brand">
+    <div class="nav__logo-mark"><span>LD</span></div>
+    <span class="nav__logo">LARRY<em>·</em>DOJO</span>
+  </a>
+  <div class="nav__links">
+    <a href="#about">About</a>
+    <a href="#work">Work</a>
+    <a href="#agency">Studio</a>
+    <a href="#services">Services</a>
+  </div>
+  <a href="#contact" class="nav__cta">Start a Project →</a>
+</nav>
+
+<!-- ─── HERO ────────────────────────────────────────── -->
+<header class="hero" id="top">
+  <svg class="spark" style="top:60px;left:48%;width:38px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2 L13.5 10.5 L22 12 L13.5 13.5 L12 22 L10.5 13.5 L2 12 L10.5 10.5 Z"/></svg>
+  <svg class="spark" style="bottom:80px;left:42%;width:24px;" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2 L13.5 10.5 L22 12 L13.5 13.5 L12 22 L10.5 13.5 L2 12 L10.5 10.5 Z"/></svg>
+
+  <div class="hero__inner">
+    <div>
+      <span class="eyebrow">an AI studio · est. 2026</span>
+      <h1>Independent.<br>Episodic.<br><em>On purpose.</em></h1>
+      <p class="hero__lead">
+        LarryDoJo builds <strong>AI-generated shows, rapid websites, and custom apps</strong> for the post-studio era — the same playbook the new wave of independent animators is using to outpace the majors.
+      </p>
+      <div class="hero__cta">
+        <a href="#work" class="btn btn--primary">See the Work</a>
+        <a href="#contact" class="btn btn--ghost">Hire the Studio</a>
+      </div>
+    </div>
+
+    <div class="collage" aria-hidden="true">
+      <div class="sticker sticker--top">NEW EPISODE ↓</div>
+      <div class="polaroid polaroid--1">
+        <img class="polaroid__img" src="img-hero-hallway.jpg" alt="Mega Man and Robocop in a high school hallway — AI still">
+        <span class="polaroid__caption">RoboNoir, Pilot</span>
+      </div>
+      <div class="polaroid polaroid--2">
+        <img class="polaroid__img" src="img-lab.jpg" alt="Flash and Batman in a lab — AI still">
+        <span class="polaroid__caption">DCU Noir — pilot</span>
+      </div>
+      <div class="sticker sticker--bot">↑ AI-native IP</div>
+    </div>
+  </div>
+</header>
+
+<!-- ─── MARQUEE ─────────────────────────────────────── -->
+<div class="marquee" aria-hidden="true">
+  <div class="marquee__track">
+    <span>
+      AI Content&nbsp;★&nbsp;Rapid Web&nbsp;★&nbsp;eCommerce&nbsp;★&nbsp;Custom Apps&nbsp;★&nbsp;Episodic IP&nbsp;★&nbsp;Consulting&nbsp;★&nbsp;
+      AI Content&nbsp;★&nbsp;Rapid Web&nbsp;★&nbsp;eCommerce&nbsp;★&nbsp;Custom Apps&nbsp;★&nbsp;Episodic IP&nbsp;★&nbsp;Consulting&nbsp;★&nbsp;
+    </span>
+  </div>
+</div>
+
+<!-- ─── ABOUT ───────────────────────────────────────── -->
+<section class="about" id="about">
+  <div class="container">
+    <div class="section-head">
+      <span class="section-head__kicker">↓ what we do</span>
+      <h2>A studio<br>built for the<br><span class="scribble">new playbook.</span></h2>
+    </div>
+
+    <div class="about__grid">
+      <div class="about__text">
+        <p>The major studios have stopped placing bets on original IP. <strong>61% of Gen Z animation fans</strong> say they prefer independent YouTube series to anything coming out of the legacy houses.</p>
+        <p>LarryDoJo is built for that shift. We make episodic AI content that earns its own audience. We ship websites in days, not quarters. And we build the custom apps that let small operators look like big ones.</p>
+        <p>Every project is also a public POC — proof, in market, that this way of working actually works.</p>
+      </div>
+
+      <div class="pillars">
+        <div class="pillar">
+          <div class="pillar__num">01</div>
+          <h3>AI-Native Content</h3>
+          <p>Original characters and serialized shows produced with AI pipelines. One-offs and episodic IP, distributed where the audience already lives.</p>
+        </div>
+        <div class="pillar">
+          <div class="pillar__num">02</div>
+          <h3>Rapid Web + eCommerce</h3>
+          <p>Sites built, deployed, and iterated on a tight loop. GitHub-backed, Netlify-hosted, AEO and SEO baked in from day one.</p>
+        </div>
+        <div class="pillar">
+          <div class="pillar__num">03</div>
+          <h3>Custom Apps</h3>
+          <p>The plumbing behind the marketing — automation, analytics, and AI tooling tailored to your stack and your team's actual workflow.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── WORK / AI CONTENT ───────────────────────────── -->
+<section class="work" id="work">
+  <div class="container">
+    <div class="section-head">
+      <span class="section-head__kicker">↓ ai-generated content</span>
+      <h2>The audience<br>is already here.</h2>
+      <p class="section-head__desc">
+        Independent online animation isn't a trend — it's the new mainstream. The numbers are doing the arguing for us.
+      </p>
+    </div>
+
+    <div class="stat-row">
+      <div class="stat">
+        <div class="stat__num">61%</div>
+        <div class="stat__label">Of Gen Z Fans Prefer Indie YouTube Series Over Major Studio IP</div>
+        <div class="stat__src">// Google/SmithGeiger, Apr 2025</div>
+      </div>
+      <div class="stat">
+        <div class="stat__num">66%</div>
+        <div class="stat__label">Watch Animation Memes Weekly Or More</div>
+        <div class="stat__src">// YouTube Trends Survey 2026</div>
+      </div>
+      <div class="stat">
+        <div class="stat__num">50%</div>
+        <div class="stat__label">Watch Animated Series In Languages Other Than Their Own</div>
+        <div class="stat__src">// YouTube Culture & Trends 2026</div>
+      </div>
+    </div>
+
+    <div class="work__intro">
+      The YouTube Culture & Trends Report calls this <strong>"The New Showrunner Era"</strong> — independent creators producing original characters, serialized stories, and engaged fan communities at speeds the legacy studios can't match. LarryDoJo operates inside that model. Below: two formats we ship today.
+    </div>
+
+    <div class="show-grid">
+      <article class="show-card">
+        <div class="show-card__video show-card__video--vertical">
+          <span class="show-card__tag">One-Off</span>
+          <iframe
+            src="https://www.youtube.com/embed/RyYVlkZaaD8"
+            title="Jack's last laugh — LarryDoJo"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerpolicy="strict-origin-when-cross-origin"
+            allowfullscreen></iframe>
+        </div>
+        <div class="show-card__body">
+          <h3>One-Off Drops</h3>
+          <div class="show-card__meta">// format: short-form vertical · platform: YouTube + TikTok</div>
+          <p>Standalone moments. Concept-driven, fast to produce, designed to test characters and visual worlds in-market before committing to a series.</p>
+          <div class="show-card__links">
+            <a href="https://www.youtube.com/@larrydojo" target="_blank" rel="noopener" class="show-card__link show-card__link--primary">More on YouTube ↗</a>
+            <a href="https://www.tiktok.com/@larrydojo_noir" target="_blank" rel="noopener" class="show-card__link">@larrydojo_noir</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="show-card">
+        <div class="show-card__video">
+          <span class="show-card__tag">Episodic Series</span>
+          <iframe
+            src="https://www.youtube.com/embed/fdBXaYj48tA"
+            title="RoboNoir / RoboJr — LarryDoJo"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerpolicy="strict-origin-when-cross-origin"
+            allowfullscreen></iframe>
+        </div>
+        <div class="show-card__body">
+          <h3>RoboNoir &nbsp;/&nbsp; RoboJr</h3>
+          <div class="show-card__meta">// format: serialized · platform: YouTube + cross-post</div>
+          <p>Recurring characters. Episode-to-episode continuity. The same playbook independent animators use to build fan communities — applied to AI-native production.</p>
+          <div class="show-card__links">
+            <a href="https://www.youtube.com/@larrydojo" target="_blank" rel="noopener" class="show-card__link show-card__link--primary">Watch the Series ↗</a>
+            <a href="https://www.tiktok.com/@larrydojo_noir" target="_blank" rel="noopener" class="show-card__link">TikTok</a>
+          </div>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ─── DIGITAL AGENCY ──────────────────────────────── -->
+<section class="agency" id="agency">
+  <div class="container">
+    <div class="section-head">
+      <span class="section-head__kicker">↓ rapid web & ecommerce</span>
+      <h2>The new<br>digital agency.</h2>
+      <p class="section-head__desc">
+        Most agencies still run a six-month build cycle. We run a six-day one — then keep iterating.
+      </p>
+    </div>
+
+    <div class="agency__grid">
+      <div class="agency__copy">
+        <h3>Built fast.<br>Updated <span>weekly.</span><br>Optimized always.</h3>
+        <p>The LarryDoJo workflow is a tight loop between Claude, GitHub, and Netlify. <strong>GitHub is the source of truth.</strong> Netlify auto-deploys on every commit. Edits ship in minutes, not weeks.</p>
+        <p>That means <strong>continuous updates without retainer bloat</strong> — and AEO/SEO optimization baked into the way the site is built, not bolted on after launch.</p>
+
+        <ul class="feature-list">
+          <li>
+            <span class="feature-list__icon">→</span>
+            <span class="feature-list__text"><strong>Single source of truth</strong>Every site lives in GitHub. No drift, no mystery zips, no "which version is live."</span>
+          </li>
+          <li>
+            <span class="feature-list__icon">→</span>
+            <span class="feature-list__text"><strong>Auto-deploy on commit</strong>Netlify pushes changes live in ~30 seconds. Client sees the new URL the same day.</span>
+          </li>
+          <li>
+            <span class="feature-list__icon">→</span>
+            <span class="feature-list__text"><strong>AEO + SEO from day one</strong>Structured for AI answer engines and traditional search both — built in, not retrofitted.</span>
+          </li>
+          <li>
+            <span class="feature-list__icon">→</span>
+            <span class="feature-list__text"><strong>Low monthly overhead</strong>Static-first hosting. No per-seat licenses. Predictable costs that scale with you.</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="workflow">
+        <div class="workflow__title">The Workflow</div>
+        <div class="workflow__sub">7 steps, every round, every client</div>
+        <ol>
+          <li><strong>Receive client feedback</strong> — PDF, email, Slack, doesn't matter.</li>
+          <li><strong>Pull current code</strong> from GitHub (the canonical version).</li>
+          <li><strong>Refresh project knowledge</strong> with Claude, fresh every round.</li>
+          <li><strong>Share the feedback</strong> — Claude confirms with a numbered checklist.</li>
+          <li><strong>Output changed files</strong>, ready to commit.</li>
+          <li><strong>Push to GitHub</strong> → commit message logs the round.</li>
+          <li><strong>Netlify auto-deploys</strong> in ~30s. Send the live URL.</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── SPECIAL PROJECTS ────────────────────────────── -->
+<section class="special" id="services">
+  <div class="container">
+    <div class="section-head">
+      <span class="section-head__kicker">↓ special projects</span>
+      <h2>Custom <em>apps</em><br>& AI consulting.</h2>
+      <p class="section-head__desc">
+        For teams that need more than a website. Pipeline architecture, AI tooling, automation strategy — engagements scoped to fit, not stretched to fill a retainer.
+      </p>
+    </div>
+
+    <div class="services-grid">
+      <a href="#contact" class="service">
+        <div class="service__num">A</div>
+        <h3>AI Strategy &amp; POCs</h3>
+        <p>Translate "we should be using AI" into something shippable. Scoped POCs, validated against real workflows.</p>
+        <ul>
+          <li>// pipeline architecture</li>
+          <li>// model selection &amp; tooling</li>
+          <li>// proof-of-concept builds</li>
+        </ul>
+        <span class="service__cta">Inquire →</span>
+      </a>
+
+      <a href="#contact" class="service">
+        <div class="service__num">B</div>
+        <h3>Custom App Builds</h3>
+        <p>Custom plumbing between the tools you already pay for. Less dashboard tax, more signal.</p>
+        <ul>
+          <li>// CRM + analytics</li>
+          <li>// automation flows</li>
+          <li>// reporting that's actually read</li>
+        </ul>
+        <span class="service__cta">Inquire →</span>
+      </a>
+
+      <a href="#contact" class="service">
+        <div class="service__num">C</div>
+        <h3>Fractional Consulting</h3>
+        <p>Sustained advisory for founders and teams that need a builder in the room, not a deck.</p>
+        <ul>
+          <li>// monthly engagements</li>
+          <li>// hands-on, not handoff</li>
+          <li>// measurable deliverables</li>
+        </ul>
+        <span class="service__cta">Inquire →</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ─── CONTACT ─────────────────────────────────────── -->
+<section class="contact" id="contact">
+  <div class="contact__head">
+    <h2>Let's <em>build</em><br>something.</h2>
+    <p class="contact__lead">
+      Got a show, a site, or a system that needs shipping? Tell me what you're working on.
+    </p>
+  </div>
+
+  <form class="form-card" id="contact-form" name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+    <input type="hidden" name="form-name" value="contact" />
+    <p style="display:none;"><label>Don't fill this out: <input name="bot-field" /></label></p>
+
+    <div class="form-row">
+      <div class="form-field">
+        <label for="name">Name <span class="req">*</span></label>
+        <input type="text" id="name" name="name" required />
+      </div>
+      <div class="form-field">
+        <label for="email">Email <span class="req">*</span></label>
+        <input type="email" id="email" name="email" required />
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-field">
+        <label for="company">Company / Project</label>
+        <input type="text" id="company" name="company" />
+      </div>
+      <div class="form-field">
+        <label for="service">What do you need? <span class="req">*</span></label>
+        <select id="service" name="service" required>
+          <option value="">Select one…</option>
+          <option>AI Content / Episodic IP</option>
+          <option>Rapid Website Build</option>
+          <option>eCommerce Site</option>
+          <option>Custom Apps / MarTech</option>
+          <option>AI Strategy &amp; Consulting</option>
+          <option>Something Else</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="form-field form-field--full">
+      <label for="message">Tell me about it <span class="req">*</span></label>
+      <textarea id="message" name="message" required placeholder="What are you trying to ship? Any deadlines, constraints, or links I should see?"></textarea>
+    </div>
+
+    <button type="submit" class="form-submit">Send it →</button>
+  </form>
+
+  <div class="form-success" id="form-success" style="display:none;">
+    <h3>Got it.</h3>
+    <p>I'll be in touch within a day or two. In the meantime, check out the work below.</p>
+  </div>
+
+  <div class="contact__socials">
+    <a href="https://www.tiktok.com/@larrydojo_noir" target="_blank" rel="noopener">TikTok ↗</a>
+    <a href="https://www.youtube.com/@larrydojo" target="_blank" rel="noopener">YouTube ↗</a>
+    <a href="https://www.instagram.com/larrydojo/" target="_blank" rel="noopener">Instagram ↗</a>
+  </div>
+</section>
+
+<!-- ─── FOOTER ──────────────────────────────────────── -->
+<footer>
+  <div>© 2026 <span>LARRYDOJO</span> · An AI studio.</div>
+  <div>Built fast. Hosted on Netlify. Source of truth: GitHub.</div>
+</footer>
+
+<script>
+  // Light-touch form handler — Netlify will pick up the POST natively when deployed.
+  // Locally / on GitHub Pages, this falls back to a thank-you state.
+  const form = document.getElementById('contact-form');
+  const success = document.getElementById('form-success');
+  if (form) {
+    form.addEventListener('submit', function(e) {
+      // If running outside Netlify, fake success so the user gets feedback
+      const isNetlify = window.location.hostname.includes('netlify') || window.location.hostname.includes('larrydojo');
+      if (!isNetlify) {
+        e.preventDefault();
+        form.style.display = 'none';
+        success.style.display = 'block';
+        success.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+      // On Netlify, let the native POST submit and Netlify will redirect.
+    });
+  }
+</script>
+
+</body>
+</html>
