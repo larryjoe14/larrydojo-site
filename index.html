@@ -489,8 +489,8 @@
     z-index: 5;
   }
 
-  /* vertical (9:16) frame for short-form vertical content */
-  .video-frame--vertical {
+  /* YouTube vertical frame: strict 9:16, fills the iframe perfectly */
+  .yt-frame {
     width: 100%;
     max-width: 380px;
     aspect-ratio: 9 / 16;
@@ -500,8 +500,7 @@
     overflow: hidden;
     position: relative;
   }
-  .video-frame--vertical iframe,
-  .video-frame--vertical .tiktok-wrap {
+  .yt-frame iframe {
     position: absolute;
     inset: 0;
     width: 100%;
@@ -509,15 +508,50 @@
     border: 0;
     display: block;
   }
-  .video-frame--vertical .tiktok-wrap {
-    overflow: auto;
-    background: #000;
+
+  /* TikTok frame: gives the embed script room to size itself */
+  .tt-frame {
+    width: 100%;
+    max-width: 605px;
+    min-height: 740px;
+    background: var(--paper);
+    border: 2.5px solid var(--ink);
+    box-shadow: 6px 6px 0 var(--acid);
+    padding: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
   }
-  /* TikTok renders its own iframe inside the blockquote; constrain the result */
-  .video-frame--vertical .tiktok-embed {
+  .tt-frame .tiktok-embed {
     margin: 0 auto !important;
+    width: 100% !important;
     max-width: 100% !important;
-    min-width: 0 !important;
+  }
+  .tt-frame .tt-fallback {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 18px;
+    background: var(--paper);
+    color: var(--ink);
+    text-align: center;
+    padding: 24px;
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .tt-frame .tt-fallback a { pointer-events: auto; }
+  /* Once TikTok injects its iframe, the rendered content sits above the fallback */
+  .tt-frame iframe { position: relative; z-index: 1; background: var(--paper); }
+  @media (max-width: 720px) {
+    .tt-frame { min-height: 640px; padding: 8px; }
   }
 
   .show-card__body {
@@ -1004,7 +1038,7 @@
       <article class="show-card">
         <div class="show-card__media">
           <span class="show-card__tag">One-Off</span>
-          <div class="video-frame--vertical">
+          <div class="yt-frame">
             <iframe
               src="https://www.youtube.com/embed/RyYVlkZaaD8"
               title="Jack's last laugh - LarryDoJo"
@@ -1029,18 +1063,20 @@
       <article class="show-card">
         <div class="show-card__media">
           <span class="show-card__tag">Design Continuity</span>
-          <div class="video-frame--vertical">
-            <div class="tiktok-wrap">
-              <blockquote class="tiktok-embed"
-                cite="https://www.tiktok.com/@larrydojo_noir/video/7596596438558133518"
-                data-video-id="7596596438558133518"
-                style="max-width: 605px; min-width: 325px;">
-                <section>
-                  <a target="_blank" title="@larrydojo_noir" href="https://www.tiktok.com/@larrydojo_noir?refer=embed">@larrydojo_noir</a>
-                  Robo Junior E2: An Evil Transformer Attacks the Middle School
-                </section>
-              </blockquote>
+          <div class="tt-frame">
+            <div class="tt-fallback" aria-hidden="true">
+              <span>Loading TikTok…</span>
+              <a href="https://www.tiktok.com/@larrydojo_noir/video/7596596438558133518" target="_blank" rel="noopener" class="show-card__link show-card__link--primary">Open in TikTok ↗</a>
             </div>
+            <blockquote class="tiktok-embed"
+              cite="https://www.tiktok.com/@larrydojo_noir/video/7596596438558133518"
+              data-video-id="7596596438558133518"
+              style="max-width: 605px; min-width: 325px;">
+              <section>
+                <a target="_blank" title="@larrydojo_noir" href="https://www.tiktok.com/@larrydojo_noir?refer=embed">@larrydojo_noir</a>
+                Robo Junior E2: An Evil Transformer Attacks the Middle School
+              </section>
+            </blockquote>
           </div>
         </div>
         <div class="show-card__body">
