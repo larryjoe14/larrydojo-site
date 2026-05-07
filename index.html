@@ -1456,6 +1456,280 @@
     background: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 14' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M2 8 Q 50 2, 100 8 T 198 8' stroke='%23ff5b1f' stroke-width='4' fill='none' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat center / 100% 100%;
   }
 
+  /* ─── MOTION LAYER (Pass 1 + Pass 2) ────────────────
+     PASS 1 — hero entry choreography, scroll reveals, polaroid hover, stat count-up
+     PASS 2 — capture→convert sequence, service card hover stagger, hero sticker
+              parallax, scribble draw-in, highlighter sweep on <strong> tags
+
+     All gated behind prefers-reduced-motion. Standard reveal timing is
+     24px translate, 500ms duration, soft-settle easing, fires once.
+     Sticker pops use spring overshoot for the "slap a sticker on" feel. */
+  :root {
+    --ease-settle: cubic-bezier(0.22, 1, 0.36, 1);
+    --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  /* ─── PASS 1: Default reveal state ───────────────────
+     Anything tagged data-reveal starts hidden + nudged down. The .is-in
+     class is added by JS either when the element enters the viewport
+     (scroll reveal) or as part of the hero entry sequence (page load). */
+  [data-reveal] {
+    opacity: 0;
+    transform: translateY(24px);
+    transition:
+      opacity 0.55s var(--ease-settle),
+      transform 0.55s var(--ease-settle);
+    will-change: opacity, transform;
+  }
+  [data-reveal].is-in {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Sticker pop: starts scaled-down + counter-rotated, lands at its existing
+     resting rotation with a tiny overshoot. Each sticker preserves its
+     original transform via CSS variables. */
+  [data-reveal="sticker"] {
+    opacity: 0;
+    transform: var(--sticker-rest, scale(0.7) rotate(-8deg));
+    transition:
+      opacity 0.45s var(--ease-spring),
+      transform 0.55s var(--ease-spring);
+  }
+  [data-reveal="sticker"].is-in {
+    opacity: 1;
+    transform: var(--sticker-final, none);
+  }
+  .eyebrow[data-reveal="sticker"]                    { --sticker-rest: scale(0.7) rotate(8deg);   --sticker-final: rotate(-2deg); }
+  .pipeline-sticker--idea[data-reveal="sticker"]     { --sticker-rest: scale(0.7) rotate(4deg);   --sticker-final: rotate(-5deg); }
+  .pipeline-sticker--control[data-reveal="sticker"]  { --sticker-rest: scale(0.7) rotate(-6deg);  --sticker-final: rotate(4deg); }
+  .pipeline-sticker--final[data-reveal="sticker"]    { --sticker-rest: scale(0.7) rotate(-4deg);  --sticker-final: rotate(3deg); }
+  .section-head__kicker[data-reveal="sticker"]       { --sticker-rest: scale(0.85) rotate(6deg);  --sticker-final: rotate(-1deg); }
+  .capture-convert__kicker[data-reveal="sticker"]    { --sticker-rest: scale(0.85) rotate(-4deg); --sticker-final: rotate(0); }
+
+  /* Polaroid drop: starts higher and rotated more aggressively, lands at
+     each polaroid's CSS-defined resting rotation. */
+  .stage-polaroid[data-reveal="polaroid"] {
+    opacity: 0;
+    transition:
+      opacity 0.6s var(--ease-settle),
+      transform 0.7s var(--ease-spring);
+  }
+  .stage-polaroid--idea[data-reveal="polaroid"]   { transform: translateY(-20px) rotate(-12deg) scale(0.94); }
+  .stage-polaroid--final[data-reveal="polaroid"]  { transform: translateY(-20px) rotate(10deg)  scale(0.94); }
+  .control-card[data-reveal="polaroid"] {
+    opacity: 0;
+    transform: translateY(-16px) rotate(-4deg) scale(0.95);
+    transition:
+      opacity 0.6s var(--ease-settle),
+      transform 0.7s var(--ease-spring);
+  }
+  .stage-polaroid--idea[data-reveal="polaroid"].is-in  { opacity: 1; transform: rotate(-3deg); }
+  .stage-polaroid--final[data-reveal="polaroid"].is-in { opacity: 1; transform: rotate(2.5deg); }
+  .control-card[data-reveal="polaroid"].is-in          { opacity: 1; transform: rotate(-0.6deg); }
+  /* Desktop polaroid resting rotations are slightly different */
+  @media (min-width: 981px) {
+    .stage-polaroid--idea[data-reveal="polaroid"].is-in  { transform: rotate(-2deg); }
+    .stage-polaroid--final[data-reveal="polaroid"].is-in { transform: rotate(1.5deg); }
+  }
+  /* Mobile polaroid resting rotations */
+  @media (max-width: 720px) {
+    .stage-polaroid--idea[data-reveal="polaroid"].is-in  { transform: rotate(-2deg); }
+    .stage-polaroid--final[data-reveal="polaroid"].is-in { transform: rotate(1.5deg); }
+  }
+
+  /* Polaroid hover refinement: replace the existing instant rotation
+     with a springy lift so picking one up feels tactile. */
+  .stage-polaroid {
+    transition: transform 0.4s var(--ease-spring) !important;
+  }
+
+  /* Stat: appears with a quick fade so the count-up has a frame to play.
+     The :nth-child rotations from the base CSS are preserved on landing. */
+  .stat[data-reveal="stat"] {
+    opacity: 0;
+    transform: translateY(24px) rotate(0deg);
+    transition:
+      opacity 0.55s var(--ease-settle),
+      transform 0.7s var(--ease-spring);
+  }
+  .stat:nth-child(1)[data-reveal="stat"].is-in { opacity: 1; transform: rotate(-1deg); }
+  .stat:nth-child(2)[data-reveal="stat"].is-in { opacity: 1; transform: rotate(0.5deg); }
+  .stat:nth-child(3)[data-reveal="stat"].is-in { opacity: 1; transform: rotate(-0.7deg); }
+
+  /* Stagger helper: when a parent has data-stagger, its data-reveal children
+     animate one after another with delays applied via inline --stagger-delay. */
+  [data-reveal][style*="--stagger-delay"] {
+    transition-delay: var(--stagger-delay);
+  }
+
+  /* ─── PASS 2: Capture → Convert sequence ─────────────
+     The "Capture" stage lands first, the arrow draws left-to-right
+     (or top-to-bottom on mobile), then "Convert" lands. Each chip
+     inside cascades after its parent stage settles. */
+  .cc-stage[data-reveal="cc-stage"] {
+    opacity: 0;
+    transform: translateY(20px) scale(0.97);
+    transition:
+      opacity 0.55s var(--ease-settle),
+      transform 0.65s var(--ease-spring);
+  }
+  .cc-stage[data-reveal="cc-stage"].is-in {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+
+  /* The arrow draws itself in: it scales horizontally from 0 to 1 with
+     its left edge anchored, so it appears to be "drawn" between the
+     two stages. On mobile (when the layout stacks vertically and the
+     arrow is rotated 90deg), the same scale animates as a vertical line. */
+  .cc-arrow[data-reveal="cc-arrow"] {
+    opacity: 0;
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition:
+      opacity 0.3s var(--ease-settle),
+      transform 0.55s var(--ease-settle);
+  }
+  .cc-arrow[data-reveal="cc-arrow"].is-in {
+    opacity: 1;
+    transform: scaleX(1);
+  }
+  @media (max-width: 720px) {
+    /* Mobile: the arrow is rotated 90deg by the base CSS. We need the
+       reveal animation to still feel like a "draw" along its length,
+       so we keep the same scaleX but anchor at top — the rotation makes
+       it visually a vertical draw. */
+    .cc-arrow[data-reveal="cc-arrow"] {
+      transform: rotate(90deg) scaleX(0);
+      transform-origin: left center;
+    }
+    .cc-arrow[data-reveal="cc-arrow"].is-in {
+      transform: rotate(90deg) scaleX(1);
+    }
+  }
+
+  /* Chips inside each stage cascade in from the bottom-left, like
+     someone pulling a stack of trading cards out of a sleeve. */
+  .cc-chip[data-reveal="cc-chip"] {
+    opacity: 0;
+    transform: translateY(8px);
+    transition:
+      opacity 0.35s var(--ease-settle),
+      transform 0.45s var(--ease-spring);
+  }
+  .cc-chip[data-reveal="cc-chip"].is-in {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ─── PASS 2: Service card hover stagger ─────────────
+     When you hover a service card, the background and CTA color fill
+     the same way they did before, but the giant outlined letter
+     (A/B/C) now fills *after* the rest, by 80ms. The base CSS already
+     handled fill states; we just split the timing so it feels deliberate. */
+  .service__num {
+    transition: color 0.18s ease 0.08s, -webkit-text-stroke-color 0.18s ease 0.08s;
+  }
+  .service {
+    /* Slightly extend the existing background transition so it feels
+       like the card itself responds first, then the letter fills. */
+    transition: background 0.22s ease, color 0.22s ease;
+  }
+  /* When hover ends, reverse the order: letter fades back instantly,
+     then the background follows. This avoids a "stuck" filled-letter look. */
+  .service:not(:hover) .service__num {
+    transition-delay: 0s;
+  }
+
+  /* ─── PASS 2: Hero sticker parallax ──────────────────
+     The two stickers floating above the polaroids drift slightly faster
+     than the hero scrolls. The translateY value is set inline by JS based
+     on scroll position, layered on top of each sticker's existing
+     rotation. Movement is capped to ~12px to stay subliminal. */
+  .pipeline-sticker {
+    will-change: transform;
+  }
+
+  /* ─── PASS 2: Scribble draw-in ───────────────────────
+     The orange scribble underline on "new playbook." starts with
+     clip-path hiding it from left to right, then unclips like someone
+     drawing it with a marker. clip-path animates smoothly in modern
+     browsers; older fallbacks just show the static line. */
+  .scribble[data-reveal="scribble"]::after {
+    clip-path: inset(0 100% 0 0);
+    transition: clip-path 0.7s var(--ease-settle) 0.3s;
+  }
+  .scribble[data-reveal="scribble"].is-in::after {
+    clip-path: inset(0 0 0 0);
+  }
+
+  /* ─── PASS 2: Highlighter sweep on <strong> tags ─────
+     The acid-yellow highlight on inline <strong> tags inside paragraphs
+     sweeps in from left to right, ~400ms after its parent paragraph
+     reveals. We use a pseudo-element so we don't disturb the existing
+     styling. The base CSS sets background: var(--acid) directly on
+     these tags; we override that to a sweeping linear-gradient mask. */
+  [data-highlight-sweep] strong {
+    background: linear-gradient(to right, var(--acid) 50%, transparent 50%);
+    background-size: 200% 100%;
+    background-position: 100% 0;
+    background-repeat: no-repeat;
+    transition: background-position 0.6s var(--ease-settle) 0.4s;
+    /* Re-add the existing inline padding from the base styles */
+    padding: 0 4px;
+  }
+  [data-highlight-sweep].is-in strong {
+    background-position: 0 0;
+  }
+
+  /* ─── Reduced motion: disable everything ──────────────
+     Users who've opted out get the site exactly as it was — final state,
+     no transitions, no transforms. */
+  @media (prefers-reduced-motion: reduce) {
+    [data-reveal],
+    [data-reveal="sticker"],
+    [data-reveal="polaroid"],
+    [data-reveal="stat"],
+    [data-reveal="cc-stage"],
+    [data-reveal="cc-arrow"],
+    [data-reveal="cc-chip"],
+    [data-reveal="scribble"],
+    .stage-polaroid--idea[data-reveal="polaroid"],
+    .stage-polaroid--final[data-reveal="polaroid"],
+    .control-card[data-reveal="polaroid"] {
+      opacity: 1 !important;
+      transform: none !important;
+      transition: none !important;
+    }
+    /* Restore each element's original resting rotation since
+       transform: none would otherwise flatten them. */
+    .eyebrow                   { transform: rotate(-2deg) !important; }
+    .pipeline-sticker--idea    { transform: rotate(-5deg) !important; }
+    .pipeline-sticker--control { transform: rotate(4deg)  !important; }
+    .pipeline-sticker--final   { transform: rotate(3deg)  !important; }
+    .stage-polaroid--idea      { transform: rotate(-3deg) !important; }
+    .stage-polaroid--final     { transform: rotate(2.5deg) !important; }
+    .control-card              { transform: rotate(-0.6deg) !important; }
+    .stat:nth-child(1)         { transform: rotate(-1deg) !important; }
+    .stat:nth-child(2)         { transform: rotate(0.5deg) !important; }
+    .stat:nth-child(3)         { transform: rotate(-0.7deg) !important; }
+    @media (max-width: 720px) {
+      .cc-arrow                { transform: rotate(90deg) !important; }
+    }
+    /* Highlighter: skip the sweep, just show the highlight statically. */
+    [data-highlight-sweep] strong {
+      background: var(--acid) !important;
+      background-position: 0 0 !important;
+      transition: none !important;
+    }
+    /* Scribble: show the full underline immediately. */
+    .scribble[data-reveal="scribble"]::after {
+      clip-path: none !important;
+      transition: none !important;
+    }
+  }
+
 </style>
 </head>
 <body>
@@ -1488,12 +1762,12 @@
 
   <div class="hero__inner">
     <div class="hero__copy">
-      <span class="eyebrow">an AI studio · est. 2024</span>
-      <h1>Rapid.<br>Content.<br><em>Now.</em></h1>
-      <p class="hero__lead">
+      <span class="eyebrow" data-reveal="sticker" data-hero-step="1">an AI studio · est. 2024</span>
+      <h1 data-reveal data-hero-step="2">Rapid.<br>Content.<br><em>Now.</em></h1>
+      <p class="hero__lead" data-reveal data-highlight-sweep data-hero-step="3">
         LarryDoJo builds <strong>AI content, rapid websites, and custom apps</strong> for the post-studio era. It's the same playbook the new wave of independent creators is using to outpace the majors.
       </p>
-      <div class="hero__cta">
+      <div class="hero__cta" data-reveal data-hero-step="4">
         <a href="#work" class="btn btn--primary">See the Work</a>
         <a href="#contact" class="btn btn--ghost">Contact the Studio</a>
       </div>
@@ -1503,8 +1777,8 @@
     <div class="pipeline" aria-label="The LarryDoJo content pipeline: idea, brand controls, finished episode">
 
       <div class="pipeline__stage">
-        <div class="pipeline-sticker pipeline-sticker--idea">IDEA ↓</div>
-        <div class="stage-polaroid stage-polaroid--idea">
+        <div class="pipeline-sticker pipeline-sticker--idea" data-reveal="sticker" data-hero-step="6" data-parallax="0.4">IDEA ↓</div>
+        <div class="stage-polaroid stage-polaroid--idea" data-reveal="polaroid" data-hero-step="5">
           <img class="stage-polaroid__img" src="img-concept-megaman.jpg" alt="Early concept frame for Robo Jr. character" />
           <span class="stage-polaroid__caption">Concept · Robo Jr.</span>
         </div>
@@ -1513,8 +1787,8 @@
       <div class="pipeline__connector" aria-hidden="true"></div>
 
       <div class="pipeline__stage">
-        <div class="pipeline-sticker pipeline-sticker--control">Creative &amp; Brand Control</div>
-        <div class="control-card" role="figure" aria-label="Brand bible with character profile, environment plate, and style swatches">
+        <div class="pipeline-sticker pipeline-sticker--control" data-reveal="sticker" data-hero-step="8" data-parallax="-0.3">Creative &amp; Brand Control</div>
+        <div class="control-card" role="figure" aria-label="Brand bible with character profile, environment plate, and style swatches" data-reveal="polaroid" data-hero-step="7">
           <div class="control-card__head">
             <span class="control-card__title">// Brand Bible</span>
             <span class="control-card__meta">v1.0 · locked</span>
@@ -1552,8 +1826,8 @@
       <div class="pipeline__connector" aria-hidden="true"></div>
 
       <div class="pipeline__stage">
-        <div class="pipeline-sticker pipeline-sticker--final">Mid-funnel · shipped ↓</div>
-        <div class="stage-polaroid stage-polaroid--final">
+        <div class="pipeline-sticker pipeline-sticker--final" data-reveal="sticker" data-hero-step="10" data-parallax="0.5">Mid-funnel · shipped ↓</div>
+        <div class="stage-polaroid stage-polaroid--final" data-reveal="polaroid" data-hero-step="9">
           <img class="stage-polaroid__img" src="img-hero-hallway.jpg" alt="Finished episode still: Robo Jr. pilot" />
           <span class="stage-polaroid__caption">Robo Jr., Pilot · Ep. 01</span>
         </div>
@@ -1569,7 +1843,7 @@
          - Mobile (≤980px): the hero collapses to a single column and
            `order: 3` on this element places it between the pipeline collage
            and the next section (About) -->
-    <div class="case-study-callout">
+    <div class="case-study-callout" data-reveal data-hero-step="11">
       <div class="case-study-callout__video">
         <!-- YouTube embed: starts muted (browser autoplay policy). Sound is
              one click on YouTube's own unmute button in the player chrome.
@@ -1597,64 +1871,64 @@
 <!-- ─── ABOUT ───────────────────────────────────────── -->
 <section class="about" id="about">
   <div class="container">
-    <div class="section-head">
-      <span class="section-head__kicker">↓ what we do</span>
-      <h2>A studio<br>built for the<br><span class="scribble">new playbook.</span></h2>
+    <div class="section-head" data-stagger>
+      <span class="section-head__kicker" data-reveal="sticker">↓ what we do</span>
+      <h2 data-reveal>A studio<br>built for the<br><span class="scribble" data-reveal="scribble">new playbook.</span></h2>
     </div>
 
     <!-- The 1/2/3 service pillars used to live next to this copy. They were
          removed because the same three services are explained in more depth
          in the AI Content (Robo Jr.), Studio (Rapid Web + eCommerce), and
          Special Projects (Custom Apps) sections further down the page. -->
-    <div class="about__text about__text--full">
-      <p>We bring your ideas and brand to life through <strong>rapid, on-demand content</strong>. Reach your customers on every channel, the moment they're looking.</p>
-      <p>Customers stopped searching. They expect immediate answers. Our workflows balance <strong>brand control with speed to market</strong>, so your content shows up where AI and search send people now.</p>
-      <p>The old digital agency model is dead. Six-month builds and bloated retainers waste budget. Ship today's playbook for a fraction of the cost.</p>
+    <div class="about__text about__text--full" data-stagger>
+      <p data-reveal data-highlight-sweep>We bring your ideas and brand to life through <strong>rapid, on-demand content</strong>. Reach your customers on every channel, the moment they're looking.</p>
+      <p data-reveal data-highlight-sweep>Customers stopped searching. They expect immediate answers. Our workflows balance <strong>brand control with speed to market</strong>, so your content shows up where AI and search send people now.</p>
+      <p data-reveal>The old digital agency model is dead. Six-month builds and bloated retainers waste budget. Ship today's playbook for a fraction of the cost.</p>
     </div>
 
     <!-- ─── CAPTURE → CONVERT KEY MESSAGE GRAPHIC ─────────── -->
     <!-- Visual key-message: the captive audience that AI content captures
          on social platforms gets converted through web, app, payments, CRM. -->
-    <div class="capture-convert">
-      <div class="capture-convert__head">
-        <div class="capture-convert__kicker">↓ how it all connects</div>
-        <h3 class="capture-convert__title">We don't just <em>capture</em> attention.<br>We help you <em>convert</em> it.</h3>
-        <p class="capture-convert__sub">
+    <div class="capture-convert" data-cc-sequence>
+      <div class="capture-convert__head" data-stagger>
+        <div class="capture-convert__kicker" data-reveal="sticker">↓ how it all connects</div>
+        <h3 class="capture-convert__title" data-reveal>We don't just <em>capture</em> attention.<br>We help you <em>convert</em> it.</h3>
+        <p class="capture-convert__sub" data-reveal>
           Content captures the audience. Custom apps, online stores, secure payment, and CRM convert them. We build the back end that turns viewers into customers.
         </p>
       </div>
 
       <div class="capture-convert__flow" role="list" aria-label="Capture to convert flow">
-        <div class="cc-stage cc-stage--capture" role="listitem">
+        <div class="cc-stage cc-stage--capture" role="listitem" data-reveal="cc-stage" data-cc-step="1">
           <span class="cc-stage__label">// step 01</span>
           <span class="cc-stage__title"><em>Capture</em></span>
           <div class="cc-stage__items">
-            <span class="cc-chip">TikTok</span>
-            <span class="cc-chip">YouTube</span>
-            <span class="cc-chip">Instagram</span>
-            <span class="cc-chip">Shorts</span>
-            <span class="cc-chip">Reels</span>
+            <span class="cc-chip" data-reveal="cc-chip" data-cc-chip="1">TikTok</span>
+            <span class="cc-chip" data-reveal="cc-chip" data-cc-chip="1">YouTube</span>
+            <span class="cc-chip" data-reveal="cc-chip" data-cc-chip="1">Instagram</span>
+            <span class="cc-chip" data-reveal="cc-chip" data-cc-chip="1">Shorts</span>
+            <span class="cc-chip" data-reveal="cc-chip" data-cc-chip="1">Reels</span>
           </div>
         </div>
 
-        <div class="cc-arrow" aria-hidden="true">→</div>
+        <div class="cc-arrow" aria-hidden="true" data-reveal="cc-arrow" data-cc-step="2">→</div>
 
-        <div class="cc-stage cc-stage--convert" role="listitem">
+        <div class="cc-stage cc-stage--convert" role="listitem" data-reveal="cc-stage" data-cc-step="3">
           <span class="cc-stage__label">// step 02</span>
           <span class="cc-stage__title"><em>Convert</em></span>
           <div class="cc-stage__items">
-            <span class="cc-chip">Web</span>
-            <span class="cc-chip">App</span>
-            <span class="cc-chip">eCommerce</span>
-            <span class="cc-chip">Payments</span>
-            <span class="cc-chip">CRM</span>
+            <span class="cc-chip" data-reveal="cc-chip" data-cc-chip="3">Web</span>
+            <span class="cc-chip" data-reveal="cc-chip" data-cc-chip="3">App</span>
+            <span class="cc-chip" data-reveal="cc-chip" data-cc-chip="3">eCommerce</span>
+            <span class="cc-chip" data-reveal="cc-chip" data-cc-chip="3">Payments</span>
+            <span class="cc-chip" data-reveal="cc-chip" data-cc-chip="3">CRM</span>
           </div>
         </div>
       </div>
     </div>
 
     <!-- PDF download card -->
-    <a href="youtube-animation-trends-2026.pdf" download class="download-card">
+    <a href="youtube-animation-trends-2026.pdf" download class="download-card" data-reveal>
       <div class="download-card__icon" aria-hidden="true">
         <span>PDF</span>
       </div>
@@ -1672,33 +1946,33 @@
 <!-- ─── AI CONTENT / WORK ───────────────────────────── -->
 <section class="work" id="work">
   <div class="container">
-    <div class="section-head">
-      <span class="section-head__kicker">↓ ai content</span>
-      <h2>The audience<br>is already here.</h2>
-      <p class="section-head__desc">
+    <div class="section-head" data-stagger>
+      <span class="section-head__kicker" data-reveal="sticker">↓ ai content</span>
+      <h2 data-reveal>The audience<br>is already here.</h2>
+      <p class="section-head__desc" data-reveal>
         Independent online animation isn't a trend. It's the new mainstream. The numbers are doing the arguing for us.
       </p>
     </div>
 
-    <div class="stat-row">
-      <div class="stat">
-        <div class="stat__num">61%</div>
+    <div class="stat-row" data-stagger>
+      <div class="stat" data-reveal="stat">
+        <div class="stat__num" data-count="61" data-suffix="%">0%</div>
         <div class="stat__label">Of Gen Z Fans Prefer Indie YouTube Series Over Major Studio IP</div>
         <div class="stat__src">// Google/SmithGeiger, Apr 2025</div>
       </div>
-      <div class="stat">
-        <div class="stat__num">66%</div>
+      <div class="stat" data-reveal="stat">
+        <div class="stat__num" data-count="66" data-suffix="%">0%</div>
         <div class="stat__label">Watch Animation Memes Weekly Or More</div>
         <div class="stat__src">// YouTube Trends Survey 2026</div>
       </div>
-      <div class="stat">
-        <div class="stat__num">50%</div>
+      <div class="stat" data-reveal="stat">
+        <div class="stat__num" data-count="50" data-suffix="%">0%</div>
         <div class="stat__label">Watch Animated Series In Languages Other Than Their Own</div>
         <div class="stat__src">// YouTube Culture &amp; Trends 2026</div>
       </div>
     </div>
 
-    <div class="work__intro">
+    <div class="work__intro" data-reveal data-highlight-sweep>
       The YouTube Culture &amp; Trends Report calls this <strong>"The New Showrunner Era."</strong> Independent creators producing original characters, serialized stories, and engaged fan communities at speeds the legacy studios can't match. LarryDoJo operates inside that model.
     </div>
 
@@ -1711,7 +1985,7 @@
            collage), so duplicating it here was redundant. The Episodic card
            was also removed in this round to focus the section on one
            technique: continuity. -->
-      <article class="show-card">
+      <article class="show-card" data-reveal>
         <div class="show-card__media">
           <span class="show-card__tag">Frame-by-Frame</span>
           <div class="yt-frame">
@@ -1743,16 +2017,16 @@
 <!-- ─── DIGITAL AGENCY ──────────────────────────────── -->
 <section class="agency" id="agency">
   <div class="container">
-    <div class="section-head">
-      <span class="section-head__kicker">↓ rapid web &amp; ecommerce</span>
-      <h2>The new<br>digital agency.</h2>
-      <p class="section-head__desc">
+    <div class="section-head" data-stagger>
+      <span class="section-head__kicker" data-reveal="sticker">↓ rapid web &amp; ecommerce</span>
+      <h2 data-reveal>The new<br>digital agency.</h2>
+      <p class="section-head__desc" data-reveal>
         Most agencies still run a six-month build cycle. We run a six-day one, then keep iterating.
       </p>
     </div>
 
-    <div class="agency__grid">
-      <div class="agency__copy">
+    <div class="agency__grid" data-stagger>
+      <div class="agency__copy" data-reveal data-highlight-sweep>
         <h3>Built fast.<br>Updated <span>weekly.</span><br>Optimized always.</h3>
         <p>The LarryDoJo workflow is a tight loop between Claude, GitHub, and Netlify. <strong>GitHub is the source of truth.</strong> Netlify auto-deploys on every commit. Edits ship in minutes, not weeks.</p>
         <p>That means <strong>continuous updates without retainer bloat.</strong> AEO and SEO optimization gets baked into the way the site is built, not bolted on after launch.</p>
@@ -1777,7 +2051,7 @@
         </ul>
       </div>
 
-      <div class="workflow">
+      <div class="workflow" data-reveal>
         <div class="workflow__title">The Workflow</div>
         <div class="workflow__sub">7 steps, every round, every client</div>
         <ol>
@@ -1797,16 +2071,16 @@
 <!-- ─── SPECIAL PROJECTS ────────────────────────────── -->
 <section class="special" id="services">
   <div class="container">
-    <div class="section-head">
-      <span class="section-head__kicker">↓ special projects</span>
-      <h2>Custom <em>apps</em><br>&amp; AI consulting.</h2>
-      <p class="section-head__desc">
+    <div class="section-head" data-stagger>
+      <span class="section-head__kicker" data-reveal="sticker">↓ special projects</span>
+      <h2 data-reveal>Custom <em>apps</em><br>&amp; AI consulting.</h2>
+      <p class="section-head__desc" data-reveal>
         For teams that need more than a website. Pipeline architecture, AI tooling, automation strategy. Engagements scoped to fit, not stretched to fill a retainer.
       </p>
     </div>
 
-    <div class="services-grid">
-      <a href="#contact" class="service">
+    <div class="services-grid" data-stagger>
+      <a href="#contact" class="service" data-reveal>
         <div class="service__num">A</div>
         <h3>AI Strategy &amp; POCs</h3>
         <p>Translate "we should be using AI" into something shippable. Scoped POCs, validated against real workflows.</p>
@@ -1818,7 +2092,7 @@
         <span class="service__cta">Inquire →</span>
       </a>
 
-      <a href="#contact" class="service">
+      <a href="#contact" class="service" data-reveal>
         <div class="service__num">B</div>
         <h3>Custom App Builds</h3>
         <p>Custom plumbing between the tools you already pay for. Less dashboard tax, more signal.</p>
@@ -1830,7 +2104,7 @@
         <span class="service__cta">Inquire →</span>
       </a>
 
-      <a href="#contact" class="service">
+      <a href="#contact" class="service" data-reveal>
         <div class="service__num">C</div>
         <h3>Fractional Consulting</h3>
         <p>Sustained advisory for founders and teams that need a builder in the room, not a deck.</p>
@@ -1847,9 +2121,9 @@
 
 <!-- ─── CONTACT ─────────────────────────────────────── -->
 <section class="contact" id="contact">
-  <div class="contact__head">
-    <h2>Let's <em>build</em><br>something.</h2>
-    <p class="contact__lead">
+  <div class="contact__head" data-stagger>
+    <h2 data-reveal>Let's <em>build</em><br>something.</h2>
+    <p class="contact__lead" data-reveal>
       Got a show, a site, or a system that needs shipping? Tell me what you're working on.
     </p>
   </div>
@@ -1895,10 +2169,6 @@
   <div>Built fast. Hosted on Netlify. Source of truth: GitHub.</div>
 </footer>
 
-<!-- The TikTok embed renderer script was removed in this round when the
-     Episodic card was dropped. Re-add `<script async src="https://www.tiktok.com/embed.js"></script>`
-     if you re-introduce TikTok embeds. -->
-
 <script>
   // Contact form success state. Netlify processes the form and redirects back
   // to /?success=true; we swap the form for a confirmation message.
@@ -1914,6 +2184,273 @@
       });
     }
   }
+</script>
+
+<!-- ─── MOTION CONTROLLER (Pass 1 + Pass 2) ─────────────
+     Handles:
+       1. Hero entry choreography on page load (data-hero-step ordering)
+       2. Scroll reveals via IntersectionObserver
+       3. Stagger: data-stagger parents cascade their data-reveal children
+       4. Stat count-up: data-count numerals animate from 0 to target
+       5. Capture→Convert orchestrated sequence (Pass 2)
+       6. Hero sticker parallax — stickers drift faster than scroll (Pass 2)
+
+     All gated behind prefers-reduced-motion. -->
+<script>
+(function () {
+  'use strict';
+
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // Stagger interval between cascading siblings (ms). 70ms is the sweet spot:
+  // fast enough to feel choreographed, slow enough that the eye can track it.
+  const STAGGER_MS = 70;
+
+  // Hero entry: pace between steps. Slightly slower than scroll stagger because
+  // the hero is the user's first impression and deserves a moment to breathe.
+  const HERO_STEP_MS = 110;
+  const HERO_INITIAL_DELAY_MS = 150;
+
+  // Capture→convert sequence: pace between Capture stage, arrow, Convert stage.
+  // Slower than scroll stagger so each beat reads as a distinct action.
+  const CC_STEP_MS = 280;
+  const CC_CHIP_MS = 60;
+  const CC_CHIP_INITIAL_OFFSET = 200; // ms after the parent stage lands
+
+  // ─── 1. Hero entry choreography ───────────────────────
+  function runHeroEntry () {
+    const heroSteps = Array.from(document.querySelectorAll('[data-hero-step]'))
+      .sort((a, b) => Number(a.dataset.heroStep) - Number(b.dataset.heroStep));
+
+    if (reduceMotion) {
+      heroSteps.forEach(el => el.classList.add('is-in'));
+      return;
+    }
+
+    heroSteps.forEach((el, i) => {
+      const delay = HERO_INITIAL_DELAY_MS + (i * HERO_STEP_MS);
+      setTimeout(() => el.classList.add('is-in'), delay);
+    });
+  }
+
+  // ─── 2. Scroll reveals ─────────────────────────────────
+  // Anything with data-reveal that isn't part of the hero entry sequence
+  // gets revealed when it enters the viewport. Once revealed, we stop
+  // observing it — no re-animating on scroll-up.
+  function setupScrollReveals () {
+    // Capture-convert is handled separately as an orchestrated sequence,
+    // so exclude its children from the generic scroll observer.
+    const reveals = document.querySelectorAll(
+      '[data-reveal]:not([data-hero-step]):not([data-cc-step]):not([data-cc-chip])'
+    );
+
+    if (reduceMotion) {
+      reveals.forEach(el => el.classList.add('is-in'));
+      // Fill in stat counters immediately to their final values.
+      document.querySelectorAll('[data-count]').forEach(el => {
+        el.textContent = el.dataset.count + (el.dataset.suffix || '');
+      });
+      return;
+    }
+
+    // Stagger: for each [data-stagger] parent, set per-child --stagger-delay
+    // so each child's transition starts at a different moment.
+    document.querySelectorAll('[data-stagger]').forEach(parent => {
+      const children = parent.querySelectorAll(':scope > [data-reveal], :scope > * > [data-reveal]');
+      children.forEach((child, i) => {
+        if (!child.dataset.heroStep) {
+          child.style.setProperty('--stagger-delay', (i * STAGGER_MS) + 'ms');
+        }
+      });
+    });
+
+    // IntersectionObserver fires once per element. rootMargin pulls the
+    // trigger line up 80px from the bottom of the viewport so reveals
+    // happen a beat before the element is fully in view.
+    const io = new IntersectionObserver((entries, observer) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-in');
+
+          // If this is a stat with a count-up target, kick off the counter.
+          const countEl = entry.target.querySelector('[data-count]');
+          if (countEl) startCountUp(countEl);
+
+          observer.unobserve(entry.target);
+        }
+      });
+    }, {
+      threshold: 0.15,
+      rootMargin: '0px 0px -80px 0px'
+    });
+
+    reveals.forEach(el => io.observe(el));
+  }
+
+  // ─── 3. Stat count-up ──────────────────────────────────
+  function startCountUp (el) {
+    if (el.dataset.counting === 'true') return;
+    el.dataset.counting = 'true';
+
+    const target = parseInt(el.dataset.count, 10);
+    const suffix = el.dataset.suffix || '';
+    const duration = 1400;
+    const start = performance.now();
+
+    function tick (now) {
+      const elapsed = now - start;
+      const progress = Math.min(elapsed / duration, 1);
+      // ease-out cubic — fast start, soft landing
+      const eased = 1 - Math.pow(1 - progress, 3);
+      const value = Math.round(eased * target);
+      el.textContent = value + suffix;
+
+      if (progress < 1) {
+        requestAnimationFrame(tick);
+      } else {
+        el.textContent = target + suffix;
+      }
+    }
+
+    requestAnimationFrame(tick);
+  }
+
+  // ─── 4. Capture → Convert orchestrated sequence ─────────
+  // When the .capture-convert block enters the viewport, run an explicit
+  // sequence: Capture stage lands → arrow draws → Convert stage lands.
+  // Chips inside each stage cascade in after their parent settles.
+  function setupCaptureConvert () {
+    const cc = document.querySelector('[data-cc-sequence]');
+    if (!cc) return;
+
+    if (reduceMotion) {
+      // Snap everything to its final state.
+      cc.querySelectorAll('[data-reveal]').forEach(el => el.classList.add('is-in'));
+      return;
+    }
+
+    const ccObserver = new IntersectionObserver((entries, observer) => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+
+        // 1. Run the head stagger (kicker, h3, sub) immediately.
+        const headChildren = cc.querySelectorAll('.capture-convert__head [data-reveal]');
+        headChildren.forEach((child, i) => {
+          setTimeout(() => child.classList.add('is-in'), i * STAGGER_MS);
+        });
+
+        // 2. Run the flow sequence after the head finishes.
+        // Capture(1) → Arrow(2) → Convert(3), each CC_STEP_MS apart.
+        const flowDelay = headChildren.length * STAGGER_MS + 100;
+        const stages = cc.querySelectorAll('[data-cc-step]');
+        stages.forEach(stage => {
+          const step = parseInt(stage.dataset.ccStep, 10);
+          setTimeout(() => {
+            stage.classList.add('is-in');
+
+            // Cascade chips inside this stage (only stages 1 and 3 have chips).
+            const chips = cc.querySelectorAll('[data-cc-chip="' + step + '"]');
+            chips.forEach((chip, i) => {
+              setTimeout(
+                () => chip.classList.add('is-in'),
+                CC_CHIP_INITIAL_OFFSET + (i * CC_CHIP_MS)
+              );
+            });
+          }, flowDelay + ((step - 1) * CC_STEP_MS));
+        });
+
+        observer.unobserve(cc);
+      });
+    }, { threshold: 0.2, rootMargin: '0px 0px -60px 0px' });
+
+    ccObserver.observe(cc);
+  }
+
+  // ─── 5. Hero sticker parallax ──────────────────────────
+  // Stickers with data-parallax drift relative to scroll. The data-parallax
+  // value is a multiplier — positive means drifts down faster, negative
+  // means drifts up. Capped at ~12px total to stay subliminal. Only active
+  // while the hero is in/near view to avoid wasted scroll work.
+  function setupParallax () {
+    if (reduceMotion) return;
+
+    const stickers = Array.from(document.querySelectorAll('[data-parallax]'));
+    if (stickers.length === 0) return;
+
+    const hero = document.querySelector('.hero');
+    if (!hero) return;
+
+    // Cache each sticker's existing rotation (set inline via the
+    // pipeline-sticker--* classes after entry animation completes).
+    // We need to layer translateY onto it without losing the rotation.
+    const baseTransforms = new WeakMap();
+    function captureBase (el) {
+      // Read computed transform AFTER the entry animation has finished.
+      // Until then, the entry transform is in flux; we'll re-capture later.
+      const computed = window.getComputedStyle(el).transform;
+      baseTransforms.set(el, computed === 'none' ? '' : computed);
+    }
+
+    // Re-capture base transforms after the hero entry animation finishes.
+    // Hero takes about 1.4s total; capture at 1.6s to be safe.
+    let baseReady = false;
+    setTimeout(() => {
+      stickers.forEach(captureBase);
+      baseReady = true;
+    }, 1600);
+
+    let ticking = false;
+    function update () {
+      if (!baseReady) {
+        ticking = false;
+        return;
+      }
+
+      const heroRect = hero.getBoundingClientRect();
+      // Skip work if hero is well off-screen.
+      if (heroRect.bottom < -200 || heroRect.top > window.innerHeight + 200) {
+        ticking = false;
+        return;
+      }
+
+      // Use scroll progress through the hero (0 at top of page, ~1 when
+      // hero is fully scrolled past) to drive the drift.
+      const scrolled = -heroRect.top;
+      const heroHeight = hero.offsetHeight;
+      const progress = Math.max(0, Math.min(1.5, scrolled / heroHeight));
+
+      stickers.forEach(el => {
+        const multiplier = parseFloat(el.dataset.parallax) || 0;
+        // Cap drift at 12px in either direction
+        const offsetY = Math.max(-12, Math.min(12, progress * multiplier * 30));
+        const base = baseTransforms.get(el) || '';
+        el.style.transform = (base ? base + ' ' : '') + 'translateY(' + offsetY + 'px)';
+      });
+      ticking = false;
+    }
+
+    window.addEventListener('scroll', () => {
+      if (!ticking) {
+        requestAnimationFrame(update);
+        ticking = true;
+      }
+    }, { passive: true });
+  }
+
+  // ─── Boot ──────────────────────────────────────────────
+  function init () {
+    runHeroEntry();
+    setupScrollReveals();
+    setupCaptureConvert();
+    setupParallax();
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+})();
 </script>
 
 </body>
