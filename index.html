@@ -538,6 +538,9 @@
   /* desktop: compress the pipeline so the whole hero fits in one viewport */
   @media (min-width: 981px) {
     .hero { padding: 36px 20px 44px; }
+    /* Anchor headline/copy/CTA to the top instead of vertically centering
+       against the much taller pipeline collage on the right. */
+    .hero__inner { align-items: start; }
     .eyebrow { margin-bottom: 18px; font-size: 22px; }
     .hero h1 { margin-bottom: 22px; font-size: clamp(56px, 6.5vw, 88px); }
     .hero__lead { margin-bottom: 24px; font-size: 17px; }
@@ -1308,6 +1311,15 @@
 </head>
 <body>
 
+<!-- Static form for Netlify build-time detection. Hidden from users.
+     This is what Netlify's bot scans at deploy time so it knows the form exists
+     and can register the field names. The real form is below. -->
+<form name="contact" netlify netlify-honeypot="bot-field" hidden>
+  <input type="text" name="name" />
+  <input type="email" name="email" />
+  <textarea name="message"></textarea>
+</form>
+
 <!-- ─── NAV ─────────────────────────────────────────── -->
 <nav class="nav">
   <a href="#top" class="nav__brand">
@@ -1671,7 +1683,9 @@
     </p>
   </div>
 
-  <form class="form-card" id="contact-form" name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+  <!-- Real form. Posts to / with ?success=true so Netlify can intercept,
+       process, then redirect the user back here with the success state. -->
+  <form class="form-card" id="contact-form" name="contact" method="POST" action="/?success=true" data-netlify="true" netlify-honeypot="bot-field">
     <input type="hidden" name="form-name" value="contact" />
     <p style="display:none;"><label>Don't fill this out: <input name="bot-field" /></label></p>
 
@@ -1716,19 +1730,20 @@
 <script async src="https://www.tiktok.com/embed.js"></script>
 
 <script>
-  // Form fallback for non-Netlify environments (local preview, GitHub Pages, etc.)
-  const form = document.getElementById('contact-form');
-  const success = document.getElementById('form-success');
-  if (form) {
-    form.addEventListener('submit', function(e) {
-      const isNetlify = window.location.hostname.includes('netlify') || window.location.hostname.includes('larrydojo');
-      if (!isNetlify) {
-        e.preventDefault();
-        form.style.display = 'none';
-        success.style.display = 'block';
+  // After Netlify processes the form, it redirects back to /?success=true.
+  // We detect that and swap the form for the success message.
+  const params = new URLSearchParams(window.location.search);
+  if (params.get('success') === 'true') {
+    const form = document.getElementById('contact-form');
+    const success = document.getElementById('form-success');
+    if (form && success) {
+      form.style.display = 'none';
+      success.style.display = 'block';
+      // Smoothly scroll to the success state on next paint
+      requestAnimationFrame(() => {
         success.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      }
-    });
+      });
+    }
   }
 </script>
 
