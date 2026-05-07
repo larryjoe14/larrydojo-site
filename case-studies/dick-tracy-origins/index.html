@@ -859,6 +859,44 @@ section {
 
 ::selection { background: var(--accent); color: var(--noir); }
 </style>
+
+<!-- JSON-LD: Article schema for AI answer engines (ChatGPT, Perplexity,
+     Google AI Overviews) and traditional search. Tells crawlers exactly what
+     this page is, who published it, and when. -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Dick Tracy Origins: Building Character-Consistent AI Video From a Public-Domain Source",
+  "description": "How LarryDoJo built a character-consistent AI video sequence from the 1931 Dick Tracy strips. Four frames, one Character Pack, three modular environment plates, zero IP exposure, under nine dollars in API spend.",
+  "image": "https://larrydojo.com/case-studies/dick-tracy-origins/img/character-pack.jpg",
+  "datePublished": "2026-05-07",
+  "dateModified": "2026-05-07",
+  "author": {
+    "@type": "Organization",
+    "name": "LarryDoJo",
+    "url": "https://larrydojo.com"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "LarryDoJo",
+    "url": "https://larrydojo.com",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://larrydojo.com/img-hero-hallway.jpg"
+    }
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://larrydojo.com/case-studies/dick-tracy-origins/"
+  },
+  "keywords": "AI video, character consistency, Gemini 3 Pro, Nano Banana Pro, public domain, AI content pipeline, Dick Tracy, AI animation"
+}
+</script>
+
+<!-- Canonical URL helps Google consolidate any link variants to this one URL. -->
+<link rel="canonical" href="https://larrydojo.com/case-studies/dick-tracy-origins/" />
+
 </head>
 
 <body>
