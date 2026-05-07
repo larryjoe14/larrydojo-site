@@ -210,10 +210,31 @@
     display: grid;
     grid-template-columns: 1.15fr 1fr;
     gap: 40px;
-    align-items: center;
+    align-items: start;
   }
+  /* Desktop layout, three grid items:
+     [hero__copy]   [pipeline]
+     [callout    ]   (sits in left column, under the copy/CTAs)
+     The callout is forced into the left column at row 2, column 1.
+     The pipeline spans both rows on the right so it visually anchors the page. */
+  @media (min-width: 981px) {
+    .hero__copy            { grid-column: 1; grid-row: 1; }
+    .pipeline              { grid-column: 2; grid-row: 1 / span 2; }
+    .case-study-callout    { grid-column: 1; grid-row: 2; align-self: start; }
+  }
+  /* Mobile / tablet: collapse to one column. Order matters here, since the
+     user asked for the callout to sit right after the pipeline collage,
+     above the About section. Default DOM order is copy → pipeline → callout,
+     which is exactly what we want, so we just enforce order explicitly. */
   @media (max-width: 980px) {
-    .hero__inner { grid-template-columns: 1fr; gap: 40px; align-items: stretch; }
+    .hero__inner {
+      grid-template-columns: 1fr;
+      gap: 40px;
+      align-items: stretch;
+    }
+    .hero__copy           { order: 1; }
+    .pipeline             { order: 2; }
+    .case-study-callout   { order: 3; }
   }
   .eyebrow {
     font-family: 'Caveat', cursive;
@@ -588,10 +609,9 @@
   }
   @media (max-width: 720px) { .spark { display: none; } }
 
-  /* ─── HERO CASE STUDY VIDEO CALLOUT (DESKTOP) ─────── */
-  /* Sits below the headline/copy/CTA on the left column of the hero on desktop.
-     On mobile/tablet (≤980px), this block is hidden and a duplicate appears
-     after the AI Content section instead (see .case-study-callout--mobile). */
+  /* ─── HERO CASE STUDY VIDEO CALLOUT ─────────────────
+     One element, two layouts. Position is handled by the .hero__inner grid
+     rules above; the styles here cover sizing, type, and palette only. */
   .case-study-callout {
     margin-top: 36px;
     background: var(--ink);
@@ -664,33 +684,31 @@
     transition: transform 0.15s ease;
   }
   .case-study-callout__link:hover { transform: translate(-2px, -2px); }
-  .case-study-callout--mobile { display: none; }
 
-  /* On tablet/mobile, hide desktop callout, show mobile version after Robo Jr. */
+  /* Tablet/mobile: callout becomes wider, lays out the same two-column shape
+     but at full container width. */
   @media (max-width: 980px) {
-    .case-study-callout--desktop { display: none; }
-    .case-study-callout--mobile {
-      display: grid;
+    .case-study-callout {
       max-width: 100%;
       grid-template-columns: 160px 1fr;
       transform: rotate(-0.4deg);
-      margin-top: 60px;
-      box-shadow: 8px 8px 0 var(--acid);
+      margin-top: 24px;
     }
-    .case-study-callout--mobile .case-study-callout__video { width: 160px; }
+    .case-study-callout__video { width: 160px; }
   }
+  /* Phones: stack the video above the copy, center-align text. */
   @media (max-width: 600px) {
-    .case-study-callout--mobile {
+    .case-study-callout {
       grid-template-columns: 1fr;
       gap: 16px;
       padding: 16px;
     }
-    .case-study-callout--mobile .case-study-callout__video {
+    .case-study-callout__video {
       width: 100%;
       max-width: 220px;
       margin: 0 auto;
     }
-    .case-study-callout--mobile .case-study-callout__copy {
+    .case-study-callout__copy {
       text-align: center;
     }
   }
@@ -731,51 +749,25 @@
 
   /* ─── ABOUT ───────────────────────────────────────── */
   .about { background: var(--paper); }
-  .about__grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 60px;
-    align-items: start;
+
+  /* The pillars column was removed; the prose now reads full-width but
+     constrained to a comfortable measure so it doesn't sprawl across the
+     full container on wide screens. */
+  .about__text--full {
+    max-width: 820px;
   }
-  @media (max-width: 900px) { .about__grid { grid-template-columns: 1fr; gap: 40px; } }
 
   .about__text p {
     font-size: clamp(16px, 2vw, 18px);
     margin-bottom: 20px;
   }
   .about__text p:first-of-type {
-    font-size: clamp(20px, 2.5vw, 24px);
+    font-size: clamp(22px, 2.8vw, 28px);
     font-weight: 500;
-    line-height: 1.4;
+    line-height: 1.35;
+    margin-bottom: 24px;
   }
   .about__text p strong { background: var(--acid); padding: 0 4px; }
-
-  .pillars { display: grid; gap: 20px; }
-  .pillar {
-    background: var(--paper);
-    border: 2.5px solid var(--ink);
-    padding: 24px;
-    box-shadow: 6px 6px 0 var(--ink);
-    transition: transform 0.2s ease;
-  }
-  .pillar:hover { transform: translate(-3px, -3px); box-shadow: 9px 9px 0 var(--ink); }
-  .pillar__num {
-    font-family: 'Archivo Black', sans-serif;
-    font-size: 56px;
-    color: var(--tangerine);
-    line-height: 1;
-    -webkit-text-stroke: 2px var(--ink);
-  }
-  .pillar h3 {
-    font-family: 'Archivo Black', sans-serif;
-    font-size: 22px;
-    margin: 12px 0 8px;
-    text-transform: uppercase;
-  }
-  .pillar p { font-size: 15px; }
-  .pillar:nth-child(1) { transform: rotate(-1deg); }
-  .pillar:nth-child(2) { transform: rotate(0.5deg); }
-  .pillar:nth-child(3) { transform: rotate(-0.5deg); }
 
   /* ─── CAPTURE → CONVERT GRAPHIC ───────────────────── */
   /* Visual key-message: capture audience on social → convert through web/app/CRM. */
@@ -1113,49 +1105,8 @@
     display: block;
   }
 
-  /* TikTok frame: gives the embed script room to size itself */
-  .tt-frame {
-    width: 100%;
-    max-width: 605px;
-    min-height: 740px;
-    background: var(--paper);
-    border: 2.5px solid var(--ink);
-    box-shadow: 6px 6px 0 var(--acid);
-    padding: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-  }
-  .tt-frame .tiktok-embed {
-    margin: 0 auto !important;
-    width: 100% !important;
-    max-width: 100% !important;
-  }
-  .tt-frame .tt-fallback {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 18px;
-    background: var(--paper);
-    color: var(--ink);
-    text-align: center;
-    padding: 24px;
-    font-family: 'Archivo Black', sans-serif;
-    font-size: 14px;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    pointer-events: none;
-    z-index: 0;
-  }
-  .tt-frame .tt-fallback a { pointer-events: auto; }
-  .tt-frame iframe { position: relative; z-index: 1; background: var(--paper); }
-  @media (max-width: 720px) {
-    .tt-frame { min-height: 640px; padding: 8px; }
-  }
+  /* (TikTok embed CSS removed in this round along with the Episodic card.
+     If you re-introduce TikTok embeds, you'll need .tt-frame styles back.) */
 
   .show-card__body {
     padding: 36px;
@@ -1536,7 +1487,7 @@
   <svg class="spark" style="bottom:80px;left:42%;width:24px;" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2 L13.5 10.5 L22 12 L13.5 13.5 L12 22 L10.5 13.5 L2 12 L10.5 10.5 Z"/></svg>
 
   <div class="hero__inner">
-    <div>
+    <div class="hero__copy">
       <span class="eyebrow">an AI studio · est. 2024</span>
       <h1>Rapid.<br>Content.<br><em>Now.</em></h1>
       <p class="hero__lead">
@@ -1545,32 +1496,6 @@
       <div class="hero__cta">
         <a href="#work" class="btn btn--primary">See the Work</a>
         <a href="#contact" class="btn btn--ghost">Contact the Studio</a>
-      </div>
-
-      <!-- ─── DESKTOP CASE STUDY VIDEO CALLOUT ─────────────────
-           Sits below the headline/copy/CTA on desktop hero. Video plays
-           muted on arrival; sound toggle is one click. Hidden on tablet/mobile,
-           where a duplicate appears after the AI Content section instead. -->
-      <div class="case-study-callout case-study-callout--desktop">
-        <div class="case-study-callout__video">
-          <!-- YouTube embed: starts muted (browser autoplay policy). Sound is
-               one click on YouTube's own unmute button in the player chrome.
-               rel=0 disables the "more videos" overlay; modestbranding minimizes
-               the YouTube logo so the embed feels native. -->
-          <iframe
-            src="https://www.youtube.com/embed/ZkABMo72b2A?autoplay=1&mute=1&loop=1&playlist=ZkABMo72b2A&rel=0&modestbranding=1&playsinline=1"
-            title="Dick Tracy Origins · 60-second sequence"
-            loading="lazy"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            referrerpolicy="strict-origin-when-cross-origin"
-            allowfullscreen></iframe>
-        </div>
-        <div class="case-study-callout__copy">
-          <div class="case-study-callout__tag">↓ new case study</div>
-          <h3>Dick Tracy <em>Origins.</em></h3>
-          <p>How we built character-consistent AI video from a public-domain source. Four frames, one Character Pack, under nine dollars in API spend.</p>
-          <a href="case-studies/dick-tracy-origins/" class="case-study-callout__link">Read the Case Study →</a>
-        </div>
       </div>
     </div>
 
@@ -1635,6 +1560,37 @@
       </div>
 
     </div>
+
+    <!-- ─── CASE STUDY VIDEO CALLOUT ─────────────────────────
+         Single callout that lives in the hero. CSS grid + order rules
+         position it differently on desktop vs mobile:
+         - Desktop (≥981px): rendered as a third grid cell that sits below
+           the headline/copy/CTAs in the left column
+         - Mobile (≤980px): the hero collapses to a single column and
+           `order: 3` on this element places it between the pipeline collage
+           and the next section (About) -->
+    <div class="case-study-callout">
+      <div class="case-study-callout__video">
+        <!-- YouTube embed: starts muted (browser autoplay policy). Sound is
+             one click on YouTube's own unmute button in the player chrome.
+             rel=0 disables the "more videos" overlay; modestbranding minimizes
+             the YouTube logo so the embed feels native. -->
+        <iframe
+          src="https://www.youtube.com/embed/ZkABMo72b2A?autoplay=1&mute=1&loop=1&playlist=ZkABMo72b2A&rel=0&modestbranding=1&playsinline=1"
+          title="Dick Tracy Origins · 60-second sequence"
+          loading="lazy"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          referrerpolicy="strict-origin-when-cross-origin"
+          allowfullscreen></iframe>
+      </div>
+      <div class="case-study-callout__copy">
+        <div class="case-study-callout__tag">↓ new case study</div>
+        <h3>Dick Tracy <em>Origins.</em></h3>
+        <p>How we built character-consistent AI video from a public-domain source. Four frames, one Character Pack, under nine dollars in API spend.</p>
+        <a href="case-studies/dick-tracy-origins/" class="case-study-callout__link">Read the Case Study →</a>
+      </div>
+    </div>
+
   </div>
 </header>
 
@@ -1646,30 +1602,14 @@
       <h2>A studio<br>built for the<br><span class="scribble">new playbook.</span></h2>
     </div>
 
-    <div class="about__grid">
-      <div class="about__text">
-        <p>We bring your ideas and brand to life through <strong>rapid, on-demand content</strong>. Reach your customers on every channel, the moment they're looking.</p>
-        <p>Customers stopped searching. They expect immediate answers. Our workflows balance <strong>brand control with speed to market</strong>, so your content shows up where AI and search send people now.</p>
-        <p>The old digital agency model is dead. Six-month builds and bloated retainers waste budget. Ship today's playbook for a fraction of the cost.</p>
-      </div>
-
-      <div class="pillars">
-        <div class="pillar">
-          <div class="pillar__num">01</div>
-          <h3>AI-Native Content</h3>
-          <p>Original characters and serialized shows produced with AI pipelines. One-offs and episodic IP, distributed where the audience already lives.</p>
-        </div>
-        <div class="pillar">
-          <div class="pillar__num">02</div>
-          <h3>Rapid Web + eCommerce</h3>
-          <p>Sites built, deployed, and iterated on a tight loop. GitHub-backed, Netlify-hosted, AEO and SEO baked in from day one.</p>
-        </div>
-        <div class="pillar">
-          <div class="pillar__num">03</div>
-          <h3>Custom Apps</h3>
-          <p>The plumbing behind the marketing. Automation, analytics, and AI tooling tailored to your stack and your team's actual workflow.</p>
-        </div>
-      </div>
+    <!-- The 1/2/3 service pillars used to live next to this copy. They were
+         removed because the same three services are explained in more depth
+         in the AI Content (Robo Jr.), Studio (Rapid Web + eCommerce), and
+         Special Projects (Custom Apps) sections further down the page. -->
+    <div class="about__text about__text--full">
+      <p>We bring your ideas and brand to life through <strong>rapid, on-demand content</strong>. Reach your customers on every channel, the moment they're looking.</p>
+      <p>Customers stopped searching. They expect immediate answers. Our workflows balance <strong>brand control with speed to market</strong>, so your content shows up where AI and search send people now.</p>
+      <p>The old digital agency model is dead. Six-month builds and bloated retainers waste budget. Ship today's playbook for a fraction of the cost.</p>
     </div>
 
     <!-- ─── CAPTURE → CONVERT KEY MESSAGE GRAPHIC ─────────── -->
@@ -1759,12 +1699,18 @@
     </div>
 
     <div class="work__intro">
-      The YouTube Culture &amp; Trends Report calls this <strong>"The New Showrunner Era."</strong> Independent creators producing original characters, serialized stories, and engaged fan communities at speeds the legacy studios can't match. LarryDoJo operates inside that model. Below are two formats we ship today.
+      The YouTube Culture &amp; Trends Report calls this <strong>"The New Showrunner Era."</strong> Independent creators producing original characters, serialized stories, and engaged fan communities at speeds the legacy studios can't match. LarryDoJo operates inside that model.
     </div>
 
     <div class="show-stack">
 
-      <!-- Card 1: Frame-by-Frame Continuity (YouTube: Robo Jr.) -->
+      <!-- The Frame-by-Frame Continuity card is the proof point: a single
+           Robo Jr. video demonstrating the technique. The companion mobile
+           Dick Tracy callout was removed because the callout already lives
+           higher up in the hero (and on mobile, right after the pipeline
+           collage), so duplicating it here was redundant. The Episodic card
+           was also removed in this round to focus the section on one
+           technique: continuity. -->
       <article class="show-card">
         <div class="show-card__media">
           <span class="show-card__tag">Frame-by-Frame</span>
@@ -1789,59 +1735,6 @@
         </div>
       </article>
 
-      <!-- Card 2: Episodic (TikTok: Robo Jr.) -->
-      <article class="show-card">
-        <div class="show-card__media">
-          <span class="show-card__tag">Episodic</span>
-          <div class="tt-frame">
-            <div class="tt-fallback" aria-hidden="true">
-              <span>Loading TikTok…</span>
-              <a href="https://www.tiktok.com/@larrydojo_noir/video/7596596438558133518" target="_blank" rel="noopener" class="show-card__link show-card__link--primary">Open in TikTok ↗</a>
-            </div>
-            <blockquote class="tiktok-embed"
-              cite="https://www.tiktok.com/@larrydojo_noir/video/7596596438558133518"
-              data-video-id="7596596438558133518"
-              style="max-width: 605px; min-width: 325px;">
-              <section>
-                <a target="_blank" title="@larrydojo_noir" href="https://www.tiktok.com/@larrydojo_noir?refer=embed">@larrydojo_noir</a>
-                Robo Junior E2: An Evil Transformer Attacks the Middle School
-              </section>
-            </blockquote>
-          </div>
-        </div>
-        <div class="show-card__body">
-          <h3>Episodic</h3>
-          <div class="show-card__meta">// format: serialized · platform: TikTok + cross-post</div>
-          <p>Recurring characters. Episode-to-episode continuity. The same playbook independent animators use to build fan communities, applied to AI-native production.</p>
-          <div class="show-card__links">
-            <a href="https://www.tiktok.com/@larrydojo_noir" target="_blank" rel="noopener" class="show-card__link show-card__link--primary">Watch the Series on TikTok ↗</a>
-            <a href="https://www.youtube.com/@larrydojo" target="_blank" rel="noopener" class="show-card__link">YouTube</a>
-          </div>
-        </div>
-      </article>
-
-    </div>
-
-    <!-- ─── MOBILE CASE STUDY VIDEO CALLOUT ─────────────────
-         On tablet/mobile (≤980px), this duplicate appears here, after Robo Jr.
-         The desktop hero version is hidden via the .case-study-callout--desktop
-         media query above. -->
-    <div class="case-study-callout case-study-callout--mobile">
-      <div class="case-study-callout__video">
-        <iframe
-          src="https://www.youtube.com/embed/ZkABMo72b2A?autoplay=1&mute=1&loop=1&playlist=ZkABMo72b2A&rel=0&modestbranding=1&playsinline=1"
-          title="Dick Tracy Origins · 60-second sequence"
-          loading="lazy"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-          referrerpolicy="strict-origin-when-cross-origin"
-          allowfullscreen></iframe>
-      </div>
-      <div class="case-study-callout__copy">
-        <div class="case-study-callout__tag">↓ new case study</div>
-        <h3>Dick Tracy <em>Origins.</em></h3>
-        <p>How we built character-consistent AI video from a public-domain source. Four frames, one Character Pack, under nine dollars in API spend.</p>
-        <a href="case-studies/dick-tracy-origins/" class="case-study-callout__link">Read the Case Study →</a>
-      </div>
     </div>
 
   </div>
@@ -2002,8 +1895,9 @@
   <div>Built fast. Hosted on Netlify. Source of truth: GitHub.</div>
 </footer>
 
-<!-- TikTok embed renderer -->
-<script async src="https://www.tiktok.com/embed.js"></script>
+<!-- The TikTok embed renderer script was removed in this round when the
+     Episodic card was dropped. Re-add `<script async src="https://www.tiktok.com/embed.js"></script>`
+     if you re-introduce TikTok embeds. -->
 
 <script>
   // Contact form success state. Netlify processes the form and redirects back
