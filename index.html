@@ -276,8 +276,6 @@
   .btn--primary:hover { box-shadow: 7px 7px 0 var(--tangerine); }
 
   /* ─── HERO PIPELINE COLLAGE ───────────────────────── */
-  /* Tells the workflow story top→bottom:
-     1) IDEA / CONCEPT  →  2) CREATIVE & BRAND CONTROL  →  3) FINISHED EPISODE  */
   .pipeline {
     position: relative;
     display: flex;
@@ -286,9 +284,7 @@
     padding: 8px 4px;
   }
 
-  .pipeline__stage {
-    position: relative;
-  }
+  .pipeline__stage { position: relative; }
 
   .pipeline__connector {
     position: relative;
@@ -319,7 +315,6 @@
     transform: translateX(-50%);
   }
 
-  /* Stage 1 + 3: polaroid frames (reused styling) */
   .stage-polaroid {
     position: relative;
     background: var(--paper);
@@ -359,7 +354,6 @@
     color: var(--ink);
   }
 
-  /* Pipeline stickers (reused vibe from original) */
   .pipeline-sticker {
     position: absolute;
     background: var(--acid);
@@ -392,7 +386,6 @@
     padding: 5px 11px 6px;
   }
 
-  /* Stage 2: Creative & Brand Control "bible card" */
   .control-card {
     background: var(--paper);
     border: 2.5px solid var(--ink);
@@ -459,9 +452,7 @@
     padding: 3px 6px 4px;
     text-transform: uppercase;
   }
-  .control-tile--char {
-    background: var(--paper);
-  }
+  .control-tile--char { background: var(--paper); }
   .control-tile--char img {
     object-fit: contain;
     object-position: center;
@@ -519,7 +510,6 @@
     color: var(--ink);
   }
 
-  /* mobile: tighten the stage layouts */
   @media (max-width: 720px) {
     .stage-polaroid--idea,
     .stage-polaroid--final {
@@ -535,20 +525,14 @@
     .pipeline__connector { height: 26px; }
   }
 
-  /* desktop: compress the pipeline so the whole hero fits in one viewport */
   @media (min-width: 981px) {
     .hero { padding: 36px 20px 44px; }
-    /* Anchor headline/copy/CTA to the top instead of vertically centering
-       against the much taller pipeline collage on the right. */
     .hero__inner { align-items: start; }
     .eyebrow { margin-bottom: 18px; font-size: 22px; }
     .hero h1 { margin-bottom: 22px; font-size: clamp(56px, 6.5vw, 88px); }
     .hero__lead { margin-bottom: 24px; font-size: 17px; }
 
-    .pipeline {
-      gap: 12px;
-      padding: 0;
-    }
+    .pipeline { gap: 12px; padding: 0; }
     .pipeline__connector { height: 14px; }
     .pipeline__connector::after {
       border-left-width: 6px;
@@ -556,33 +540,22 @@
       border-top-width: 8px;
     }
 
-    /* smaller, less-rotated polaroids */
     .stage-polaroid {
       max-width: 300px;
       padding: 9px 9px 34px;
       box-shadow: 6px 6px 0 var(--ink);
     }
     .stage-polaroid__caption { font-size: 17px; bottom: 7px; }
-    .stage-polaroid--idea {
-      transform: rotate(-2deg);
-      margin-right: 12%;
-    }
-    .stage-polaroid--final {
-      transform: rotate(1.5deg);
-      margin-left: 8%;
-    }
+    .stage-polaroid--idea { transform: rotate(-2deg); margin-right: 12%; }
+    .stage-polaroid--final { transform: rotate(1.5deg); margin-left: 8%; }
 
-    /* compact brand bible card */
     .control-card {
       max-width: 360px;
       padding: 12px 12px 10px;
       margin: 0 auto;
       box-shadow: 7px 7px 0 var(--ink);
     }
-    .control-card__head {
-      padding-bottom: 7px;
-      margin-bottom: 9px;
-    }
+    .control-card__head { padding-bottom: 7px; margin-bottom: 9px; }
     .control-card__title { font-size: 11px; }
     .control-card__meta { font-size: 9px; }
     .control-card__grid { gap: 9px; }
@@ -595,7 +568,6 @@
     .swatch__caption { font-size: 14px; margin-left: 2px; }
     .swatch-row { margin-top: 7px; gap: 5px; }
 
-    /* sticker tweaks for desktop */
     .pipeline-sticker { font-size: 11px; padding: 5px 11px 6px; }
     .pipeline-sticker--final { font-size: 10px; padding: 4px 9px 5px; }
     .pipeline-sticker--idea { top: -12px; }
@@ -603,7 +575,6 @@
     .pipeline-sticker--final { top: -10px; }
   }
 
-  /* image fallback: if src fails, the navy placeholder reads as intentional */
   .stage-polaroid__img,
   .control-tile img {
     background-color: var(--plum);
@@ -615,8 +586,113 @@
     z-index: 1;
     pointer-events: none;
   }
-  @media (max-width: 720px) {
-    .spark { display: none; }
+  @media (max-width: 720px) { .spark { display: none; } }
+
+  /* ─── HERO CASE STUDY VIDEO CALLOUT (DESKTOP) ─────── */
+  /* Sits below the headline/copy/CTA on the left column of the hero on desktop.
+     On mobile/tablet (≤980px), this block is hidden and a duplicate appears
+     after the AI Content section instead (see .case-study-callout--mobile). */
+  .case-study-callout {
+    margin-top: 36px;
+    background: var(--ink);
+    color: var(--paper);
+    border: 3px solid var(--ink);
+    box-shadow: 8px 8px 0 var(--acid);
+    padding: 18px;
+    display: grid;
+    grid-template-columns: 180px 1fr;
+    gap: 20px;
+    align-items: center;
+    transform: rotate(-0.6deg);
+    max-width: 620px;
+  }
+  .case-study-callout__video {
+    position: relative;
+    aspect-ratio: 9 / 16;
+    width: 180px;
+    background: #000;
+    border: 2px solid var(--paper);
+    overflow: hidden;
+  }
+  /* YouTube iframe fills the 9:16 frame. Sound is controlled by the YouTube
+     player chrome itself (one click on the unmute button), which is exactly
+     the "one click for sound on arrival" interaction we want. */
+  .case-study-callout__video iframe {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+    display: block;
+  }
+  .case-study-callout__copy h3 {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 16px;
+    text-transform: uppercase;
+    line-height: 1.05;
+    margin-bottom: 6px;
+    color: var(--paper);
+  }
+  .case-study-callout__copy h3 em {
+    font-style: normal;
+    color: var(--acid);
+  }
+  .case-study-callout__tag {
+    font-family: 'Caveat', cursive;
+    font-size: 18px;
+    color: var(--acid);
+    margin-bottom: 4px;
+    line-height: 1;
+  }
+  .case-study-callout__copy p {
+    font-size: 13px;
+    color: var(--orchid);
+    margin-bottom: 12px;
+    line-height: 1.45;
+  }
+  .case-study-callout__link {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--ink);
+    background: var(--acid);
+    padding: 8px 14px;
+    text-decoration: none;
+    border: 2px solid var(--paper);
+    display: inline-block;
+    transition: transform 0.15s ease;
+  }
+  .case-study-callout__link:hover { transform: translate(-2px, -2px); }
+  .case-study-callout--mobile { display: none; }
+
+  /* On tablet/mobile, hide desktop callout, show mobile version after Robo Jr. */
+  @media (max-width: 980px) {
+    .case-study-callout--desktop { display: none; }
+    .case-study-callout--mobile {
+      display: grid;
+      max-width: 100%;
+      grid-template-columns: 160px 1fr;
+      transform: rotate(-0.4deg);
+      margin-top: 60px;
+      box-shadow: 8px 8px 0 var(--acid);
+    }
+    .case-study-callout--mobile .case-study-callout__video { width: 160px; }
+  }
+  @media (max-width: 600px) {
+    .case-study-callout--mobile {
+      grid-template-columns: 1fr;
+      gap: 16px;
+      padding: 16px;
+    }
+    .case-study-callout--mobile .case-study-callout__video {
+      width: 100%;
+      max-width: 220px;
+      margin: 0 auto;
+    }
+    .case-study-callout--mobile .case-study-callout__copy {
+      text-align: center;
+    }
   }
 
   /* ─── SECTIONS ────────────────────────────────────── */
@@ -701,6 +777,128 @@
   .pillar:nth-child(2) { transform: rotate(0.5deg); }
   .pillar:nth-child(3) { transform: rotate(-0.5deg); }
 
+  /* ─── CAPTURE → CONVERT GRAPHIC ───────────────────── */
+  /* Visual key-message: capture audience on social → convert through web/app/CRM. */
+  .capture-convert {
+    margin-top: 60px;
+    background: var(--ink);
+    color: var(--paper);
+    padding: 36px 32px;
+    border: 3px solid var(--ink);
+    box-shadow: 10px 10px 0 var(--tangerine);
+    position: relative;
+  }
+  @media (max-width: 720px) {
+    .capture-convert { padding: 28px 20px; box-shadow: 6px 6px 0 var(--tangerine); }
+  }
+  .capture-convert__head {
+    text-align: center;
+    margin-bottom: 28px;
+  }
+  .capture-convert__kicker {
+    font-family: 'Caveat', cursive;
+    font-size: 26px;
+    color: var(--acid);
+    margin-bottom: 4px;
+    line-height: 1;
+  }
+  .capture-convert__title {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: clamp(22px, 3.5vw, 32px);
+    text-transform: uppercase;
+    line-height: 1.05;
+    color: var(--paper);
+  }
+  .capture-convert__title em {
+    font-style: normal;
+    color: var(--tangerine);
+  }
+  .capture-convert__sub {
+    font-size: 15px;
+    color: var(--orchid);
+    max-width: 640px;
+    margin: 12px auto 0;
+    line-height: 1.45;
+  }
+  .capture-convert__flow {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 22px;
+    align-items: stretch;
+    margin-top: 28px;
+  }
+  @media (max-width: 720px) {
+    .capture-convert__flow {
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+  }
+
+  .cc-stage {
+    background: var(--plum);
+    border: 2.5px solid var(--paper);
+    padding: 22px 20px 24px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .cc-stage__label {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    color: var(--acid);
+    text-transform: uppercase;
+  }
+  .cc-stage__title {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: clamp(28px, 4.2vw, 40px);
+    line-height: 0.9;
+    color: var(--paper);
+    text-transform: uppercase;
+    letter-spacing: -0.02em;
+  }
+  .cc-stage__title em {
+    font-style: normal;
+    color: var(--tangerine);
+  }
+  .cc-stage--capture .cc-stage__title em { color: var(--acid); }
+  .cc-stage__items {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: auto;
+  }
+  .cc-chip {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    padding: 5px 9px;
+    background: rgba(244,238,228,0.08);
+    border: 1.5px solid var(--orchid);
+    color: var(--paper);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+  .cc-stage--convert .cc-chip { border-color: var(--acid); }
+
+  .cc-arrow {
+    align-self: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--acid);
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 36px;
+    padding: 0 4px;
+  }
+  @media (max-width: 720px) {
+    .cc-arrow {
+      transform: rotate(90deg);
+      padding: 4px 0;
+    }
+  }
+
   /* PDF download card */
   .download-card {
     margin-top: 60px;
@@ -714,6 +912,7 @@
     gap: 28px;
     align-items: center;
     transform: rotate(-0.4deg);
+    text-decoration: none;
   }
   @media (max-width: 720px) {
     .download-card {
@@ -762,6 +961,7 @@
     text-transform: uppercase;
     line-height: 1.05;
     margin-bottom: 8px;
+    color: var(--paper);
   }
   .download-card__copy p {
     font-size: 15px;
@@ -842,7 +1042,6 @@
   }
   .work__intro strong { background: var(--acid); padding: 0 4px; }
 
-  /* show cards now stack vertically full-width */
   .show-stack {
     display: flex;
     flex-direction: column;
@@ -953,7 +1152,6 @@
     z-index: 0;
   }
   .tt-frame .tt-fallback a { pointer-events: auto; }
-  /* Once TikTok injects its iframe, the rendered content sits above the fallback */
   .tt-frame iframe { position: relative; z-index: 1; background: var(--paper); }
   @media (max-width: 720px) {
     .tt-frame { min-height: 640px; padding: 8px; }
@@ -1311,9 +1509,7 @@
 </head>
 <body>
 
-<!-- Static form for Netlify build-time detection. Hidden from users.
-     This is what Netlify's bot scans at deploy time so it knows the form exists
-     and can register the field names. The real form is below. -->
+<!-- Static form for Netlify build-time detection. Hidden from users. -->
 <form name="contact" netlify netlify-honeypot="bot-field" hidden>
   <input type="text" name="name" />
   <input type="email" name="email" />
@@ -1350,14 +1546,37 @@
         <a href="#work" class="btn btn--primary">See the Work</a>
         <a href="#contact" class="btn btn--ghost">Contact the Studio</a>
       </div>
+
+      <!-- ─── DESKTOP CASE STUDY VIDEO CALLOUT ─────────────────
+           Sits below the headline/copy/CTA on desktop hero. Video plays
+           muted on arrival; sound toggle is one click. Hidden on tablet/mobile,
+           where a duplicate appears after the AI Content section instead. -->
+      <div class="case-study-callout case-study-callout--desktop">
+        <div class="case-study-callout__video">
+          <!-- YouTube embed: starts muted (browser autoplay policy). Sound is
+               one click on YouTube's own unmute button in the player chrome.
+               rel=0 disables the "more videos" overlay; modestbranding minimizes
+               the YouTube logo so the embed feels native. -->
+          <iframe
+            src="https://www.youtube.com/embed/ZkABMo72b2A?autoplay=1&mute=1&loop=1&playlist=ZkABMo72b2A&rel=0&modestbranding=1&playsinline=1"
+            title="Dick Tracy Origins · 60-second sequence"
+            loading="lazy"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerpolicy="strict-origin-when-cross-origin"
+            allowfullscreen></iframe>
+        </div>
+        <div class="case-study-callout__copy">
+          <div class="case-study-callout__tag">↓ new case study</div>
+          <h3>Dick Tracy <em>Origins.</em></h3>
+          <p>How we built character-consistent AI video from a public-domain source. Four frames, one Character Pack, under nine dollars in API spend.</p>
+          <a href="case-studies/dick-tracy-origins/" class="case-study-callout__link">Read the Case Study →</a>
+        </div>
+      </div>
     </div>
 
     <!-- ─── PIPELINE COLLAGE ─────────────────────────── -->
-    <!-- Three-stage visual story of the rapid mid-funnel content workflow:
-         1) IDEA / CONCEPT → 2) CREATIVE & BRAND CONTROL → 3) FINISHED EPISODE -->
     <div class="pipeline" aria-label="The LarryDoJo content pipeline: idea, brand controls, finished episode">
 
-      <!-- STAGE 1: IDEA / CONCEPT -->
       <div class="pipeline__stage">
         <div class="pipeline-sticker pipeline-sticker--idea">IDEA ↓</div>
         <div class="stage-polaroid stage-polaroid--idea">
@@ -1368,7 +1587,6 @@
 
       <div class="pipeline__connector" aria-hidden="true"></div>
 
-      <!-- STAGE 2: CREATIVE & BRAND CONTROL -->
       <div class="pipeline__stage">
         <div class="pipeline-sticker pipeline-sticker--control">Creative &amp; Brand Control</div>
         <div class="control-card" role="figure" aria-label="Brand bible with character profile, environment plate, and style swatches">
@@ -1408,7 +1626,6 @@
 
       <div class="pipeline__connector" aria-hidden="true"></div>
 
-      <!-- STAGE 3: FINISHED EPISODE -->
       <div class="pipeline__stage">
         <div class="pipeline-sticker pipeline-sticker--final">Mid-funnel · shipped ↓</div>
         <div class="stage-polaroid stage-polaroid--final">
@@ -1455,6 +1672,47 @@
       </div>
     </div>
 
+    <!-- ─── CAPTURE → CONVERT KEY MESSAGE GRAPHIC ─────────── -->
+    <!-- Visual key-message: the captive audience that AI content captures
+         on social platforms gets converted through web, app, payments, CRM. -->
+    <div class="capture-convert">
+      <div class="capture-convert__head">
+        <div class="capture-convert__kicker">↓ how it all connects</div>
+        <h3 class="capture-convert__title">We don't just <em>capture</em> attention.<br>We help you <em>convert</em> it.</h3>
+        <p class="capture-convert__sub">
+          Content captures the audience. Custom apps, online stores, secure payment, and CRM convert them. We build the back end that turns viewers into customers.
+        </p>
+      </div>
+
+      <div class="capture-convert__flow" role="list" aria-label="Capture to convert flow">
+        <div class="cc-stage cc-stage--capture" role="listitem">
+          <span class="cc-stage__label">// step 01</span>
+          <span class="cc-stage__title"><em>Capture</em></span>
+          <div class="cc-stage__items">
+            <span class="cc-chip">TikTok</span>
+            <span class="cc-chip">YouTube</span>
+            <span class="cc-chip">Instagram</span>
+            <span class="cc-chip">Shorts</span>
+            <span class="cc-chip">Reels</span>
+          </div>
+        </div>
+
+        <div class="cc-arrow" aria-hidden="true">→</div>
+
+        <div class="cc-stage cc-stage--convert" role="listitem">
+          <span class="cc-stage__label">// step 02</span>
+          <span class="cc-stage__title"><em>Convert</em></span>
+          <div class="cc-stage__items">
+            <span class="cc-chip">Web</span>
+            <span class="cc-chip">App</span>
+            <span class="cc-chip">eCommerce</span>
+            <span class="cc-chip">Payments</span>
+            <span class="cc-chip">CRM</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- PDF download card -->
     <a href="youtube-animation-trends-2026.pdf" download class="download-card">
       <div class="download-card__icon" aria-hidden="true">
@@ -1470,6 +1728,8 @@
 
   </div>
 </section>
+
+<!-- ─── AI CONTENT / WORK ───────────────────────────── -->
 <section class="work" id="work">
   <div class="container">
     <div class="section-head">
@@ -1494,7 +1754,7 @@
       <div class="stat">
         <div class="stat__num">50%</div>
         <div class="stat__label">Watch Animated Series In Languages Other Than Their Own</div>
-        <div class="stat__src">// YouTube Culture & Trends 2026</div>
+        <div class="stat__src">// YouTube Culture &amp; Trends 2026</div>
       </div>
     </div>
 
@@ -1504,32 +1764,27 @@
 
     <div class="show-stack">
 
-      <!-- Card 1: Frame-by-Frame Continuity (TikTok: Dick Tracy) -->
+      <!-- Card 1: Frame-by-Frame Continuity (YouTube: Robo Jr.) -->
       <article class="show-card">
         <div class="show-card__media">
           <span class="show-card__tag">Frame-by-Frame</span>
-          <div class="tt-frame">
-            <div class="tt-fallback" aria-hidden="true">
-              <span>Loading TikTok…</span>
-              <a href="https://www.tiktok.com/@larrydojo_noir/video/7619144493178096909" target="_blank" rel="noopener" class="show-card__link show-card__link--primary">Open in TikTok ↗</a>
-            </div>
-            <blockquote class="tiktok-embed"
-              cite="https://www.tiktok.com/@larrydojo_noir/video/7619144493178096909"
-              data-video-id="7619144493178096909"
-              style="max-width: 605px; min-width: 325px;">
-              <section>
-                <a target="_blank" title="@larrydojo_noir" href="https://www.tiktok.com/@larrydojo_noir?refer=embed">@larrydojo_noir</a>
-              </section>
-            </blockquote>
+          <div class="yt-frame">
+            <iframe
+              src="https://www.youtube.com/embed/ZkABMo72b2A"
+              title="Robo Jr. · Frame-by-frame continuity demo"
+              loading="lazy"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              referrerpolicy="strict-origin-when-cross-origin"
+              allowfullscreen></iframe>
           </div>
         </div>
         <div class="show-card__body">
           <h3>Frame-by-Frame Continuity</h3>
-          <div class="show-card__meta">// case: Dick Tracy original comic strip · technique: character profiles + environment plates</div>
-          <p>The classic Dick Tracy comic strip recreated frame by frame. Character profiles lock the look. Environment plates lock the world. The result is shot-to-shot continuity that AI alone can't hold.</p>
+          <div class="show-card__meta">// case: Robo Jr. · technique: character profiles + environment plates</div>
+          <p>Locked character profiles. Locked environment plates. Shot-to-shot continuity that AI alone can't hold. The same coat in every frame, the same room across every cut.</p>
           <div class="show-card__links">
-            <a href="https://www.tiktok.com/@larrydojo_noir" target="_blank" rel="noopener" class="show-card__link show-card__link--primary">Watch on TikTok ↗</a>
-            <a href="https://www.youtube.com/@larrydojo" target="_blank" rel="noopener" class="show-card__link">YouTube</a>
+            <a href="https://www.youtube.com/@larrydojo" target="_blank" rel="noopener" class="show-card__link show-card__link--primary">Watch on YouTube ↗</a>
+            <a href="https://www.tiktok.com/@larrydojo_noir" target="_blank" rel="noopener" class="show-card__link">TikTok</a>
           </div>
         </div>
       </article>
@@ -1566,6 +1821,29 @@
       </article>
 
     </div>
+
+    <!-- ─── MOBILE CASE STUDY VIDEO CALLOUT ─────────────────
+         On tablet/mobile (≤980px), this duplicate appears here, after Robo Jr.
+         The desktop hero version is hidden via the .case-study-callout--desktop
+         media query above. -->
+    <div class="case-study-callout case-study-callout--mobile">
+      <div class="case-study-callout__video">
+        <iframe
+          src="https://www.youtube.com/embed/ZkABMo72b2A?autoplay=1&mute=1&loop=1&playlist=ZkABMo72b2A&rel=0&modestbranding=1&playsinline=1"
+          title="Dick Tracy Origins · 60-second sequence"
+          loading="lazy"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          referrerpolicy="strict-origin-when-cross-origin"
+          allowfullscreen></iframe>
+      </div>
+      <div class="case-study-callout__copy">
+        <div class="case-study-callout__tag">↓ new case study</div>
+        <h3>Dick Tracy <em>Origins.</em></h3>
+        <p>How we built character-consistent AI video from a public-domain source. Four frames, one Character Pack, under nine dollars in API spend.</p>
+        <a href="case-studies/dick-tracy-origins/" class="case-study-callout__link">Read the Case Study →</a>
+      </div>
+    </div>
+
   </div>
 </section>
 
@@ -1573,7 +1851,7 @@
 <section class="agency" id="agency">
   <div class="container">
     <div class="section-head">
-      <span class="section-head__kicker">↓ rapid web & ecommerce</span>
+      <span class="section-head__kicker">↓ rapid web &amp; ecommerce</span>
       <h2>The new<br>digital agency.</h2>
       <p class="section-head__desc">
         Most agencies still run a six-month build cycle. We run a six-day one, then keep iterating.
@@ -1628,7 +1906,7 @@
   <div class="container">
     <div class="section-head">
       <span class="section-head__kicker">↓ special projects</span>
-      <h2>Custom <em>apps</em><br>& AI consulting.</h2>
+      <h2>Custom <em>apps</em><br>&amp; AI consulting.</h2>
       <p class="section-head__desc">
         For teams that need more than a website. Pipeline architecture, AI tooling, automation strategy. Engagements scoped to fit, not stretched to fill a retainer.
       </p>
@@ -1683,8 +1961,6 @@
     </p>
   </div>
 
-  <!-- Real form. Posts to / with ?success=true so Netlify can intercept,
-       process, then redirect the user back here with the success state. -->
   <form class="form-card" id="contact-form" name="contact" method="POST" action="/?success=true" data-netlify="true" netlify-honeypot="bot-field">
     <input type="hidden" name="form-name" value="contact" />
     <p style="display:none;"><label>Don't fill this out: <input name="bot-field" /></label></p>
@@ -1726,12 +2002,12 @@
   <div>Built fast. Hosted on Netlify. Source of truth: GitHub.</div>
 </footer>
 
-<!-- TikTok embed renderer (loads once, processes all blockquotes on page) -->
+<!-- TikTok embed renderer -->
 <script async src="https://www.tiktok.com/embed.js"></script>
 
 <script>
-  // After Netlify processes the form, it redirects back to /?success=true.
-  // We detect that and swap the form for the success message.
+  // Contact form success state. Netlify processes the form and redirects back
+  // to /?success=true; we swap the form for a confirmation message.
   const params = new URLSearchParams(window.location.search);
   if (params.get('success') === 'true') {
     const form = document.getElementById('contact-form');
@@ -1739,7 +2015,6 @@
     if (form && success) {
       form.style.display = 'none';
       success.style.display = 'block';
-      // Smoothly scroll to the success state on next paint
       requestAnimationFrame(() => {
         success.scrollIntoView({ behavior: 'smooth', block: 'center' });
       });

@@ -1,0 +1,1300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dick Tracy Origins · Case Study · LarryDoJo</title>
+<meta name="description" content="How LarryDoJo built character-consistent AI video from a public-domain source. The Dick Tracy Origins POC, documented end to end.">
+<meta property="og:title" content="Dick Tracy Origins · Case Study">
+<meta property="og:description" content="Character-consistent AI video, built fast, on a public-domain source. The full POC, documented.">
+<meta property="og:image" content="https://larrydojo.com/case-studies/dick-tracy-origins/img/character-pack.jpg">
+<meta property="og:type" content="article">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<!-- Plausible Analytics (parent domain) -->
+<script defer data-domain="larrydojo.com" src="https://plausible.io/js/script.js"></script>
+
+<style>
+/* ============================================================
+   LarryDoJo · Case Study landing page
+   Style: editorial noir. Dark canvas, high contrast, mono accents.
+   ============================================================ */
+
+:root {
+  --bg: #0E0E0E;
+  --bg-2: #161616;
+  --bg-card: #1A1A1A;
+  --ink: #F4F1EA;
+  --ink-dim: #B8B3A8;
+  --ink-muted: #6B6660;
+  --accent: #E8B923;     /* canary yellow, the coat */
+  --accent-soft: #C9A227;
+  --rule: #2A2925;
+  --rule-soft: #1F1E1B;
+  --noir: #0A0A0A;
+  --danger: #D55C5C;
+  --safe: #6FBF73;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  font-size: 17px;
+  line-height: 1.65;
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.mono, code, .tag, .section-label, .meta {
+  font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+  font-size: 0.78em;
+  letter-spacing: 0.02em;
+}
+
+a { color: var(--ink); text-decoration: none; transition: color .15s, border-color .15s; }
+a:hover { color: var(--accent); }
+
+img { max-width: 100%; display: block; }
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 32px;
+}
+
+.container-narrow {
+  max-width: 820px;
+  margin: 0 auto;
+  padding: 0 32px;
+}
+
+/* ============================================================
+   NAV
+   ============================================================ */
+
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: rgba(14, 14, 14, 0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--rule-soft);
+}
+
+.nav-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 18px 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.brand {
+  font-weight: 800;
+  font-size: 16px;
+  letter-spacing: 0.04em;
+  color: var(--ink);
+}
+.brand .dot { color: var(--accent); margin: 0 4px; }
+
+.nav-links {
+  display: flex;
+  gap: 24px;
+  font-size: 14px;
+  color: var(--ink-dim);
+}
+.nav-links a:hover { color: var(--ink); }
+
+.nav-cta {
+  font-size: 14px;
+  padding: 8px 16px;
+  border: 1px solid var(--rule);
+  border-radius: 2px;
+}
+.nav-cta:hover { border-color: var(--accent); color: var(--accent); }
+
+@media (max-width: 720px) {
+  .nav-links { display: none; }
+}
+
+/* ============================================================
+   HERO with VIDEO FEATURE
+   ============================================================ */
+
+.hero {
+  padding: 64px 0 60px;
+  border-bottom: 1px solid var(--rule-soft);
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-eyebrow {
+  color: var(--accent);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 24px;
+}
+
+.hero-eyebrow::before {
+  content: "// ";
+  opacity: 0.6;
+}
+
+.hero h1 {
+  font-size: clamp(44px, 7.5vw, 88px);
+  font-weight: 800;
+  line-height: 0.96;
+  letter-spacing: -0.02em;
+  margin-bottom: 20px;
+}
+.hero h1 em {
+  font-style: italic;
+  font-weight: 800;
+  color: var(--accent);
+}
+
+.hero-sub {
+  font-size: clamp(18px, 2.2vw, 22px);
+  color: var(--ink-dim);
+  max-width: 680px;
+  line-height: 1.5;
+  margin-bottom: 36px;
+}
+
+/* Hero video feature: the new headline asset on this page.
+   Vertical video (the source MP4 is 9:16). On desktop we sit it next to
+   short copy + CTAs; on mobile it stacks above the copy. */
+.hero-video-grid {
+  display: grid;
+  grid-template-columns: minmax(280px, 360px) 1fr;
+  gap: 48px;
+  align-items: center;
+  margin-bottom: 48px;
+}
+@media (max-width: 880px) {
+  .hero-video-grid {
+    grid-template-columns: 1fr;
+    gap: 32px;
+    max-width: 480px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+.hero-video {
+  position: relative;
+  aspect-ratio: 9 / 16;
+  background: var(--noir);
+  border: 1px solid var(--rule);
+  overflow: hidden;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.6);
+}
+/* YouTube iframe fills the 9:16 hero. Sound is one click on the YouTube
+   unmute button in the player chrome — that's the "click for sound" behavior
+   we want, and it sidesteps every browser autoplay policy gotcha. */
+.hero-video iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+.hero-video__tag {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  background: rgba(14, 14, 14, 0.85);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  color: var(--accent);
+  padding: 6px 12px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  border: 1px solid var(--rule);
+  z-index: 2;
+}
+
+.hero-video-aside h2 {
+  font-size: clamp(22px, 3vw, 28px);
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  margin-bottom: 16px;
+  color: var(--ink);
+}
+.hero-video-aside h2 em { color: var(--accent); font-style: italic; }
+.hero-video-aside p {
+  color: var(--ink-dim);
+  font-size: 16px;
+  line-height: 1.6;
+  margin-bottom: 24px;
+}
+.hero-video-aside .video-meta {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+  padding-top: 16px;
+  border-top: 1px solid var(--rule-soft);
+}
+
+.hero-meta {
+  display: flex;
+  gap: 28px;
+  flex-wrap: wrap;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  color: var(--ink-muted);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding-top: 24px;
+  border-top: 1px solid var(--rule-soft);
+}
+.hero-meta span strong { color: var(--ink); font-weight: 600; }
+
+.hero-actions {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 40px;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 28px;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  border-radius: 2px;
+  transition: all .2s;
+  cursor: pointer;
+  border: 1px solid transparent;
+  font-family: inherit;
+}
+
+.btn-primary {
+  background: var(--accent);
+  color: var(--noir);
+}
+.btn-primary:hover { background: var(--ink); color: var(--noir); }
+
+.btn-secondary {
+  background: transparent;
+  color: var(--ink);
+  border-color: var(--rule);
+}
+.btn-secondary:hover { border-color: var(--accent); color: var(--accent); }
+
+/* ============================================================
+   SECTION HEADERS
+   ============================================================ */
+
+.section-label {
+  color: var(--ink-muted);
+  text-transform: lowercase;
+  letter-spacing: 0.08em;
+  font-size: 13px;
+  margin-bottom: 24px;
+  display: inline-block;
+}
+.section-label::before {
+  content: "↓ ";
+  color: var(--accent);
+}
+
+.section-heading {
+  font-size: clamp(36px, 5.5vw, 60px);
+  font-weight: 800;
+  line-height: 1.0;
+  letter-spacing: -0.02em;
+  margin-bottom: 32px;
+  max-width: 820px;
+}
+.section-heading em {
+  font-style: italic;
+  color: var(--accent);
+  font-weight: 800;
+}
+
+.section-lede {
+  font-size: 19px;
+  color: var(--ink-dim);
+  max-width: 720px;
+  line-height: 1.55;
+  margin-bottom: 48px;
+}
+
+section {
+  padding: 96px 0;
+  border-bottom: 1px solid var(--rule-soft);
+}
+
+.section-tight { padding: 64px 0; }
+
+/* ============================================================
+   PROBLEM / STATS / PIPELINE / IP / CALLOUT / GALLERY
+   ============================================================ */
+
+.problem-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 64px;
+  align-items: start;
+}
+@media (max-width: 880px) {
+  .problem-grid { grid-template-columns: 1fr; gap: 32px; }
+}
+
+.problem-grid p {
+  font-size: 17px;
+  color: var(--ink-dim);
+  line-height: 1.7;
+  margin-bottom: 16px;
+}
+.problem-grid p strong { color: var(--ink); font-weight: 600; }
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  margin-top: 24px;
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+}
+@media (max-width: 880px) {
+  .stats { grid-template-columns: repeat(2, 1fr); }
+}
+
+.stat {
+  padding: 32px 24px;
+  border-right: 1px solid var(--rule-soft);
+}
+.stat:last-child { border-right: none; }
+@media (max-width: 880px) {
+  .stat:nth-child(2) { border-right: none; }
+  .stat:nth-child(1), .stat:nth-child(2) { border-bottom: 1px solid var(--rule-soft); }
+}
+
+.stat-number {
+  font-size: 56px;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  color: var(--accent);
+  margin-bottom: 12px;
+}
+
+.stat-label {
+  font-size: 13px;
+  color: var(--ink-dim);
+  line-height: 1.4;
+}
+
+.stat-meta {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--ink-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-top: 12px;
+}
+.stat-meta::before { content: "// "; }
+
+.stages {
+  display: grid;
+  gap: 0;
+  border-top: 1px solid var(--rule);
+}
+
+.stage {
+  display: grid;
+  grid-template-columns: 80px 1fr 360px;
+  gap: 40px;
+  padding: 36px 0;
+  border-bottom: 1px solid var(--rule-soft);
+  align-items: start;
+}
+@media (max-width: 880px) {
+  .stage { grid-template-columns: 60px 1fr; gap: 20px; }
+  .stage-output { grid-column: 1 / -1; padding-left: 60px; }
+}
+
+.stage-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 14px;
+  color: var(--accent);
+  font-weight: 600;
+  padding-top: 4px;
+}
+
+.stage-body h4 {
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  letter-spacing: -0.01em;
+}
+
+.stage-body p {
+  color: var(--ink-dim);
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+.stage-output {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  color: var(--ink-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding-top: 8px;
+}
+.stage-output strong { color: var(--accent-soft); font-weight: 500; }
+.stage-output::before { content: "→ output: "; color: var(--accent); }
+
+.callout {
+  background: var(--bg-card);
+  border-left: 3px solid var(--accent);
+  padding: 32px 36px;
+  margin: 40px 0;
+}
+
+.callout-eyebrow {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 12px;
+}
+.callout-eyebrow::before { content: "⚠ "; }
+
+.callout h4 {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+.callout p {
+  font-size: 16px;
+  color: var(--ink-dim);
+  line-height: 1.6;
+}
+
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin: 40px 0;
+}
+@media (max-width: 880px) {
+  .gallery { grid-template-columns: 1fr; }
+}
+
+.gallery-item {
+  background: var(--noir);
+  border: 1px solid var(--rule);
+  overflow: hidden;
+}
+
+.gallery-item img {
+  width: 100%;
+  height: 380px;
+  object-fit: cover;
+  display: block;
+}
+
+.gallery-caption {
+  padding: 16px 18px;
+  border-top: 1px solid var(--rule-soft);
+}
+
+.gallery-tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 6px;
+}
+
+.gallery-text {
+  font-size: 14px;
+  color: var(--ink-dim);
+  line-height: 1.5;
+}
+
+.feature-image {
+  margin: 40px 0;
+  background: var(--noir);
+  border: 1px solid var(--rule);
+}
+
+.feature-image img {
+  width: 100%;
+  display: block;
+}
+
+.feature-caption {
+  padding: 16px 20px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--ink-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  border-top: 1px solid var(--rule-soft);
+}
+.feature-caption::before { content: "// "; color: var(--accent); }
+
+.ip-split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  margin-top: 32px;
+}
+@media (max-width: 880px) {
+  .ip-split { grid-template-columns: 1fr; gap: 24px; }
+}
+
+.ip-card {
+  background: var(--bg-card);
+  padding: 28px 32px;
+  border: 1px solid var(--rule);
+}
+
+.ip-card h4 {
+  font-size: 14px;
+  font-family: 'JetBrains Mono', monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 18px;
+  color: var(--accent);
+}
+
+.ip-card ul { list-style: none; padding: 0; }
+
+.ip-card li {
+  padding: 10px 0;
+  border-bottom: 1px solid var(--rule-soft);
+  color: var(--ink-dim);
+  font-size: 15px;
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+.ip-card li:last-child { border-bottom: none; }
+.ip-card li strong { color: var(--ink); font-weight: 500; }
+
+.ip-tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  flex-shrink: 0;
+}
+.ip-tag.safe { color: var(--safe); }
+.ip-tag.locked { color: var(--danger); }
+
+.cost-block {
+  background: var(--bg-card);
+  border: 1px solid var(--rule);
+  padding: 40px;
+  margin-top: 32px;
+}
+
+.cost-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--rule-soft);
+  font-size: 15px;
+  color: var(--ink-dim);
+}
+
+.cost-row.total {
+  border-bottom: none;
+  border-top: 1px solid var(--accent);
+  padding-top: 18px;
+  margin-top: 8px;
+  font-weight: 700;
+  color: var(--ink);
+  font-size: 18px;
+}
+.cost-row.total .cost-amt { color: var(--accent); }
+
+.cost-amt {
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+/* ============================================================
+   EMAIL-GATED PDF DOWNLOAD
+   ============================================================ */
+
+.download-cta {
+  background: linear-gradient(180deg, var(--bg) 0%, var(--bg-2) 100%);
+  text-align: center;
+  padding: 96px 0;
+  border-bottom: 1px solid var(--rule-soft);
+}
+
+.download-cta h2 {
+  font-size: clamp(36px, 5vw, 56px);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  margin-bottom: 20px;
+}
+.download-cta h2 em { color: var(--accent); font-style: italic; }
+
+.download-cta > .container-narrow > p {
+  font-size: 18px;
+  color: var(--ink-dim);
+  max-width: 600px;
+  margin: 0 auto 36px;
+  line-height: 1.55;
+}
+
+.download-meta {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--ink-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-top: 20px;
+}
+.download-meta::before { content: "// "; color: var(--accent); }
+
+/* The form: clean, dark, minimal. We collect just an email; on success the
+   user gets bounced through to a thank-you page that triggers the download. */
+.gate-form {
+  max-width: 520px;
+  margin: 0 auto;
+  background: var(--bg-card);
+  border: 1px solid var(--rule);
+  padding: 32px;
+  text-align: left;
+}
+@media (max-width: 600px) {
+  .gate-form { padding: 24px; }
+}
+
+.gate-form__label {
+  display: block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--accent);
+  margin-bottom: 10px;
+}
+
+.gate-form__row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 12px;
+}
+@media (max-width: 540px) {
+  .gate-form__row { grid-template-columns: 1fr; gap: 14px; }
+}
+
+.gate-form input[type="email"] {
+  background: var(--bg);
+  border: 1px solid var(--rule);
+  color: var(--ink);
+  font-family: inherit;
+  font-size: 15px;
+  padding: 14px 16px;
+  width: 100%;
+  transition: border-color .15s;
+}
+.gate-form input[type="email"]:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.gate-form button {
+  background: var(--accent);
+  color: var(--noir);
+  border: none;
+  padding: 14px 26px;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  cursor: pointer;
+  transition: background .15s;
+  white-space: nowrap;
+}
+.gate-form button:hover { background: var(--ink); }
+
+.gate-form__fineprint {
+  font-size: 12px;
+  color: var(--ink-muted);
+  margin-top: 16px;
+  line-height: 1.5;
+}
+.gate-form__fineprint a { color: var(--ink-dim); border-bottom: 1px dotted var(--rule); }
+
+/* Thank-you / success state, shown when the page is loaded via /?downloaded=true */
+.gate-success {
+  max-width: 520px;
+  margin: 0 auto;
+  background: var(--bg-card);
+  border: 1px solid var(--accent);
+  padding: 32px;
+  text-align: center;
+  display: none;
+}
+.gate-success h3 {
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  color: var(--accent);
+}
+.gate-success p {
+  font-size: 15px;
+  color: var(--ink-dim);
+  margin-bottom: 16px;
+  line-height: 1.6;
+}
+.gate-success a {
+  color: var(--accent);
+  font-weight: 600;
+  border-bottom: 1px solid var(--accent);
+}
+
+/* ============================================================
+   LESSONS / FOOTER
+   ============================================================ */
+
+.lessons {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+  margin-top: 32px;
+}
+@media (max-width: 880px) {
+  .lessons { grid-template-columns: 1fr; }
+}
+
+.lesson-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 14px;
+  color: var(--accent);
+  margin-bottom: 16px;
+}
+
+.lesson h4 {
+  font-size: 19px;
+  font-weight: 700;
+  line-height: 1.25;
+  margin-bottom: 12px;
+  letter-spacing: -0.01em;
+}
+
+.lesson p {
+  font-size: 15px;
+  color: var(--ink-dim);
+  line-height: 1.6;
+}
+
+.footer {
+  background: var(--noir);
+  padding: 56px 0 32px;
+  border-top: 1px solid var(--rule);
+}
+
+.footer-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 24px;
+}
+
+.footer-brand {
+  font-weight: 800;
+  letter-spacing: 0.04em;
+}
+.footer-brand .dot { color: var(--accent); margin: 0 4px; }
+
+.footer-links {
+  display: flex;
+  gap: 28px;
+  font-size: 14px;
+  color: var(--ink-dim);
+}
+
+.footer-meta {
+  text-align: center;
+  margin-top: 32px;
+  padding-top: 24px;
+  border-top: 1px solid var(--rule-soft);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--ink-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+::selection { background: var(--accent); color: var(--noir); }
+</style>
+</head>
+
+<body>
+
+<!-- Hidden static form for Netlify build-time detection.
+     Netlify scans this at deploy and registers the form + field names. -->
+<form name="case-study-download" netlify netlify-honeypot="bot-field" hidden>
+  <input type="email" name="email" />
+  <input type="hidden" name="asset" />
+</form>
+
+<!-- ===== NAV ===== -->
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="https://larrydojo.com" class="brand">LARRY<span class="dot">·</span>DOJO</a>
+    <div class="nav-links">
+      <a href="https://larrydojo.com#about">About</a>
+      <a href="https://larrydojo.com#work">Work</a>
+      <a href="https://larrydojo.com#services">Services</a>
+    </div>
+    <a href="https://larrydojo.com#contact" class="nav-cta">Start a Project →</a>
+  </div>
+</nav>
+
+<!-- ===== HERO with FEATURE VIDEO ===== -->
+<header class="hero">
+  <div class="container">
+    <div class="hero-eyebrow">Case Study · AI Content Pipeline</div>
+    <h1>Dick Tracy<br>Origins<em>.</em></h1>
+    <p class="hero-sub">How LarryDoJo built a character-consistent AI video sequence from a public-domain source. Four frames, one Character Pack, three modular environment plates, zero IP exposure.</p>
+
+    <!-- The 60-second sequence is the headline asset on this page.
+         YouTube embed: starts muted (browser autoplay policy). Sound is one
+         click on YouTube's own unmute button in the player chrome. -->
+    <div class="hero-video-grid">
+      <div class="hero-video">
+        <span class="hero-video__tag">// 60-second sequence</span>
+        <iframe
+          src="https://www.youtube.com/embed/ZkABMo72b2A?autoplay=1&mute=1&loop=1&playlist=ZkABMo72b2A&rel=0&modestbranding=1&playsinline=1"
+          title="Dick Tracy Origins · 60-second sequence"
+          loading="lazy"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          referrerpolicy="strict-origin-when-cross-origin"
+          allowfullscreen></iframe>
+      </div>
+
+      <div class="hero-video-aside">
+        <h2>Watch the <em>finished sequence.</em></h2>
+        <p>Four starting frames, chained into a 60-second opener. Same Character Pack across every cut. Same room across every domestic frame. The full pipeline that produced this is documented in the PDF below.</p>
+
+        <div class="hero-actions" style="margin-bottom: 24px;">
+          <a href="#download" class="btn btn-primary">Get the PDF →</a>
+          <a href="#summary" class="btn btn-secondary">Read the Summary ↓</a>
+        </div>
+
+        <div class="video-meta">Click the player to unmute</div>
+      </div>
+    </div>
+
+    <div class="hero-meta">
+      <span><strong>Project</strong> · Dick Tracy Origins, Episode 1</span>
+      <span><strong>Source</strong> · 1931 Trueheart Robbery strips</span>
+      <span><strong>Tools</strong> · Gemini 3 Pro, Nano Banana Pro</span>
+      <span><strong>Cost</strong> · under $9 in API spend</span>
+    </div>
+  </div>
+</header>
+
+<!-- ===== SUMMARY / THE PROBLEM ===== -->
+<section id="summary">
+  <div class="container">
+    <div class="section-label">the brief</div>
+    <h2 class="section-heading">The audience can spot drift in <em>one frame.</em></h2>
+    <p class="section-lede">Generative AI can produce a single beautiful image. The harder problem is producing a hundred of them that share the same face, the same coat, the same room, and the same light. That problem is what this proof of concept set out to solve.</p>
+
+    <div class="problem-grid">
+      <div>
+        <p>Every frame an AI model produces is, by default, a fresh draw. A character&rsquo;s nose shifts. A coat changes shade. A room rearranges itself. For a single hero image, this does not matter. For a story, it matters completely.</p>
+        <p>We chose the opening of the 1931 Dick Tracy strip as the test case. <strong>The earliest strips lapsed into the public domain decades ago after a failed renewal,</strong> giving us a rich, period-correct source to adapt without paying licensing fees or risking takedowns.</p>
+      </div>
+      <div>
+        <p>The brief had three constraints: use only public-domain source material, produce a recognizable period-correct opening, and document every step so a second team could repeat the work without supervision.</p>
+        <p><strong>The result is a repeatable production method.</strong> Anyone with the framework, the source, and a Gemini 3 Pro account can reproduce a comparable sequence in a single working day for less than ten dollars.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== HEADLINE STATS ===== -->
+<section class="section-tight">
+  <div class="container">
+    <div class="section-label">headline numbers</div>
+    <h2 class="section-heading">By the <em>numbers.</em></h2>
+
+    <div class="stats">
+      <div class="stat">
+        <div class="stat-number">4</div>
+        <div class="stat-label">Narrative starting frames produced, all anchored to the same Character Pack.</div>
+        <div class="stat-meta">deliverable</div>
+      </div>
+      <div class="stat">
+        <div class="stat-number">5</div>
+        <div class="stat-label">Pipeline stages, gated end to end. No stage starts until the previous one validates.</div>
+        <div class="stat-meta">workflow</div>
+      </div>
+      <div class="stat">
+        <div class="stat-number">$8.26</div>
+        <div class="stat-label">Total API spend for the full episode opener, including all iteration and refinement.</div>
+        <div class="stat-meta">cost</div>
+      </div>
+      <div class="stat">
+        <div class="stat-number">0</div>
+        <div class="stat-label">IP exposure. The protagonist was renamed while every public-domain visual element was kept.</div>
+        <div class="stat-meta">legal</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== IP STRATEGY ===== -->
+<section>
+  <div class="container">
+    <div class="section-label">source &amp; ip strategy</div>
+    <h2 class="section-heading">Public domain follows a <em>slow release.</em></h2>
+    <p class="section-lede">Copyright on the 1931 strips lapsed in the late 1950s when the Chicago Tribune failed to renew. The 1931 imagery is free to use. The trademark on the name "Dick Tracy" is not. We solved this with a one-line decision: rename the character, keep the look.</p>
+
+    <div class="ip-split">
+      <div class="ip-card">
+        <h4>// names safe as-is</h4>
+        <ul>
+          <li><strong>Tess Trueheart</strong> <span class="ip-tag safe">PUBLIC DOMAIN</span></li>
+          <li><strong>Emil Trueheart</strong> <span class="ip-tag safe">PUBLIC DOMAIN</span></li>
+          <li><strong>Mrs. Trueheart</strong> <span class="ip-tag safe">PUBLIC DOMAIN</span></li>
+          <li><strong>Crutch &amp; partner (villains)</strong> <span class="ip-tag safe">PUBLIC DOMAIN</span></li>
+          <li><strong>Yellow overcoat &amp; fedora</strong> <span class="ip-tag safe">PUBLIC DOMAIN</span></li>
+        </ul>
+      </div>
+      <div class="ip-card">
+        <h4>// names &amp; elements locked</h4>
+        <ul>
+          <li><strong>"Dick Tracy" name</strong> <span class="ip-tag locked">TM ACTIVE</span></li>
+          <li><strong>Flattop (1943)</strong> <span class="ip-tag locked">UNTIL 2039</span></li>
+          <li><strong>2-Way Wrist Radio (1946)</strong> <span class="ip-tag locked">UNTIL 2042</span></li>
+          <li><strong>Moon Maid (1964)</strong> <span class="ip-tag locked">UNTIL 2060</span></li>
+          <li><strong>1990 film likeness</strong> <span class="ip-tag locked">RIGHTS HELD</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="callout" style="margin-top: 48px;">
+      <div class="callout-eyebrow">The rename</div>
+      <h4>Dick Tracy → Detective Hawknose</h4>
+      <p>The new name is descriptive, nods to creator Chester Gould&rsquo;s original silhouette, and carries no enforceable mark. Every visual element of the character (the coat, the hat, the jaw, the slicked hair) comes directly from the 1931 strips and is therefore in the clear.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== THE PIPELINE ===== -->
+<section>
+  <div class="container">
+    <div class="section-label">the framework</div>
+    <h2 class="section-heading">Five stages. <em>Gated.</em></h2>
+    <p class="section-lede">The Nano Banana Professional Framework breaks production into five stages. Each one produces a defined output. No stage begins until the previous one validates. The pipeline is explicit on purpose: it removes guesswork and makes the work auditable.</p>
+
+    <div class="callout">
+      <div class="callout-eyebrow">The Cardinal Rule</div>
+      <h4>Never generate a character directly inside a scene.</h4>
+      <p>Independent research measured a consistency score drop from 7.99 to 0.55 when characters are generated from a text prompt alongside their environment. We always generate the character anchor first, in isolation, then composite into the environment plate. Every stage of the framework is built around protecting this rule.</p>
+    </div>
+
+    <div class="stages">
+      <div class="stage">
+        <div class="stage-num">STAGE I</div>
+        <div class="stage-body">
+          <h4>Character DNA Definition</h4>
+          <p>Write the Character Bible (anatomy, materials, fixed identifiers) and generate a 3-view Character Pack as 3D figurine references. Validate with the Exploded View test before proceeding.</p>
+        </div>
+        <div class="stage-output"><strong>Identity-Locked Character Pack</strong></div>
+      </div>
+
+      <div class="stage">
+        <div class="stage-num">STAGE II</div>
+        <div class="stage-body">
+          <h4>Environment Plate Construction</h4>
+          <p>Build modular environment plates as reusable kits, never as finished scenes. Lock material continuity (wallpaper, floor, doorframes) across plates that share a location.</p>
+        </div>
+        <div class="stage-output"><strong>3 Modular Plate Kits</strong></div>
+      </div>
+
+      <div class="stage">
+        <div class="stage-num">STAGE III</div>
+        <div class="stage-body">
+          <h4>Anchor Visualization</h4>
+          <p>Generate each character independently in a neutral studio. Validate against the Pack. Composite into the plate using multi-image fusion with IP-Adapter scale tuned between 0.4 and 0.6.</p>
+        </div>
+        <div class="stage-output"><strong>Identity-Locked Starting Frame</strong></div>
+      </div>
+
+      <div class="stage">
+        <div class="stage-num">STAGE IV</div>
+        <div class="stage-body">
+          <h4>Temporal Chaining</h4>
+          <p>The last frame of any sequence becomes the reference for the next. This preserves dust, light, prop positions, and dynamic environmental details across cuts.</p>
+        </div>
+        <div class="stage-output"><strong>Chained Frame Sequence</strong></div>
+      </div>
+
+      <div class="stage">
+        <div class="stage-num">STAGE V</div>
+        <div class="stage-body">
+          <h4>Semantic Refinement</h4>
+          <p>Edit, never re-roll. If a frame is 80% correct, a natural-language edit fixes the rest without losing what already works. Faces stay protected; we edit lighting and pose only.</p>
+        </div>
+        <div class="stage-output"><strong>Final Production Frame</strong></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== HERO IMAGE: HAWKNOSE ===== -->
+<section>
+  <div class="container">
+    <div class="section-label">the anchor</div>
+    <h2 class="section-heading">The yellow coat is <em>everything.</em></h2>
+    <p class="section-lede">The Character Bible called it "canary-yellow wool overcoat, double-breasted with six black buttons." That phrase, kept verbatim in every prompt, became the fixed identifier the model could not lose. Generic descriptions drifted. Specifics held.</p>
+
+    <div class="gallery">
+      <div class="gallery-item">
+        <img src="img/hawknose-hero.jpg" alt="Detective Hawknose in his canary-yellow overcoat and black fedora, hero studio render">
+        <div class="gallery-caption">
+          <div class="gallery-tag">// hawknose · stage iii anchor</div>
+          <div class="gallery-text">Hero render before compositing. Coat geometry, hat, and proportions are locked from the Character Pack.</div>
+        </div>
+      </div>
+      <div class="gallery-item">
+        <img src="img/emil-render.jpg" alt="Emil Trueheart seated in the green velvet armchair, isolated studio render for compositing">
+        <div class="gallery-caption">
+          <div class="gallery-tag">// emil · stage iii anchor</div>
+          <div class="gallery-text">Emil isolated in his armchair pose, ready to composite into Frame 3. Same character, different state.</div>
+        </div>
+      </div>
+      <div class="gallery-item">
+        <img src="img/frame4-lockpick.jpg" alt="Hands picking the lock of the Trueheart door, cold blue lighting from outside">
+        <div class="gallery-caption">
+          <div class="gallery-tag">// frame 4 · setup detail</div>
+          <div class="gallery-text">Lock-pick moment preceding the burst-in. Cold ambient previews the lighting reversal.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FRAME 1 FEATURE ===== -->
+<section>
+  <div class="container">
+    <div class="section-label">the payoff</div>
+    <h2 class="section-heading">One Pack, one plate, <em>two scenes.</em></h2>
+    <p class="section-lede">Frame 1 (below) and Frame 3 share the same plate, the same lighting, and the same characters in different states. The continuity holds because it was built to. Every element is anchored upstream in the framework.</p>
+
+    <div class="feature-image">
+      <img src="img/frame1-truehearts.jpg" alt="Frame 1: Emil and Mrs. Trueheart in the warm-lit Trueheart living room, money on the table, pendant lamp overhead">
+      <div class="feature-caption">Figure 02 · Frame 1 final composite · Emil and Mrs. Trueheart in Plate A · pendant pool, warm tungsten, money as focal object</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== COST BREAKDOWN ===== -->
+<section>
+  <div class="container">
+    <div class="section-label">tools &amp; cost</div>
+    <h2 class="section-heading">Under nine dollars. <em>Total.</em></h2>
+    <p class="section-lede">The episode opener (four hero frames, all studio renders, plate generations, refinement passes) cost less than a stock photo license. The constraint is not money. The constraint is the discipline of the pipeline.</p>
+
+    <div class="cost-block">
+      <div class="cost-row">
+        <span>Character Pack views (front / side / back, 4 chars)</span>
+        <span class="cost-amt">$1.56</span>
+      </div>
+      <div class="cost-row">
+        <span>Studio character renders (9 total)</span>
+        <span class="cost-amt">$0.91</span>
+      </div>
+      <div class="cost-row">
+        <span>Environment plates with iteration</span>
+        <span class="cost-amt">$0.91</span>
+      </div>
+      <div class="cost-row">
+        <span>Hero frames at 4K with refinement passes</span>
+        <span class="cost-amt">$2.34</span>
+      </div>
+      <div class="cost-row">
+        <span>Stage V semantic edits</span>
+        <span class="cost-amt">$0.74</span>
+      </div>
+      <div class="cost-row">
+        <span>Reasoning, blueprinting, validation calls</span>
+        <span class="cost-amt">$1.80</span>
+      </div>
+      <div class="cost-row total">
+        <span>Total API spend</span>
+        <span class="cost-amt">$8.26</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== LESSONS ===== -->
+<section>
+  <div class="container">
+    <div class="section-label">what we learned</div>
+    <h2 class="section-heading">Six things <em>that mattered.</em></h2>
+
+    <div class="lessons">
+      <div class="lesson">
+        <div class="lesson-num">// 01</div>
+        <h4>The Cardinal Rule is real.</h4>
+        <p>Generating a character inside a scene from a text prompt collapses consistency in one step. Stage III exists for a reason.</p>
+      </div>
+      <div class="lesson">
+        <div class="lesson-num">// 02</div>
+        <h4>Fixed identifiers do the work.</h4>
+        <p>"Six black buttons" held. "Yellow coat" drifted. Specifics survive into the output. Generics evaporate.</p>
+      </div>
+      <div class="lesson">
+        <div class="lesson-num">// 03</div>
+        <h4>Plates are kits, not paintings.</h4>
+        <p>Treating environments as recombinable elements lets the same room hold three different frames without breaking.</p>
+      </div>
+      <div class="lesson">
+        <div class="lesson-num">// 04</div>
+        <h4>Edit, do not re-roll.</h4>
+        <p>Re-rolling at 80% costs you the small wins. Stage V exists to preserve them. Trust the anchor.</p>
+      </div>
+      <div class="lesson">
+        <div class="lesson-num">// 05</div>
+        <h4>IP discipline pays for itself.</h4>
+        <p>Renaming the protagonist took an afternoon. The legal certainty it bought outweighed every other safeguard.</p>
+      </div>
+      <div class="lesson">
+        <div class="lesson-num">// 06</div>
+        <h4>The framework is the product.</h4>
+        <p>The frames are pretty. The framework is what makes them repeatable. That is what scales.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== EMAIL-GATED PDF DOWNLOAD ===== -->
+<!-- The PDF is gated on email. Real submissions go to Netlify Forms; on
+     success, Netlify redirects to the thank-you page which auto-triggers
+     the actual file download. The form below is shown by default; if the
+     URL has ?downloaded=true (the post-submit redirect target), the form
+     hides and the success block shows instead. -->
+<section class="download-cta" id="download">
+  <div class="container-narrow">
+    <div class="section-label" style="display: block; text-align: center;">full case study</div>
+    <h2>Want the <em>whole thing?</em></h2>
+    <p>The full PDF runs 21 pages and covers every stage, every gate, every blueprint. JSON examples, validation checklists, the full IP timeline, and the complete cost breakdown.</p>
+
+    <!-- Active form. On submit, Netlify redirects to /thank-you/ which
+         triggers the download. -->
+    <form
+      class="gate-form"
+      id="gate-form"
+      name="case-study-download"
+      method="POST"
+      data-netlify="true"
+      netlify-honeypot="bot-field"
+      action="/case-studies/dick-tracy-origins/thank-you/"
+    >
+      <input type="hidden" name="form-name" value="case-study-download" />
+      <input type="hidden" name="asset" value="DickTracyOrigins_AIVideoPOC_CaseStudy.pdf" />
+      <p style="display:none;"><label>Don't fill this out: <input name="bot-field" /></label></p>
+
+      <label class="gate-form__label" for="gate-email">// enter email to download</label>
+      <div class="gate-form__row">
+        <input type="email" id="gate-email" name="email" required placeholder="you@company.com" autocomplete="email" />
+        <button type="submit">Download PDF →</button>
+      </div>
+      <p class="gate-form__fineprint">21 pages · 1.4 MB · I'll send occasional updates on new case studies. Unsubscribe anytime, no spam.</p>
+    </form>
+
+    <!-- Success state, shown when arriving from a successful Netlify submit
+         (the page redirects to /thank-you/ where the actual download fires).
+         This block is also useful if the user comes back to this page. -->
+    <div class="gate-success" id="gate-success">
+      <h3>Got it. Your download is starting.</h3>
+      <p>If it didn't kick off automatically, <a href="DickTracyOrigins_AIVideoPOC_CaseStudy.pdf" download>click here to grab the PDF</a>.</p>
+    </div>
+
+    <div class="download-meta">21 pages · 1.4 MB · email required</div>
+  </div>
+</section>
+
+<!-- ===== CTA / CONTACT ===== -->
+<section class="section-tight">
+  <div class="container-narrow" style="text-align: center;">
+    <div class="section-label" style="display: inline-block;">work with the studio</div>
+    <h2 class="section-heading" style="margin-left: auto; margin-right: auto;">Have a project that needs <em>this kind of rigor?</em></h2>
+    <p class="section-lede" style="margin-left: auto; margin-right: auto;">LarryDoJo runs the same pipeline for client work. AI content, rapid websites, custom apps. Built fast, governed tightly, shipped weekly.</p>
+    <a href="https://larrydojo.com#contact" class="btn btn-primary" style="font-size: 16px;">Start a Project →</a>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-inner">
+      <a href="https://larrydojo.com" class="footer-brand">LARRY<span class="dot">·</span>DOJO</a>
+      <div class="footer-links">
+        <a href="https://www.tiktok.com/@larrydojo_noir" target="_blank" rel="noopener">TikTok ↗</a>
+        <a href="https://www.youtube.com/@larrydojo" target="_blank" rel="noopener">YouTube ↗</a>
+        <a href="https://www.instagram.com/larrydojo/" target="_blank" rel="noopener">Instagram ↗</a>
+        <a href="https://larrydojo.com#contact">Contact</a>
+      </div>
+    </div>
+    <div class="footer-meta">
+      © 2026 LARRYDOJO · An AI Studio · Built fast. Hosted on Netlify. Source of truth: GitHub.
+    </div>
+  </div>
+</footer>
+
+<script>
+  // If the page loads with ?downloaded=true (post-form-submit state),
+  // hide the form and show the success block. The /thank-you/ redirect
+  // handles the actual file download on its own.
+  const params = new URLSearchParams(window.location.search);
+  if (params.get('downloaded') === 'true') {
+    const form = document.getElementById('gate-form');
+    const success = document.getElementById('gate-success');
+    if (form && success) {
+      form.style.display = 'none';
+      success.style.display = 'block';
+    }
+  }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Download Started · Dick Tracy Origins · LarryDoJo</title>
+<meta name="description" content="Your case study download is starting.">
+<meta name="robots" content="noindex,nofollow">
+
+<!--
+  Thank-you / download-trigger page.
+  This is the action target of the email-gated form. On arrival:
+    1. We immediately fire the PDF download (creating a hidden anchor and clicking it)
+    2. We show a confirmation message with a manual fallback link
+    3. After 4 seconds we redirect back to the case study page in success state
+
+  The actual PDF lives one directory up to keep the directory clean.
+-->
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --bg: #0E0E0E;
+    --bg-card: #1A1A1A;
+    --ink: #F4F1EA;
+    --ink-dim: #B8B3A8;
+    --ink-muted: #6B6660;
+    --accent: #E8B923;
+    --rule: #2A2925;
+    --noir: #0A0A0A;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Inter', -apple-system, system-ui, sans-serif;
+    font-size: 17px;
+    line-height: 1.6;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 32px;
+    -webkit-font-smoothing: antialiased;
+  }
+  .card {
+    max-width: 540px;
+    width: 100%;
+    background: var(--bg-card);
+    border: 1px solid var(--accent);
+    padding: 48px 40px;
+    text-align: center;
+  }
+  @media (max-width: 540px) {
+    .card { padding: 36px 24px; }
+  }
+  .eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    margin-bottom: 16px;
+  }
+  .eyebrow::before { content: "// "; }
+  h1 {
+    font-size: 32px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    margin-bottom: 16px;
+  }
+  h1 em { color: var(--accent); font-style: italic; }
+  p {
+    font-size: 16px;
+    color: var(--ink-dim);
+    line-height: 1.6;
+    margin-bottom: 16px;
+  }
+  .download-link {
+    display: inline-block;
+    margin-top: 12px;
+    padding: 14px 28px;
+    background: var(--accent);
+    color: var(--noir);
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 15px;
+    transition: background .15s;
+    border-radius: 2px;
+  }
+  .download-link:hover { background: var(--ink); }
+  .meta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--ink-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-top: 24px;
+    padding-top: 20px;
+    border-top: 1px solid var(--rule);
+  }
+  .back-link {
+    display: inline-block;
+    margin-top: 24px;
+    color: var(--ink-dim);
+    text-decoration: none;
+    font-size: 14px;
+    border-bottom: 1px dotted var(--rule);
+  }
+  .back-link:hover { color: var(--accent); border-color: var(--accent); }
+</style>
+</head>
+<body>
+
+<div class="card">
+  <div class="eyebrow">Download started</div>
+  <h1>Got it. Your <em>PDF is on the way.</em></h1>
+  <p>If your download didn't start automatically, use the button below.</p>
+  <a href="../DickTracyOrigins_AIVideoPOC_CaseStudy.pdf" download class="download-link" id="manual-download">
+    Download the PDF →
+  </a>
+  <div class="meta">21 pages · 1.4 MB · case study</div>
+  <a href="../?downloaded=true" class="back-link">← Back to the case study</a>
+</div>
+
+<script>
+  // Auto-trigger the PDF download on page load. Browsers will fire one
+  // programmatic download per user interaction; arriving here from a form
+  // submit counts as that interaction, so this works reliably.
+  (function() {
+    const link = document.createElement('a');
+    link.href = '../DickTracyOrigins_AIVideoPOC_CaseStudy.pdf';
+    link.download = 'DickTracyOrigins_AIVideoPOC_CaseStudy.pdf';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  })();
+
+  // Bounce back to the case study in success state after a few seconds,
+  // so the user lands on something content-rich rather than this dead end.
+  setTimeout(() => {
+    window.location.href = '../?downloaded=true';
+  }, 4500);
+</script>
+
+</body>
+</html>

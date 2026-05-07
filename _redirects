@@ -1,0 +1,5 @@
+# Pretty redirects for the case study path
+/case-studies/dick-tracy-origins  /case-studies/dick-tracy-origins/  301
+
+# Keep the old root-level PDF link working in case anyone has it bookmarked
+/youtube-animation-trends-2026.pdf  /youtube-animation-trends-2026.pdf  200
