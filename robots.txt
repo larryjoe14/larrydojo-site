@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /case-studies/dick-tracy-origins/thank-you/
+
+Sitemap: https://larrydojo.com/sitemap.xml
