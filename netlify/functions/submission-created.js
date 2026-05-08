@@ -15,8 +15,8 @@
 // confirmation to the person who filled out the form.
 //
 // Required env vars (set in Netlify → Site configuration → Environment variables):
-//   RESEND_API_KEY   — from resend.com/api-keys
-//   FROM_EMAIL       — defaults to "LarryDoJo <hello@larrydojo.com>" if unset
+//   RESEND       — from resend.com/api-keys
+//   FROM_EMAIL   — defaults to "LarryDoJo <hello@larrydojo.com>" if unset
 
 exports.handler = async (event) => {
   try {
@@ -41,10 +41,13 @@ exports.handler = async (event) => {
 
     const firstName = name.split(' ')[0] || 'there';
     const fromEmail = process.env.FROM_EMAIL || 'LarryDoJo <hello@larrydojo.com>';
-    const apiKey = process.env.RESEND_API_KEY;
+    // Reads from `RESEND` env var (Netlify locked us out of renaming the key
+    // once it was created as a secret, so the function adapts to the existing
+    // var name rather than fighting the UI).
+    const apiKey = process.env.RESEND;
 
     if (!apiKey) {
-      console.error('RESEND_API_KEY is not set. Confirmation email skipped.');
+      console.error('RESEND env var is not set. Confirmation email skipped.');
       return { statusCode: 200, body: 'Skipped: API key missing.' };
     }
 
