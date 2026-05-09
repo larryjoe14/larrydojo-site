@@ -4,9 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Dick Tracy Origins · Case Study · LarryDoJo</title>
-<meta name="description" content="How LarryDoJo built character-consistent AI video from a public-domain source. The Dick Tracy Origins POC, documented end to end.">
+<meta name="description" content="How LarryDoJo built character-consistent AI video from a public-domain source. Forty seconds of finished video for $21.50 in stack-time. The Dick Tracy Origins POC, documented end to end.">
 <meta property="og:title" content="Dick Tracy Origins · Case Study">
-<meta property="og:description" content="Character-consistent AI video, built fast, on a public-domain source. The full POC, documented.">
+<meta property="og:description" content="Character-consistent AI video, built fast, on a public-domain source. Forty seconds of finished video for $21.50 in stack-time. The full POC, documented.">
 <meta property="og:image" content="https://larrydojo.com/case-studies/dick-tracy-origins/img/character-pack.jpg">
 <meta property="og:type" content="article">
 
@@ -619,6 +619,19 @@ section {
   padding: 40px;
   margin-top: 32px;
 }
+@media (max-width: 600px) {
+  .cost-block { padding: 28px 24px; }
+}
+
+.cost-block h4 {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 18px;
+}
+.cost-block h4::before { content: "// "; }
 
 .cost-row {
   display: flex;
@@ -627,6 +640,7 @@ section {
   border-bottom: 1px solid var(--rule-soft);
   font-size: 15px;
   color: var(--ink-dim);
+  gap: 16px;
 }
 
 .cost-row.total {
@@ -644,6 +658,49 @@ section {
   font-family: 'JetBrains Mono', monospace;
   font-weight: 600;
   color: var(--ink);
+  white-space: nowrap;
+  text-align: right;
+}
+
+/* The math grid: stack-time → per-frame → per-second derivation. Three
+   compact derivation cards that show the unit-economics math working. */
+.math-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-top: 32px;
+}
+@media (max-width: 720px) {
+  .math-grid { grid-template-columns: 1fr; }
+}
+.math-card {
+  background: var(--bg-card);
+  border: 1px solid var(--rule);
+  padding: 24px;
+}
+.math-card__label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--ink-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 12px;
+}
+.math-card__formula {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  color: var(--ink-dim);
+  line-height: 1.5;
+  margin-bottom: 14px;
+  word-wrap: break-word;
+}
+.math-card__formula .op { color: var(--accent); }
+.math-card__result {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--accent);
+  letter-spacing: -0.01em;
 }
 
 /* ============================================================
@@ -868,10 +925,10 @@ section {
   "@context": "https://schema.org",
   "@type": "Article",
   "headline": "Dick Tracy Origins: Building Character-Consistent AI Video From a Public-Domain Source",
-  "description": "How LarryDoJo built a character-consistent AI video sequence from the 1931 Dick Tracy strips. Four frames, one Character Pack, three modular environment plates, zero IP exposure, under nine dollars in API spend.",
+  "description": "How LarryDoJo built a character-consistent AI video sequence from the 1931 Dick Tracy strips. Forty seconds of finished video for $21.50 in stack-time, fifty-four cents per finished second. Four frames, one Character Pack, three modular environment plates, zero IP exposure.",
   "image": "https://larrydojo.com/case-studies/dick-tracy-origins/img/character-pack.jpg",
   "datePublished": "2026-05-07",
-  "dateModified": "2026-05-07",
+  "dateModified": "2026-05-09",
   "author": {
     "@type": "Organization",
     "name": "LarryDoJo",
@@ -926,7 +983,7 @@ section {
   <div class="container">
     <div class="hero-eyebrow">Case Study · AI Content Pipeline</div>
     <h1>Dick Tracy<br>Origins<em>.</em></h1>
-    <p class="hero-sub">How LarryDoJo built a character-consistent AI video sequence from a public-domain source. Four frames, one Character Pack, three modular environment plates, zero IP exposure.</p>
+    <p class="hero-sub">How LarryDoJo built a character-consistent AI video sequence from a public-domain source. Forty seconds of finished video, four hero frames, one Character Pack, zero IP exposure.</p>
 
     <!-- The 60-second sequence is the headline asset on this page.
          YouTube embed: starts muted (browser autoplay policy). Sound is one
@@ -945,7 +1002,7 @@ section {
 
       <div class="hero-video-aside">
         <h2>Watch the <em>finished sequence.</em></h2>
-        <p>Four starting frames, chained into a 60-second opener. Same Character Pack across every cut. Same room across every domestic frame. The full pipeline that produced this is documented in the PDF below.</p>
+        <p>Four starting frames, chained into 40 seconds of finished video. Same Character Pack across every cut. Same room across every domestic frame. The full pipeline that produced this is documented in the PDF below.</p>
 
         <div class="hero-actions" style="margin-bottom: 24px;">
           <a href="#download" class="btn btn-primary">Get the PDF →</a>
@@ -959,8 +1016,8 @@ section {
     <div class="hero-meta">
       <span><strong>Project</strong> · Dick Tracy Origins, Episode 1</span>
       <span><strong>Source</strong> · 1931 Trueheart Robbery strips</span>
-      <span><strong>Tools</strong> · Gemini 3 Pro, Nano Banana Pro</span>
-      <span><strong>Cost</strong> · under $9 in API spend</span>
+      <span><strong>Output</strong> · 40 seconds of finished video</span>
+      <span><strong>Cost</strong> · $21.50 in stack-time, or $0.54/second</span>
     </div>
   </div>
 </header>
@@ -979,7 +1036,7 @@ section {
       </div>
       <div>
         <p>The brief had three constraints: use only public-domain source material, produce a recognizable period-correct opening, and document every step so a second team could repeat the work without supervision.</p>
-        <p><strong>The result is a repeatable production method.</strong> Anyone with the framework, the source, and a Gemini 3 Pro account can reproduce a comparable sequence in a single working day for less than ten dollars.</p>
+        <p><strong>The result is a repeatable production method.</strong> Anyone with the framework, the source, and a Gemini 3 Pro account can reproduce a comparable sequence in a single working day, at $0.54 per finished second.</p>
       </div>
     </div>
   </div>
@@ -993,24 +1050,24 @@ section {
 
     <div class="stats">
       <div class="stat">
-        <div class="stat-number">4</div>
-        <div class="stat-label">Narrative starting frames produced, all anchored to the same Character Pack.</div>
+        <div class="stat-number">40s</div>
+        <div class="stat-label">Of finished video produced from four narrative starting frames, all anchored to the same Character Pack.</div>
         <div class="stat-meta">deliverable</div>
       </div>
       <div class="stat">
-        <div class="stat-number">5</div>
-        <div class="stat-label">Pipeline stages, gated end to end. No stage starts until the previous one validates.</div>
-        <div class="stat-meta">workflow</div>
+        <div class="stat-number">$21.50</div>
+        <div class="stat-label">One day's slice of the production stack. Claude Max, Google AI Ultra, and Adobe Premiere combined.</div>
+        <div class="stat-meta">stack-time</div>
       </div>
       <div class="stat">
-        <div class="stat-number">$8.26</div>
-        <div class="stat-label">Total API spend for the full episode opener, including all iteration and refinement.</div>
-        <div class="stat-meta">cost</div>
+        <div class="stat-number">$5.38</div>
+        <div class="stat-label">Per finished hero frame, fully composited and refined. Four frames, one day, one stack.</div>
+        <div class="stat-meta">per frame</div>
       </div>
       <div class="stat">
-        <div class="stat-number">0</div>
-        <div class="stat-label">IP exposure. The protagonist was renamed while every public-domain visual element was kept.</div>
-        <div class="stat-meta">legal</div>
+        <div class="stat-number">$0.54</div>
+        <div class="stat-label">Per finished second of video. Less than a stamp. The framework is what makes that possible.</div>
+        <div class="stat-meta">per second</div>
       </div>
     </div>
   </div>
@@ -1163,42 +1220,58 @@ section {
   </div>
 </section>
 
-<!-- ===== COST BREAKDOWN ===== -->
+<!-- ===== TOOLS & COST ===== -->
 <section>
   <div class="container">
     <div class="section-label">tools &amp; cost</div>
-    <h2 class="section-heading">Under nine dollars. <em>Total.</em></h2>
-    <p class="section-lede">The episode opener (four hero frames, all studio renders, plate generations, refinement passes) cost less than a stock photo license. The constraint is not money. The constraint is the discipline of the pipeline.</p>
+    <h2 class="section-heading">Forty seconds. <em>$21.50.</em></h2>
+    <p class="section-lede">A real production stack costs real money. The honest cost of this POC is not "API tokens." It is one day of three professional subscriptions: the reasoning layer, the image and video layer, and the editing layer. Together they produced 40 seconds of finished, character-consistent video.</p>
 
     <div class="cost-block">
+      <h4>The monthly stack</h4>
       <div class="cost-row">
-        <span>Character Pack views (front / side / back, 4 chars)</span>
-        <span class="cost-amt">$1.56</span>
+        <span>Claude Max 20x &middot; reasoning, blueprints, orchestration</span>
+        <span class="cost-amt">$200.00 / mo</span>
       </div>
       <div class="cost-row">
-        <span>Studio character renders (9 total)</span>
-        <span class="cost-amt">$0.91</span>
+        <span>Google AI Ultra &middot; Gemini 3 Pro, Nano Banana Pro, Veo</span>
+        <span class="cost-amt">$249.99 / mo</span>
       </div>
       <div class="cost-row">
-        <span>Environment plates with iteration</span>
-        <span class="cost-amt">$0.91</span>
-      </div>
-      <div class="cost-row">
-        <span>Hero frames at 4K with refinement passes</span>
-        <span class="cost-amt">$2.34</span>
-      </div>
-      <div class="cost-row">
-        <span>Stage V semantic edits</span>
-        <span class="cost-amt">$0.74</span>
-      </div>
-      <div class="cost-row">
-        <span>Reasoning, blueprinting, validation calls</span>
-        <span class="cost-amt">$1.80</span>
+        <span>Adobe Premiere Pro &middot; final edit and assembly</span>
+        <span class="cost-amt">$22.99 / mo</span>
       </div>
       <div class="cost-row total">
-        <span>Total API spend</span>
-        <span class="cost-amt">$8.26</span>
+        <span>Total monthly stack</span>
+        <span class="cost-amt">$472.98 / mo</span>
       </div>
+    </div>
+
+    <!-- The math: showing how monthly stack cost translates to per-day,
+         per-frame, and per-second economics. Each card walks through one
+         step of the derivation. -->
+    <div class="math-grid">
+      <div class="math-card">
+        <div class="math-card__label">// per day</div>
+        <div class="math-card__formula">$472.98 <span class="op">÷</span> 22 working days</div>
+        <div class="math-card__result">$21.50 / day</div>
+      </div>
+      <div class="math-card">
+        <div class="math-card__label">// per frame</div>
+        <div class="math-card__formula">$21.50 <span class="op">÷</span> 4 hero frames</div>
+        <div class="math-card__result">$5.38 / frame</div>
+      </div>
+      <div class="math-card">
+        <div class="math-card__label">// per second</div>
+        <div class="math-card__formula">$21.50 <span class="op">÷</span> 40 seconds</div>
+        <div class="math-card__result">$0.54 / second</div>
+      </div>
+    </div>
+
+    <div class="callout" style="margin-top: 48px;">
+      <div class="callout-eyebrow">The math problem</div>
+      <h4>The framework solves the consistency problem.</h4>
+      <p>A traditional animation house quotes 60 seconds of character animation at $5,000 to $25,000. The math problem the framework solves is not "how do we make AI cheaper than humans." It is "how do we make AI consistent enough to be worth using at all." Once that's solved, the price drops out of the equation.</p>
     </div>
   </div>
 </section>
@@ -1254,7 +1327,7 @@ section {
   <div class="container-narrow">
     <div class="section-label" style="display: block; text-align: center;">full case study</div>
     <h2>Want the <em>whole thing?</em></h2>
-    <p>The full PDF runs 21 pages and covers every stage, every gate, every blueprint. JSON examples, validation checklists, the full IP timeline, and the complete cost breakdown.</p>
+    <p>The full PDF runs 19 pages and covers every stage, every gate, every blueprint. Sample bibles, validation checklists, the full IP timeline, and the complete cost breakdown.</p>
 
     <!-- Active form. On submit, Netlify redirects to /thank-you/ which
          triggers the download. -->
@@ -1276,7 +1349,7 @@ section {
         <input type="email" id="gate-email" name="email" required placeholder="you@company.com" autocomplete="email" />
         <button type="submit">Download PDF →</button>
       </div>
-      <p class="gate-form__fineprint">21 pages · 1.4 MB · I'll send occasional updates on new case studies. Unsubscribe anytime, no spam.</p>
+      <p class="gate-form__fineprint">19 pages · 1.2 MB · I'll send occasional updates on new case studies. Unsubscribe anytime, no spam.</p>
     </form>
 
     <!-- Success state, shown when arriving from a successful Netlify submit
@@ -1287,7 +1360,7 @@ section {
       <p>If it didn't kick off automatically, <a href="DickTracyOrigins_AIVideoPOC_CaseStudy.pdf" download>click here to grab the PDF</a>.</p>
     </div>
 
-    <div class="download-meta">21 pages · 1.4 MB · email required</div>
+    <div class="download-meta">19 pages · 1.2 MB · email required</div>
   </div>
 </section>
 
