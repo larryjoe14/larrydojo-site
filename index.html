@@ -773,26 +773,54 @@
     max-width: 820px;
   }
 
-  /* Two-column layout for the About body: prose + narrow series teaser.
-     The minmax on the video column caps it around 300px on desktop so it
-     stays slim and vertical, while the prose column takes the rest.
-     Below 900px we collapse to one column with the prose on top, video
-     below, mirroring the hero's mobile collapse rhythm. */
-  .about__body {
+  /* About section uses a two-column grid where the section headline
+     and prose stack in column 1 (rows 1 and 2 respectively), and the
+     Robo Noir video spans both rows in column 2 — so it sits flush
+     with the top of the headline rather than getting pushed below it.
+     The minmax on column 2 keeps the video slim (240–300px on desktop).
+     Below 900px it all collapses to one column in DOM order:
+     headline → prose → video. */
+  .about__layout {
     display: grid;
     grid-template-columns: minmax(0, 1fr) minmax(240px, 300px);
-    gap: 56px;
+    grid-template-rows: auto 1fr;
+    column-gap: 56px;
+    row-gap: 24px;
     align-items: start;
   }
-  @media (max-width: 900px) {
-    .about__body {
-      grid-template-columns: 1fr;
-      gap: 40px;
-      align-items: stretch;
-    }
+  .about__layout > .section-head {
+    grid-column: 1;
+    grid-row: 1;
+    margin-bottom: 0;
   }
-  .about__body .about__text {
+  .about__layout > .about__text {
+    grid-column: 1;
+    grid-row: 2;
     max-width: 720px;
+  }
+  .about__layout > .about__series {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+  }
+  @media (max-width: 900px) {
+    .about__layout {
+      grid-template-columns: 1fr;
+      grid-template-rows: auto auto auto;
+      row-gap: 32px;
+    }
+    .about__layout > .section-head {
+      grid-column: 1;
+      grid-row: 1;
+      margin-bottom: 0;
+    }
+    .about__layout > .about__text {
+      grid-column: 1;
+      grid-row: 2;
+    }
+    .about__layout > .about__series {
+      grid-column: 1;
+      grid-row: 3;
+    }
   }
 
   /* Robo Noir series teaser. Acid-yellow drop shadow on the frame matches
@@ -2064,15 +2092,16 @@
 <!-- ─── ABOUT ───────────────────────────────────────── -->
 <section class="about" id="about">
   <div class="container">
-    <div class="section-head" data-stagger>
-      <span class="section-head__kicker" data-reveal="sticker">↓ what we do</span>
-      <h2 data-reveal>A studio<br>built for the<br><span class="scribble" data-reveal="scribble">new playbook.</span></h2>
-    </div>
+    <!-- About uses a two-column grid where the headline and prose stack
+         in the left column, and the Robo Noir video spans both rows
+         on the right so it sits flush with the headline. On mobile
+         this all collapses to one column in DOM order. -->
+    <div class="about__layout">
+      <div class="section-head" data-stagger>
+        <span class="section-head__kicker" data-reveal="sticker">↓ what we do</span>
+        <h2 data-reveal>A studio<br>built for the<br><span class="scribble" data-reveal="scribble">new playbook.</span></h2>
+      </div>
 
-    <!-- About body: prose on the left, narrow Robo Noir series teaser on
-         the right. On mobile the whole thing collapses to one column,
-         text first then video below. -->
-    <div class="about__body" data-stagger>
       <div class="about__text" data-stagger>
         <p data-reveal data-highlight-sweep>We bring your ideas and brand to life through <strong>rapid, on-demand content</strong>. Reach your customers on every channel, the moment they're looking.</p>
         <p data-reveal data-highlight-sweep>Customers stopped searching. They expect immediate answers. Our workflows balance <strong>brand control with speed to market</strong>, so your content shows up where AI and search send people now.</p>
