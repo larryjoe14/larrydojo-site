@@ -1154,56 +1154,11 @@
   .agency { background: var(--paper); }
   .agency__grid {
     display: grid;
-    grid-template-columns: 1.1fr 1fr;
+    grid-template-columns: 1fr 1fr;
     gap: 50px;
     align-items: center;
   }
   @media (max-width: 900px) { .agency__grid { grid-template-columns: 1fr; gap: 40px; } }
-
-  .workflow {
-    background: var(--ink);
-    color: var(--paper);
-    padding: 28px;
-    border: 2.5px solid var(--ink);
-    box-shadow: 10px 10px 0 var(--tangerine);
-  }
-  .workflow__title {
-    font-family: 'Archivo Black', sans-serif;
-    font-size: 22px;
-    text-transform: uppercase;
-    color: var(--acid);
-    margin-bottom: 4px;
-  }
-  .workflow__sub {
-    font-family: 'Caveat', cursive;
-    font-size: 22px;
-    color: var(--orchid);
-    margin-bottom: 24px;
-  }
-  .workflow ol { list-style: none; counter-reset: step; }
-  .workflow li {
-    counter-increment: step;
-    padding: 14px 0 14px 56px;
-    border-bottom: 1px dashed var(--orchid-deep);
-    position: relative;
-    font-size: 14px;
-  }
-  .workflow li:last-child { border-bottom: none; }
-  .workflow li::before {
-    content: counter(step);
-    position: absolute;
-    left: 0; top: 14px;
-    width: 38px; height: 38px;
-    background: var(--acid);
-    color: var(--ink);
-    font-family: 'Archivo Black', sans-serif;
-    font-size: 18px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: 2px solid var(--paper);
-  }
-  .workflow li strong { color: var(--acid); }
 
   .agency__copy h3 {
     font-family: 'Archivo Black', sans-serif;
@@ -1216,32 +1171,109 @@
   .agency__copy p { font-size: clamp(15px, 2vw, 17px); margin-bottom: 16px; }
   .agency__copy strong { background: var(--acid); padding: 0 4px; }
 
-  .feature-list { list-style: none; margin-top: 24px; }
-  .feature-list li {
-    padding: 14px 0;
-    border-top: 2px solid var(--ink);
-    display: flex;
+  /* Pillar list — replaces the old feature-list. Compact 3-row grid with a
+     numeral, a punchy headline, and a one-line subhead. Designed to read
+     fast: scan the numbers, scan the bold lines, done. */
+  .pillar-list {
+    list-style: none;
+    margin-top: 28px;
+    display: grid;
     gap: 16px;
-    align-items: flex-start;
   }
-  .feature-list li:last-child { border-bottom: 2px solid var(--ink); }
-  .feature-list__icon {
-    flex-shrink: 0;
-    width: 32px; height: 32px;
-    background: var(--ink);
-    color: var(--acid);
-    display: flex; align-items: center; justify-content: center;
-    font-family: 'Archivo Black', sans-serif;
-    font-size: 16px;
+  .pillar-list li {
+    display: grid;
+    grid-template-columns: 44px 1fr;
+    gap: 14px;
+    align-items: center;
   }
-  .feature-list__text strong {
-    display: block;
+  .pillar-list__num {
+    font-family: 'Anton', sans-serif;
+    font-size: 36px;
+    line-height: 1;
+    color: var(--tangerine);
+    -webkit-text-stroke: 1.5px var(--ink);
+    text-align: center;
+  }
+  .pillar-list__text {
     font-family: 'Archivo Black', sans-serif;
+    font-size: 15px;
     text-transform: uppercase;
-    margin-bottom: 2px;
-    background: none;
-    padding: 0;
+    letter-spacing: 0.01em;
+    line-height: 1.2;
   }
+  .pillar-list__text small {
+    display: block;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 400;
+    text-transform: none;
+    font-size: 14px;
+    color: var(--ink);
+    opacity: 0.75;
+    margin-top: 2px;
+    letter-spacing: 0;
+  }
+
+  /* Video card — replaces the old workflow card on the right. Hosts the
+     GaryVee 2026 AI Playbook embed plus the supporting pull quote. Same
+     ink/tangerine/acid palette as the workflow card it replaced, so the
+     page rhythm stays intact. */
+  .video-card {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 22px;
+    border: 2.5px solid var(--ink);
+    box-shadow: 10px 10px 0 var(--tangerine);
+    transform: rotate(-0.6deg);
+  }
+  .video-card__tag {
+    font-family: 'Caveat', cursive;
+    font-size: 22px;
+    color: var(--acid);
+    margin-bottom: 4px;
+    line-height: 1;
+  }
+  .video-card__title {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 20px;
+    text-transform: uppercase;
+    color: var(--paper);
+    line-height: 1.05;
+    margin-bottom: 14px;
+  }
+  .video-card__title em { font-style: normal; color: var(--acid); }
+  .video-card__frame {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    background: #000;
+    border: 2px solid var(--paper);
+    overflow: hidden;
+    margin-bottom: 14px;
+  }
+  .video-card__frame iframe {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+    display: block;
+  }
+  .video-card__quote {
+    font-family: 'Caveat', cursive;
+    font-size: 22px;
+    line-height: 1.25;
+    color: var(--paper);
+    border-left: 3px solid var(--acid);
+    padding: 6px 0 6px 14px;
+    margin-bottom: 10px;
+  }
+  .video-card__attr {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--orchid);
+    letter-spacing: 0.04em;
+  }
+  .video-card__attr a { color: var(--acid); text-decoration: none; }
+  .video-card__attr a:hover { text-decoration: underline; }
 
   /* ─── SPECIAL PROJECTS ────────────────────────────── */
   .special { background: var(--ink); color: var(--paper); overflow: hidden; }
@@ -1714,6 +1746,7 @@
     .stat:nth-child(1)         { transform: rotate(-1deg) !important; }
     .stat:nth-child(2)         { transform: rotate(0.5deg) !important; }
     .stat:nth-child(3)         { transform: rotate(-0.7deg) !important; }
+    .video-card                { transform: rotate(-0.6deg) !important; }
     @media (max-width: 720px) {
       .cc-arrow                { transform: rotate(90deg) !important; }
     }
@@ -2014,55 +2047,65 @@
   </div>
 </section>
 
-<!-- ─── DIGITAL AGENCY ──────────────────────────────── -->
+<!-- ─── DIGITAL AGENCY ──────────────────────────────────
+     Replaced the old "Built fast / Updated weekly / Optimized always"
+     workflow pitch with the mid-funnel thesis. The argument: in 2026
+     algorithms shifted from social graphs to interest graphs, top-of-funnel
+     content is dead, and the middle of the funnel — relevance — is where
+     the war is won. The right column hosts the GaryVee 2026 AI Playbook
+     keynote as the supporting case for the thesis. -->
 <section class="agency" id="agency">
   <div class="container">
     <div class="section-head" data-stagger>
-      <span class="section-head__kicker" data-reveal="sticker">↓ rapid web &amp; ecommerce</span>
-      <h2 data-reveal>The new<br>digital agency.</h2>
+      <span class="section-head__kicker" data-reveal="sticker">↓ the new digital agency</span>
+      <h2 data-reveal>The top of<br>the funnel<br>is <span class="scribble" data-reveal="scribble">dead.</span></h2>
       <p class="section-head__desc" data-reveal>
-        Most agencies still run a six-month build cycle. We run a six-day one, then keep iterating.
+        Algorithms shifted from social graphs to interest graphs. The middle of the funnel — relevance — is where the war for attention is now won.
       </p>
     </div>
 
     <div class="agency__grid" data-stagger>
       <div class="agency__copy" data-reveal data-highlight-sweep>
-        <h3>Built fast.<br>Updated <span>weekly.</span><br>Optimized always.</h3>
-        <p>The LarryDoJo workflow is a tight loop between Claude, GitHub, and Netlify. <strong>GitHub is the source of truth.</strong> Netlify auto-deploys on every commit. Edits ship in minutes, not weeks.</p>
-        <p>That means <strong>continuous updates without retainer bloat.</strong> AEO and SEO optimization gets baked into the way the site is built, not bolted on after launch.</p>
+        <h3>Meet customers<br>where they <span>are.</span></h3>
+        <p>Top-of-funnel content gets dismissed as AI slop. Bottom-of-funnel pitches get swiped past. <strong>Mid-funnel content that answers real questions</strong> is what the algorithm rewards — and what AI search engines cite.</p>
+        <p>The old agency model can't ship at the pace this requires. We can.</p>
 
-        <ul class="feature-list">
+        <ul class="pillar-list">
           <li>
-            <span class="feature-list__icon">→</span>
-            <span class="feature-list__text"><strong>Single source of truth</strong>Every site lives in GitHub. No drift, no mystery zips, no "which version is live."</span>
+            <span class="pillar-list__num">1</span>
+            <span class="pillar-list__text">1,000 variations, not 1 hero asset
+              <small>One idea, AI-tweaked for every niche your customer lives in.</small>
+            </span>
           </li>
           <li>
-            <span class="feature-list__icon">→</span>
-            <span class="feature-list__text"><strong>Auto-deploy on commit</strong>Netlify pushes changes live in about 30 seconds. Client sees the new URL the same day.</span>
+            <span class="pillar-list__num">2</span>
+            <span class="pillar-list__text">Built for AI answer engines
+              <small>Structured so ChatGPT, Gemini, and Perplexity cite you, not summarize you away.</small>
+            </span>
           </li>
           <li>
-            <span class="feature-list__icon">→</span>
-            <span class="feature-list__text"><strong>AEO + SEO from day one</strong>Structured for AI answer engines and traditional search both. Built in, not retrofitted.</span>
-          </li>
-          <li>
-            <span class="feature-list__icon">→</span>
-            <span class="feature-list__text"><strong>Low monthly overhead</strong>Static-first hosting. No per-seat licenses. Predictable costs that scale with you.</span>
+            <span class="pillar-list__num">3</span>
+            <span class="pillar-list__text">Days, not quarters
+              <small>Ship today's playbook for a fraction of the cost. Iterate weekly.</small>
+            </span>
           </li>
         </ul>
       </div>
 
-      <div class="workflow" data-reveal>
-        <div class="workflow__title">The Workflow</div>
-        <div class="workflow__sub">7 steps, every round, every client</div>
-        <ol>
-          <li><strong>Receive client feedback.</strong> PDF, email, Slack, doesn't matter.</li>
-          <li><strong>Pull current code</strong> from GitHub (the canonical version).</li>
-          <li><strong>Refresh project knowledge</strong> with Claude, fresh every round.</li>
-          <li><strong>Share the feedback.</strong> Claude confirms with a numbered checklist.</li>
-          <li><strong>Output changed files,</strong> ready to commit.</li>
-          <li><strong>Push to GitHub.</strong> Commit message logs the round.</li>
-          <li><strong>Netlify auto-deploys</strong> in about 30 seconds. Send the live URL.</li>
-        </ol>
+      <div class="video-card" data-reveal>
+        <div class="video-card__tag">↓ the case for it</div>
+        <div class="video-card__title">GaryVee's 2026 <em>AI Playbook.</em></div>
+        <div class="video-card__frame">
+          <iframe
+            src="https://www.youtube.com/embed/bQmcuDtp9yw?rel=0&modestbranding=1"
+            title="GaryVee · The Ultimate AI Playbook for 2026"
+            loading="lazy"
+            allow="accelerometer; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerpolicy="strict-origin-when-cross-origin"
+            allowfullscreen></iframe>
+        </div>
+        <p class="video-card__quote">"The algorithm is no longer a mystery to be solved. It's a mirror of human interest. If you aren't relevant, you don't exist."</p>
+        <p class="video-card__attr">— Gary Vaynerchuk · <a href="https://www.youtube.com/watch?v=bQmcuDtp9yw" target="_blank" rel="noopener">watch on YouTube ↗</a></p>
       </div>
     </div>
   </div>
