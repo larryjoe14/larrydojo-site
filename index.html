@@ -84,6 +84,42 @@
 }
 </script>
 
+<!-- JSON-LD: FAQPage (AEO bait — gives ChatGPT/Gemini/Perplexity a clean
+     question-answer mapping to cite from. Keep these answers in sync with
+     the visible FAQ section below; LLMs cross-reference both. -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "How is this different from AI slop?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "AI slop is what you get when someone types one prompt and hits publish — unedited output with melting hands, characters who change costume between shots, and generic AI-looking everything. Platforms have started actively suppressing it; YouTube has updated its monetization rules to deprioritize mass-produced and repetitive content. What LarryDoJo ships is the opposite: a governed pipeline. Locked character profiles, locked environment plates, a brand bible the AI references on every frame, and shot-to-shot continuity that single-prompt AI cannot hold. It is AI-native, but not AI-generated in the slop sense — it is AI-assisted production with human authorship at every decision point."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is it legal for brands to use AI-generated content?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes, with caveats. The U.S. Copyright Office's January 2025 Copyright and AI Report confirms that purely AI-generated work is not copyrightable on its own, but hybrid work that includes meaningful human authorship is. Hundreds of works containing AI-generated material have been registered since 2023, where humans creatively selected, arranged, or modified the AI output. That is the model LarryDoJo operates inside. The human-authored elements — creative direction, character bible, editorial choices, composition and arrangement — are protectable. The law is gray and changing. Contact us for our standard AI content guidelines."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why is the traditional agency model dead?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Because it bills clients for time, and time is no longer the input that makes content work. The old agency model charges for human hours — strategy decks, six-week timelines, six-figure retainers. That math made sense when one hero asset had to carry an entire campaign and humans were the bottleneck. They are not anymore. In 2026, social platforms reward dwell time and relevance, not reach. The lever is not one hero asset — it is thousands of mid-funnel variations, each tweaked for a specific niche. Meta's Advantage+ and Google's Performance Max have automated the targeting decision; the only human lever left is creative relevance at scale. The new scale is relevance per dollar, not human hours."
+      }
+    }
+  ]
+}
+</script>
+
 <!-- Plausible Analytics -->
 <script defer data-domain="larrydojo.com" src="https://plausible.io/js/script.js"></script>
 
@@ -212,20 +248,11 @@
     gap: 40px;
     align-items: start;
   }
-  /* Desktop layout, three grid items:
-     [hero__copy]   [pipeline]
-     [callout    ]   (sits in left column, under the copy/CTAs)
-     The callout is forced into the left column at row 2, column 1.
-     The pipeline spans both rows on the right so it visually anchors the page. */
   @media (min-width: 981px) {
     .hero__copy            { grid-column: 1; grid-row: 1; }
     .pipeline              { grid-column: 2; grid-row: 1 / span 2; }
     .case-study-callout    { grid-column: 1; grid-row: 2; align-self: start; }
   }
-  /* Mobile / tablet: collapse to one column. Order matters here, since the
-     user asked for the callout to sit right after the pipeline collage,
-     above the About section. Default DOM order is copy → pipeline → callout,
-     which is exactly what we want, so we just enforce order explicitly. */
   @media (max-width: 980px) {
     .hero__inner {
       grid-template-columns: 1fr;
@@ -609,9 +636,7 @@
   }
   @media (max-width: 720px) { .spark { display: none; } }
 
-  /* ─── HERO CASE STUDY VIDEO CALLOUT ─────────────────
-     One element, two layouts. Position is handled by the .hero__inner grid
-     rules above; the styles here cover sizing, type, and palette only. */
+  /* ─── HERO CASE STUDY VIDEO CALLOUT ───────────────── */
   .case-study-callout {
     margin-top: 36px;
     background: var(--ink);
@@ -634,9 +659,6 @@
     border: 2px solid var(--paper);
     overflow: hidden;
   }
-  /* YouTube iframe fills the 9:16 frame. Sound is controlled by the YouTube
-     player chrome itself (one click on the unmute button), which is exactly
-     the "one click for sound on arrival" interaction we want. */
   .case-study-callout__video iframe {
     position: absolute;
     inset: 0;
@@ -685,8 +707,6 @@
   }
   .case-study-callout__link:hover { transform: translate(-2px, -2px); }
 
-  /* Tablet/mobile: callout becomes wider, lays out the same two-column shape
-     but at full container width. */
   @media (max-width: 980px) {
     .case-study-callout {
       max-width: 100%;
@@ -696,7 +716,6 @@
     }
     .case-study-callout__video { width: 160px; }
   }
-  /* Phones: stack the video above the copy, center-align text. */
   @media (max-width: 600px) {
     .case-study-callout {
       grid-template-columns: 1fr;
@@ -750,9 +769,6 @@
   /* ─── ABOUT ───────────────────────────────────────── */
   .about { background: var(--paper); }
 
-  /* The pillars column was removed; the prose now reads full-width but
-     constrained to a comfortable measure so it doesn't sprawl across the
-     full container on wide screens. */
   .about__text--full {
     max-width: 820px;
   }
@@ -770,7 +786,6 @@
   .about__text p strong { background: var(--acid); padding: 0 4px; }
 
   /* ─── CAPTURE → CONVERT GRAPHIC ───────────────────── */
-  /* Visual key-message: capture audience on social → convert through web/app/CRM. */
   .capture-convert {
     margin-top: 60px;
     background: var(--ink);
@@ -1085,7 +1100,6 @@
     z-index: 5;
   }
 
-  /* YouTube vertical frame: strict 9:16, fills the iframe perfectly */
   .yt-frame {
     width: 100%;
     max-width: 380px;
@@ -1104,9 +1118,6 @@
     border: 0;
     display: block;
   }
-
-  /* (TikTok embed CSS removed in this round along with the Episodic card.
-     If you re-introduce TikTok embeds, you'll need .tt-frame styles back.) */
 
   .show-card__body {
     padding: 36px;
@@ -1171,9 +1182,6 @@
   .agency__copy p { font-size: clamp(15px, 2vw, 17px); margin-bottom: 16px; }
   .agency__copy strong { background: var(--acid); padding: 0 4px; }
 
-  /* Pillar list — replaces the old feature-list. Compact 3-row grid with a
-     numeral, a punchy headline, and a one-line subhead. Designed to read
-     fast: scan the numbers, scan the bold lines, done. */
   .pillar-list {
     list-style: none;
     margin-top: 28px;
@@ -1213,10 +1221,6 @@
     letter-spacing: 0;
   }
 
-  /* Video card — replaces the old workflow card on the right. Hosts the
-     GaryVee 2026 AI Playbook embed plus the supporting pull quote. Same
-     ink/tangerine/acid palette as the workflow card it replaced, so the
-     page rhythm stays intact. */
   .video-card {
     background: var(--ink);
     color: var(--paper);
@@ -1332,6 +1336,149 @@
     text-transform: uppercase;
     letter-spacing: 0.06em;
     color: var(--acid);
+  }
+
+  /* ─── FAQ SECTION ──────────────────────────────────────
+     Sits between Services and Contact as the final objection-handler.
+     Uses native <details>/<summary> for accordion behavior — accessible
+     by default, no JS required, and screen-reader friendly. The summary
+     row carries the question; the body holds the long-form answer plus
+     source links. Each <details> is also wrapped to be parseable as
+     question-answer pairs by LLM crawlers (FAQPage schema in <head>
+     mirrors this content exactly for AEO). */
+  .faq { background: var(--paper); }
+
+  .faq__list {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    margin-top: 12px;
+  }
+
+  .faq-item {
+    background: var(--paper);
+    border: 2.5px solid var(--ink);
+    box-shadow: 6px 6px 0 var(--ink);
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+  }
+  .faq-item:hover { box-shadow: 8px 8px 0 var(--ink); transform: translate(-1px, -1px); }
+  .faq-item[open] {
+    box-shadow: 8px 8px 0 var(--tangerine);
+  }
+  .faq-item[open]:hover { box-shadow: 10px 10px 0 var(--tangerine); }
+
+  .faq-item__q {
+    list-style: none;
+    cursor: pointer;
+    padding: 22px 26px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 18px;
+    align-items: center;
+    font-family: 'Archivo Black', sans-serif;
+    font-size: clamp(17px, 2.4vw, 22px);
+    text-transform: uppercase;
+    line-height: 1.15;
+    color: var(--ink);
+    user-select: none;
+  }
+  /* Hide the default disclosure triangle in all browsers */
+  .faq-item__q::-webkit-details-marker { display: none; }
+  .faq-item__q::marker { content: ''; }
+
+  .faq-item__icon {
+    width: 38px;
+    height: 38px;
+    background: var(--acid);
+    border: 2.5px solid var(--ink);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Anton', sans-serif;
+    font-size: 28px;
+    line-height: 1;
+    color: var(--ink);
+    flex-shrink: 0;
+    transition: transform 0.25s var(--ease-spring);
+  }
+  .faq-item[open] .faq-item__icon {
+    background: var(--tangerine);
+    color: var(--paper);
+    transform: rotate(45deg);
+  }
+
+  .faq-item__a {
+    padding: 0 26px 26px 26px;
+    font-size: clamp(15px, 1.9vw, 17px);
+    line-height: 1.55;
+    color: var(--ink);
+  }
+  .faq-item__a p { margin-bottom: 14px; }
+  .faq-item__a p:last-child { margin-bottom: 0; }
+  .faq-item__a strong { background: var(--acid); padding: 0 4px; }
+  .faq-item__a a {
+    color: var(--ink);
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 3px;
+    text-decoration-color: var(--tangerine);
+  }
+  .faq-item__a a:hover { background: var(--acid); }
+
+  /* Sources block at the bottom of each answer */
+  .faq-item__sources {
+    margin-top: 16px;
+    padding-top: 14px;
+    border-top: 1.5px dashed var(--orchid-deep);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    line-height: 1.55;
+    color: var(--ink);
+    opacity: 0.85;
+  }
+  .faq-item__sources strong {
+    display: block;
+    background: none;
+    padding: 0;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-size: 11px;
+    margin-bottom: 6px;
+    color: var(--orchid-deep);
+  }
+  .faq-item__sources a {
+    color: var(--ink);
+    text-decoration: underline;
+    text-decoration-color: var(--orchid-deep);
+  }
+  .faq-item__sources a:hover { color: var(--tangerine); text-decoration-color: var(--tangerine); }
+
+  /* Inline CTA inside an answer (e.g. "Contact us for our standard
+     guidelines") — visually separated from the body prose. */
+  .faq-item__cta {
+    display: inline-block;
+    margin-top: 8px;
+    background: var(--ink);
+    color: var(--acid);
+    padding: 10px 18px;
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    text-decoration: none;
+    border: 2.5px solid var(--ink);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  .faq-item__cta:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 4px 4px 0 var(--tangerine);
+    text-decoration: none;
+  }
+
+  @media (max-width: 720px) {
+    .faq-item__q { padding: 18px 20px; gap: 14px; }
+    .faq-item__icon { width: 32px; height: 32px; font-size: 22px; }
+    .faq-item__a { padding: 0 20px 22px 20px; }
   }
 
   /* ─── CONTACT ─────────────────────────────────────── */
@@ -1488,23 +1635,12 @@
     background: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 14' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M2 8 Q 50 2, 100 8 T 198 8' stroke='%23ff5b1f' stroke-width='4' fill='none' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat center / 100% 100%;
   }
 
-  /* ─── MOTION LAYER (Pass 1 + Pass 2) ────────────────
-     PASS 1 — hero entry choreography, scroll reveals, polaroid hover, stat count-up
-     PASS 2 — capture→convert sequence, service card hover stagger, hero sticker
-              parallax, scribble draw-in, highlighter sweep on <strong> tags
-
-     All gated behind prefers-reduced-motion. Standard reveal timing is
-     24px translate, 500ms duration, soft-settle easing, fires once.
-     Sticker pops use spring overshoot for the "slap a sticker on" feel. */
+  /* ─── MOTION LAYER ────────────────────────────────── */
   :root {
     --ease-settle: cubic-bezier(0.22, 1, 0.36, 1);
     --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
   }
 
-  /* ─── PASS 1: Default reveal state ───────────────────
-     Anything tagged data-reveal starts hidden + nudged down. The .is-in
-     class is added by JS either when the element enters the viewport
-     (scroll reveal) or as part of the hero entry sequence (page load). */
   [data-reveal] {
     opacity: 0;
     transform: translateY(24px);
@@ -1518,9 +1654,6 @@
     transform: translateY(0);
   }
 
-  /* Sticker pop: starts scaled-down + counter-rotated, lands at its existing
-     resting rotation with a tiny overshoot. Each sticker preserves its
-     original transform via CSS variables. */
   [data-reveal="sticker"] {
     opacity: 0;
     transform: var(--sticker-rest, scale(0.7) rotate(-8deg));
@@ -1539,8 +1672,6 @@
   .section-head__kicker[data-reveal="sticker"]       { --sticker-rest: scale(0.85) rotate(6deg);  --sticker-final: rotate(-1deg); }
   .capture-convert__kicker[data-reveal="sticker"]    { --sticker-rest: scale(0.85) rotate(-4deg); --sticker-final: rotate(0); }
 
-  /* Polaroid drop: starts higher and rotated more aggressively, lands at
-     each polaroid's CSS-defined resting rotation. */
   .stage-polaroid[data-reveal="polaroid"] {
     opacity: 0;
     transition:
@@ -1559,25 +1690,19 @@
   .stage-polaroid--idea[data-reveal="polaroid"].is-in  { opacity: 1; transform: rotate(-3deg); }
   .stage-polaroid--final[data-reveal="polaroid"].is-in { opacity: 1; transform: rotate(2.5deg); }
   .control-card[data-reveal="polaroid"].is-in          { opacity: 1; transform: rotate(-0.6deg); }
-  /* Desktop polaroid resting rotations are slightly different */
   @media (min-width: 981px) {
     .stage-polaroid--idea[data-reveal="polaroid"].is-in  { transform: rotate(-2deg); }
     .stage-polaroid--final[data-reveal="polaroid"].is-in { transform: rotate(1.5deg); }
   }
-  /* Mobile polaroid resting rotations */
   @media (max-width: 720px) {
     .stage-polaroid--idea[data-reveal="polaroid"].is-in  { transform: rotate(-2deg); }
     .stage-polaroid--final[data-reveal="polaroid"].is-in { transform: rotate(1.5deg); }
   }
 
-  /* Polaroid hover refinement: replace the existing instant rotation
-     with a springy lift so picking one up feels tactile. */
   .stage-polaroid {
     transition: transform 0.4s var(--ease-spring) !important;
   }
 
-  /* Stat: appears with a quick fade so the count-up has a frame to play.
-     The :nth-child rotations from the base CSS are preserved on landing. */
   .stat[data-reveal="stat"] {
     opacity: 0;
     transform: translateY(24px) rotate(0deg);
@@ -1589,16 +1714,10 @@
   .stat:nth-child(2)[data-reveal="stat"].is-in { opacity: 1; transform: rotate(0.5deg); }
   .stat:nth-child(3)[data-reveal="stat"].is-in { opacity: 1; transform: rotate(-0.7deg); }
 
-  /* Stagger helper: when a parent has data-stagger, its data-reveal children
-     animate one after another with delays applied via inline --stagger-delay. */
   [data-reveal][style*="--stagger-delay"] {
     transition-delay: var(--stagger-delay);
   }
 
-  /* ─── PASS 2: Capture → Convert sequence ─────────────
-     The "Capture" stage lands first, the arrow draws left-to-right
-     (or top-to-bottom on mobile), then "Convert" lands. Each chip
-     inside cascades after its parent stage settles. */
   .cc-stage[data-reveal="cc-stage"] {
     opacity: 0;
     transform: translateY(20px) scale(0.97);
@@ -1611,10 +1730,6 @@
     transform: translateY(0) scale(1);
   }
 
-  /* The arrow draws itself in: it scales horizontally from 0 to 1 with
-     its left edge anchored, so it appears to be "drawn" between the
-     two stages. On mobile (when the layout stacks vertically and the
-     arrow is rotated 90deg), the same scale animates as a vertical line. */
   .cc-arrow[data-reveal="cc-arrow"] {
     opacity: 0;
     transform: scaleX(0);
@@ -1628,10 +1743,6 @@
     transform: scaleX(1);
   }
   @media (max-width: 720px) {
-    /* Mobile: the arrow is rotated 90deg by the base CSS. We need the
-       reveal animation to still feel like a "draw" along its length,
-       so we keep the same scaleX but anchor at top — the rotation makes
-       it visually a vertical draw. */
     .cc-arrow[data-reveal="cc-arrow"] {
       transform: rotate(90deg) scaleX(0);
       transform-origin: left center;
@@ -1641,8 +1752,6 @@
     }
   }
 
-  /* Chips inside each stage cascade in from the bottom-left, like
-     someone pulling a stack of trading cards out of a sleeve. */
   .cc-chip[data-reveal="cc-chip"] {
     opacity: 0;
     transform: translateY(8px);
@@ -1655,39 +1764,20 @@
     transform: translateY(0);
   }
 
-  /* ─── PASS 2: Service card hover stagger ─────────────
-     When you hover a service card, the background and CTA color fill
-     the same way they did before, but the giant outlined letter
-     (A/B/C) now fills *after* the rest, by 80ms. The base CSS already
-     handled fill states; we just split the timing so it feels deliberate. */
   .service__num {
     transition: color 0.18s ease 0.08s, -webkit-text-stroke-color 0.18s ease 0.08s;
   }
   .service {
-    /* Slightly extend the existing background transition so it feels
-       like the card itself responds first, then the letter fills. */
     transition: background 0.22s ease, color 0.22s ease;
   }
-  /* When hover ends, reverse the order: letter fades back instantly,
-     then the background follows. This avoids a "stuck" filled-letter look. */
   .service:not(:hover) .service__num {
     transition-delay: 0s;
   }
 
-  /* ─── PASS 2: Hero sticker parallax ──────────────────
-     The two stickers floating above the polaroids drift slightly faster
-     than the hero scrolls. The translateY value is set inline by JS based
-     on scroll position, layered on top of each sticker's existing
-     rotation. Movement is capped to ~12px to stay subliminal. */
   .pipeline-sticker {
     will-change: transform;
   }
 
-  /* ─── PASS 2: Scribble draw-in ───────────────────────
-     The orange scribble underline on "new playbook." starts with
-     clip-path hiding it from left to right, then unclips like someone
-     drawing it with a marker. clip-path animates smoothly in modern
-     browsers; older fallbacks just show the static line. */
   .scribble[data-reveal="scribble"]::after {
     clip-path: inset(0 100% 0 0);
     transition: clip-path 0.7s var(--ease-settle) 0.3s;
@@ -1696,28 +1786,18 @@
     clip-path: inset(0 0 0 0);
   }
 
-  /* ─── PASS 2: Highlighter sweep on <strong> tags ─────
-     The acid-yellow highlight on inline <strong> tags inside paragraphs
-     sweeps in from left to right, ~400ms after its parent paragraph
-     reveals. We use a pseudo-element so we don't disturb the existing
-     styling. The base CSS sets background: var(--acid) directly on
-     these tags; we override that to a sweeping linear-gradient mask. */
   [data-highlight-sweep] strong {
     background: linear-gradient(to right, var(--acid) 50%, transparent 50%);
     background-size: 200% 100%;
     background-position: 100% 0;
     background-repeat: no-repeat;
     transition: background-position 0.6s var(--ease-settle) 0.4s;
-    /* Re-add the existing inline padding from the base styles */
     padding: 0 4px;
   }
   [data-highlight-sweep].is-in strong {
     background-position: 0 0;
   }
 
-  /* ─── Reduced motion: disable everything ──────────────
-     Users who've opted out get the site exactly as it was — final state,
-     no transitions, no transforms. */
   @media (prefers-reduced-motion: reduce) {
     [data-reveal],
     [data-reveal="sticker"],
@@ -1734,8 +1814,6 @@
       transform: none !important;
       transition: none !important;
     }
-    /* Restore each element's original resting rotation since
-       transform: none would otherwise flatten them. */
     .eyebrow                   { transform: rotate(-2deg) !important; }
     .pipeline-sticker--idea    { transform: rotate(-5deg) !important; }
     .pipeline-sticker--control { transform: rotate(4deg)  !important; }
@@ -1747,16 +1825,15 @@
     .stat:nth-child(2)         { transform: rotate(0.5deg) !important; }
     .stat:nth-child(3)         { transform: rotate(-0.7deg) !important; }
     .video-card                { transform: rotate(-0.6deg) !important; }
+    .faq-item[open] .faq-item__icon { transform: rotate(45deg) !important; }
     @media (max-width: 720px) {
       .cc-arrow                { transform: rotate(90deg) !important; }
     }
-    /* Highlighter: skip the sweep, just show the highlight statically. */
     [data-highlight-sweep] strong {
       background: var(--acid) !important;
       background-position: 0 0 !important;
       transition: none !important;
     }
-    /* Scribble: show the full underline immediately. */
     .scribble[data-reveal="scribble"]::after {
       clip-path: none !important;
       transition: none !important;
@@ -1784,6 +1861,7 @@
     <a href="#work">Work</a>
     <a href="#agency">Studio</a>
     <a href="#services">Services</a>
+    <a href="#faq">FAQ</a>
   </div>
   <a href="#contact" class="nav__cta">Start a Project →</a>
 </nav>
@@ -1806,7 +1884,6 @@
       </div>
     </div>
 
-    <!-- ─── PIPELINE COLLAGE ─────────────────────────── -->
     <div class="pipeline" aria-label="The LarryDoJo content pipeline: idea, brand controls, finished episode">
 
       <div class="pipeline__stage">
@@ -1868,20 +1945,8 @@
 
     </div>
 
-    <!-- ─── CASE STUDY VIDEO CALLOUT ─────────────────────────
-         Single callout that lives in the hero. CSS grid + order rules
-         position it differently on desktop vs mobile:
-         - Desktop (≥981px): rendered as a third grid cell that sits below
-           the headline/copy/CTAs in the left column
-         - Mobile (≤980px): the hero collapses to a single column and
-           `order: 3` on this element places it between the pipeline collage
-           and the next section (About) -->
     <div class="case-study-callout" data-reveal data-hero-step="11">
       <div class="case-study-callout__video">
-        <!-- YouTube embed: starts muted (browser autoplay policy). Sound is
-             one click on YouTube's own unmute button in the player chrome.
-             rel=0 disables the "more videos" overlay; modestbranding minimizes
-             the YouTube logo so the embed feels native. -->
         <iframe
           src="https://www.youtube.com/embed/ZkABMo72b2A?autoplay=1&mute=1&loop=1&playlist=ZkABMo72b2A&rel=0&modestbranding=1&playsinline=1"
           title="Dick Tracy Origins · 60-second sequence"
@@ -1909,19 +1974,12 @@
       <h2 data-reveal>A studio<br>built for the<br><span class="scribble" data-reveal="scribble">new playbook.</span></h2>
     </div>
 
-    <!-- The 1/2/3 service pillars used to live next to this copy. They were
-         removed because the same three services are explained in more depth
-         in the AI Content (Robo Jr.), Studio (Rapid Web + eCommerce), and
-         Special Projects (Custom Apps) sections further down the page. -->
     <div class="about__text about__text--full" data-stagger>
       <p data-reveal data-highlight-sweep>We bring your ideas and brand to life through <strong>rapid, on-demand content</strong>. Reach your customers on every channel, the moment they're looking.</p>
       <p data-reveal data-highlight-sweep>Customers stopped searching. They expect immediate answers. Our workflows balance <strong>brand control with speed to market</strong>, so your content shows up where AI and search send people now.</p>
       <p data-reveal>The old digital agency model is dead. Six-month builds and bloated retainers waste budget. Ship today's playbook for a fraction of the cost.</p>
     </div>
 
-    <!-- ─── CAPTURE → CONVERT KEY MESSAGE GRAPHIC ─────────── -->
-    <!-- Visual key-message: the captive audience that AI content captures
-         on social platforms gets converted through web, app, payments, CRM. -->
     <div class="capture-convert" data-cc-sequence>
       <div class="capture-convert__head" data-stagger>
         <div class="capture-convert__kicker" data-reveal="sticker">↓ how it all connects</div>
@@ -1960,7 +2018,6 @@
       </div>
     </div>
 
-    <!-- PDF download card -->
     <a href="youtube-animation-trends-2026.pdf" download class="download-card" data-reveal>
       <div class="download-card__icon" aria-hidden="true">
         <span>PDF</span>
@@ -2011,13 +2068,6 @@
 
     <div class="show-stack">
 
-      <!-- The Frame-by-Frame Continuity card is the proof point: a single
-           Robo Jr. video demonstrating the technique. The companion mobile
-           Dick Tracy callout was removed because the callout already lives
-           higher up in the hero (and on mobile, right after the pipeline
-           collage), so duplicating it here was redundant. The Episodic card
-           was also removed in this round to focus the section on one
-           technique: continuity. -->
       <article class="show-card" data-reveal>
         <div class="show-card__media">
           <span class="show-card__tag">Frame-by-Frame</span>
@@ -2049,11 +2099,8 @@
 
 <!-- ─── DIGITAL AGENCY ──────────────────────────────────
      Replaced the old "Built fast / Updated weekly / Optimized always"
-     workflow pitch with the mid-funnel thesis. The argument: in 2026
-     algorithms shifted from social graphs to interest graphs, top-of-funnel
-     content is dead, and the middle of the funnel — relevance — is where
-     the war is won. The right column hosts the GaryVee 2026 AI Playbook
-     keynote as the supporting case for the thesis. -->
+     workflow pitch with the mid-funnel thesis. The right column hosts
+     the GaryVee 2026 AI Playbook keynote as the supporting case. -->
 <section class="agency" id="agency">
   <div class="container">
     <div class="section-head" data-stagger>
@@ -2162,6 +2209,85 @@
   </div>
 </section>
 
+<!-- ─── FAQ ──────────────────────────────────────────────
+     Final objection-handler before the contact form. Three questions
+     buyers actually ask, with sourced answers. Mirrored exactly in
+     FAQPage JSON-LD in <head> so LLM crawlers can pick up clean
+     question-answer pairs. -->
+<section class="faq" id="faq">
+  <div class="container">
+    <div class="section-head" data-stagger>
+      <span class="section-head__kicker" data-reveal="sticker">↓ questions worth asking</span>
+      <h2 data-reveal>The honest<br>answers.</h2>
+      <p class="section-head__desc" data-reveal>
+        What buyers actually want to know about working with an AI-native studio. Sourced, not hand-wavy.
+      </p>
+    </div>
+
+    <div class="faq__list" data-stagger>
+
+      <details class="faq-item" data-reveal>
+        <summary class="faq-item__q">
+          <span>How is this different from AI slop?</span>
+          <span class="faq-item__icon" aria-hidden="true">+</span>
+        </summary>
+        <div class="faq-item__a">
+          <p><strong>AI slop is what you get when someone types one prompt and hits publish.</strong> It's the unedited output: melting hands, characters who change costume between shots, voiceovers that drift, generic AI-looking everything. Platforms have started actively suppressing it — YouTube has updated its monetization rules to deprioritize mass-produced and repetitive content, and the latest YouTube Culture &amp; Trends Report calls authentic, character-led work "the new mainstream" precisely because audiences have learned to spot the slop.</p>
+          <p>What we ship is the opposite: a governed pipeline. Locked character profiles. Locked environment plates. A brand bible that AI references on every frame. Shot-to-shot continuity that single-prompt AI can't hold. The same coat in every frame, the same room across every cut. It's AI-native, but it's not AI-generated in the slop sense — it's <strong>AI-assisted production with human authorship at every decision point.</strong></p>
+          <p>The Dick Tracy Origins case study is the proof: 40 seconds of finished video, 4 hero frames, $0.54 per second, full character consistency.</p>
+          <div class="faq-item__sources">
+            <strong>Sources</strong>
+            <a href="https://support.google.com/youtube/answer/1311392" target="_blank" rel="noopener">YouTube monetization policy →</a><br>
+            <a href="https://www.youtube.com/howyoutubeworks/research/" target="_blank" rel="noopener">YouTube Culture &amp; Trends research →</a><br>
+            <a href="case-studies/dick-tracy-origins/">Dick Tracy Origins case study →</a>
+          </div>
+        </div>
+      </details>
+
+      <details class="faq-item" data-reveal>
+        <summary class="faq-item__q">
+          <span>Is it legal for brands to use AI-generated content?</span>
+          <span class="faq-item__icon" aria-hidden="true">+</span>
+        </summary>
+        <div class="faq-item__a">
+          <p><strong>Short version: yes, with caveats — and the caveats matter.</strong> This is an evolving area of law, and we're not lawyers. What we can tell you is the current state and the controls we put in place.</p>
+          <p>The U.S. Copyright Office has issued formal guidance (most recently in its Copyright and AI Report Part 2, January 2025) confirming that purely AI-generated work isn't copyrightable on its own — but <strong>hybrid work that includes meaningful human authorship is.</strong> Courts have backed this up: in <em>Thaler v. Perlmutter</em> (DC Circuit, May 2025), the human authorship requirement was affirmed. Hundreds of works containing AI-generated material have been registered since 2023, where humans creatively selected, arranged, or modified the AI output. That's the model we operate inside.</p>
+          <p>What this means practically: when we deliver work to you, the human-authored elements — the creative direction, the character bible, the editorial choices, the composition and arrangement — are protectable. The raw AI elements aren't. Most clients don't need raw-element protection; they need the <em>finished work</em> protected, and that's where the human governance layer earns its keep.</p>
+          <p>The shorter answer: we put the controls in place. We advise on best practices. We disclose AI use where required. <strong>The law is gray and changing.</strong></p>
+          <a href="#contact" class="faq-item__cta">Contact us for our standard guidelines →</a>
+          <div class="faq-item__sources">
+            <strong>Reputable sources for independent research</strong>
+            <a href="https://www.copyright.gov/ai/Copyright-and-Artificial-Intelligence-Part-2-Copyrightability-Report.pdf" target="_blank" rel="noopener">U.S. Copyright Office: Copyright and AI, Part 2 (Jan 2025) →</a><br>
+            <a href="https://www.copyright.gov/ai/" target="_blank" rel="noopener">U.S. Copyright Office AI hub →</a><br>
+            <a href="https://www.congress.gov/crs-product/LSB10922" target="_blank" rel="noopener">Congressional Research Service: Generative AI &amp; Copyright →</a><br>
+            <a href="https://www.lawfaremedia.org/" target="_blank" rel="noopener">Lawfare: ongoing AI case tracking →</a>
+          </div>
+        </div>
+      </details>
+
+      <details class="faq-item" data-reveal>
+        <summary class="faq-item__q">
+          <span>Why is the traditional agency model dead?</span>
+          <span class="faq-item__icon" aria-hidden="true">+</span>
+        </summary>
+        <div class="faq-item__a">
+          <p><strong>Because it bills you for time, and time isn't the input that makes content work anymore.</strong> The old agency model charges for human hours — strategy decks, creative reviews, six-week timelines, six-figure retainers. That math made sense when one hero asset had to carry an entire campaign and humans were the bottleneck. They aren't anymore.</p>
+          <p>In 2026, social platforms reward <strong>dwell time and relevance</strong>, not reach. The lever isn't a hero asset — it's <em>thousands</em> of mid-funnel variations, each tweaked for a specific niche. Meta's Advantage+ and Google's Performance Max have automated the targeting decision; the only human lever left is creative relevance at scale. An agency that needs a kickoff meeting, a strategy phase, three rounds of revisions, and a "go-live" date can't ship at that pace. By the time the campaign launches, the algorithm has moved on three times.</p>
+          <p><strong>An agency that bills based on human hours is no more.</strong> The new scale is relevance per dollar — how fast you can ship variations, how many niches you can reach, how many of them the algorithm pushes for free. That's what we charge against. The math is closer to media buying than to hourly consulting.</p>
+          <p>GaryVee makes the same case in his 2026 AI Playbook keynote (linked in the section above). Watch it. He's right.</p>
+          <div class="faq-item__sources">
+            <strong>Sources</strong>
+            <a href="https://www.youtube.com/watch?v=bQmcuDtp9yw" target="_blank" rel="noopener">GaryVee · The Ultimate AI Playbook for 2026 →</a><br>
+            <a href="https://www.facebook.com/business/help/352109546282876" target="_blank" rel="noopener">Meta Advantage+ campaigns overview →</a><br>
+            <a href="https://support.google.com/google-ads/answer/10724817" target="_blank" rel="noopener">Google Performance Max overview →</a>
+          </div>
+        </div>
+      </details>
+
+    </div>
+  </div>
+</section>
+
 <!-- ─── CONTACT ─────────────────────────────────────── -->
 <section class="contact" id="contact">
   <div class="contact__head" data-stagger>
@@ -2213,8 +2339,7 @@
 </footer>
 
 <script>
-  // Contact form success state. Netlify processes the form and redirects back
-  // to /?success=true; we swap the form for a confirmation message.
+  // Contact form success state.
   const params = new URLSearchParams(window.location.search);
   if (params.get('success') === 'true') {
     const form = document.getElementById('contact-form');
@@ -2229,38 +2354,19 @@
   }
 </script>
 
-<!-- ─── MOTION CONTROLLER (Pass 1 + Pass 2) ─────────────
-     Handles:
-       1. Hero entry choreography on page load (data-hero-step ordering)
-       2. Scroll reveals via IntersectionObserver
-       3. Stagger: data-stagger parents cascade their data-reveal children
-       4. Stat count-up: data-count numerals animate from 0 to target
-       5. Capture→Convert orchestrated sequence (Pass 2)
-       6. Hero sticker parallax — stickers drift faster than scroll (Pass 2)
-
-     All gated behind prefers-reduced-motion. -->
 <script>
 (function () {
   'use strict';
 
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  // Stagger interval between cascading siblings (ms). 70ms is the sweet spot:
-  // fast enough to feel choreographed, slow enough that the eye can track it.
   const STAGGER_MS = 70;
-
-  // Hero entry: pace between steps. Slightly slower than scroll stagger because
-  // the hero is the user's first impression and deserves a moment to breathe.
   const HERO_STEP_MS = 110;
   const HERO_INITIAL_DELAY_MS = 150;
-
-  // Capture→convert sequence: pace between Capture stage, arrow, Convert stage.
-  // Slower than scroll stagger so each beat reads as a distinct action.
   const CC_STEP_MS = 280;
   const CC_CHIP_MS = 60;
-  const CC_CHIP_INITIAL_OFFSET = 200; // ms after the parent stage lands
+  const CC_CHIP_INITIAL_OFFSET = 200;
 
-  // ─── 1. Hero entry choreography ───────────────────────
   function runHeroEntry () {
     const heroSteps = Array.from(document.querySelectorAll('[data-hero-step]'))
       .sort((a, b) => Number(a.dataset.heroStep) - Number(b.dataset.heroStep));
@@ -2276,28 +2382,19 @@
     });
   }
 
-  // ─── 2. Scroll reveals ─────────────────────────────────
-  // Anything with data-reveal that isn't part of the hero entry sequence
-  // gets revealed when it enters the viewport. Once revealed, we stop
-  // observing it — no re-animating on scroll-up.
   function setupScrollReveals () {
-    // Capture-convert is handled separately as an orchestrated sequence,
-    // so exclude its children from the generic scroll observer.
     const reveals = document.querySelectorAll(
       '[data-reveal]:not([data-hero-step]):not([data-cc-step]):not([data-cc-chip])'
     );
 
     if (reduceMotion) {
       reveals.forEach(el => el.classList.add('is-in'));
-      // Fill in stat counters immediately to their final values.
       document.querySelectorAll('[data-count]').forEach(el => {
         el.textContent = el.dataset.count + (el.dataset.suffix || '');
       });
       return;
     }
 
-    // Stagger: for each [data-stagger] parent, set per-child --stagger-delay
-    // so each child's transition starts at a different moment.
     document.querySelectorAll('[data-stagger]').forEach(parent => {
       const children = parent.querySelectorAll(':scope > [data-reveal], :scope > * > [data-reveal]');
       children.forEach((child, i) => {
@@ -2307,18 +2404,12 @@
       });
     });
 
-    // IntersectionObserver fires once per element. rootMargin pulls the
-    // trigger line up 80px from the bottom of the viewport so reveals
-    // happen a beat before the element is fully in view.
     const io = new IntersectionObserver((entries, observer) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
           entry.target.classList.add('is-in');
-
-          // If this is a stat with a count-up target, kick off the counter.
           const countEl = entry.target.querySelector('[data-count]');
           if (countEl) startCountUp(countEl);
-
           observer.unobserve(entry.target);
         }
       });
@@ -2330,7 +2421,6 @@
     reveals.forEach(el => io.observe(el));
   }
 
-  // ─── 3. Stat count-up ──────────────────────────────────
   function startCountUp (el) {
     if (el.dataset.counting === 'true') return;
     el.dataset.counting = 'true';
@@ -2343,7 +2433,6 @@
     function tick (now) {
       const elapsed = now - start;
       const progress = Math.min(elapsed / duration, 1);
-      // ease-out cubic — fast start, soft landing
       const eased = 1 - Math.pow(1 - progress, 3);
       const value = Math.round(eased * target);
       el.textContent = value + suffix;
@@ -2358,16 +2447,11 @@
     requestAnimationFrame(tick);
   }
 
-  // ─── 4. Capture → Convert orchestrated sequence ─────────
-  // When the .capture-convert block enters the viewport, run an explicit
-  // sequence: Capture stage lands → arrow draws → Convert stage lands.
-  // Chips inside each stage cascade in after their parent settles.
   function setupCaptureConvert () {
     const cc = document.querySelector('[data-cc-sequence]');
     if (!cc) return;
 
     if (reduceMotion) {
-      // Snap everything to its final state.
       cc.querySelectorAll('[data-reveal]').forEach(el => el.classList.add('is-in'));
       return;
     }
@@ -2376,22 +2460,17 @@
       entries.forEach(entry => {
         if (!entry.isIntersecting) return;
 
-        // 1. Run the head stagger (kicker, h3, sub) immediately.
         const headChildren = cc.querySelectorAll('.capture-convert__head [data-reveal]');
         headChildren.forEach((child, i) => {
           setTimeout(() => child.classList.add('is-in'), i * STAGGER_MS);
         });
 
-        // 2. Run the flow sequence after the head finishes.
-        // Capture(1) → Arrow(2) → Convert(3), each CC_STEP_MS apart.
         const flowDelay = headChildren.length * STAGGER_MS + 100;
         const stages = cc.querySelectorAll('[data-cc-step]');
         stages.forEach(stage => {
           const step = parseInt(stage.dataset.ccStep, 10);
           setTimeout(() => {
             stage.classList.add('is-in');
-
-            // Cascade chips inside this stage (only stages 1 and 3 have chips).
             const chips = cc.querySelectorAll('[data-cc-chip="' + step + '"]');
             chips.forEach((chip, i) => {
               setTimeout(
@@ -2409,11 +2488,6 @@
     ccObserver.observe(cc);
   }
 
-  // ─── 5. Hero sticker parallax ──────────────────────────
-  // Stickers with data-parallax drift relative to scroll. The data-parallax
-  // value is a multiplier — positive means drifts down faster, negative
-  // means drifts up. Capped at ~12px total to stay subliminal. Only active
-  // while the hero is in/near view to avoid wasted scroll work.
   function setupParallax () {
     if (reduceMotion) return;
 
@@ -2423,19 +2497,12 @@
     const hero = document.querySelector('.hero');
     if (!hero) return;
 
-    // Cache each sticker's existing rotation (set inline via the
-    // pipeline-sticker--* classes after entry animation completes).
-    // We need to layer translateY onto it without losing the rotation.
     const baseTransforms = new WeakMap();
     function captureBase (el) {
-      // Read computed transform AFTER the entry animation has finished.
-      // Until then, the entry transform is in flux; we'll re-capture later.
       const computed = window.getComputedStyle(el).transform;
       baseTransforms.set(el, computed === 'none' ? '' : computed);
     }
 
-    // Re-capture base transforms after the hero entry animation finishes.
-    // Hero takes about 1.4s total; capture at 1.6s to be safe.
     let baseReady = false;
     setTimeout(() => {
       stickers.forEach(captureBase);
@@ -2450,21 +2517,17 @@
       }
 
       const heroRect = hero.getBoundingClientRect();
-      // Skip work if hero is well off-screen.
       if (heroRect.bottom < -200 || heroRect.top > window.innerHeight + 200) {
         ticking = false;
         return;
       }
 
-      // Use scroll progress through the hero (0 at top of page, ~1 when
-      // hero is fully scrolled past) to drive the drift.
       const scrolled = -heroRect.top;
       const heroHeight = hero.offsetHeight;
       const progress = Math.max(0, Math.min(1.5, scrolled / heroHeight));
 
       stickers.forEach(el => {
         const multiplier = parseFloat(el.dataset.parallax) || 0;
-        // Cap drift at 12px in either direction
         const offsetY = Math.max(-12, Math.min(12, progress * multiplier * 30));
         const base = baseTransforms.get(el) || '';
         el.style.transform = (base ? base + ' ' : '') + 'translateY(' + offsetY + 'px)';
@@ -2480,7 +2543,6 @@
     }, { passive: true });
   }
 
-  // ─── Boot ──────────────────────────────────────────────
   function init () {
     runHeroEntry();
     setupScrollReveals();
