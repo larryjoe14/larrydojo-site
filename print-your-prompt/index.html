@@ -224,12 +224,12 @@
   /* ─── HERO POLAROID STACK (right column, real photos) ─ */
   .hero-stack {
     position: relative;
-    min-height: 560px;
+    height: 580px;
     margin: 0 auto;
     max-width: 540px;
   }
-  @media (max-width: 980px) { .hero-stack { min-height: 480px; max-width: 480px; } }
-  @media (max-width: 600px) { .hero-stack { min-height: 420px; } }
+  @media (max-width: 980px) { .hero-stack { height: 520px; max-width: 480px; } }
+  @media (max-width: 600px) { .hero-stack { height: 460px; max-width: 380px; } }
 
   .polaroid {
     position: absolute;
@@ -238,37 +238,53 @@
     border: 2.5px solid var(--ink);
     box-shadow: 8px 8px 0 var(--ink);
     transition: transform 0.4s var(--ease-spring), box-shadow 0.3s ease;
-    width: 60%;
+    width: 240px;
   }
+  @media (max-width: 980px) { .polaroid { width: 220px; } }
+  @media (max-width: 600px) { .polaroid { width: 200px; } }
+
   .polaroid:hover { transform: rotate(0deg) scale(1.04) !important; box-shadow: 12px 12px 0 var(--ink); z-index: 10; }
-  .polaroid__img {
-    display: block;
+
+  /* Image well: padding-bottom hack for 3:4 ratio. Bulletproof — works in
+     every browser back to ancient versions, doesn't depend on aspect-ratio
+     property, doesn't collapse if the image takes a moment to load. The
+     image itself is absolutely positioned to fill the well. */
+  .polaroid__well {
+    position: relative;
     width: 100%;
-    aspect-ratio: 3 / 4;
-    object-fit: cover;
+    padding-bottom: 133.33%;  /* 4/3 = 1.333 → 3:4 ratio */
     background: #2a1f3d;
     border: 1px solid rgba(0,0,0,0.15);
+    overflow: hidden;
   }
+  .polaroid__img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
   .polaroid__caption {
     position: absolute;
     bottom: 12px; left: 0; right: 0;
     text-align: center;
     font-family: 'Caveat', cursive;
-    font-size: 22px;
+    font-size: 20px;
     color: var(--ink);
     line-height: 1;
   }
 
   /* The three-card stagger. Each rotated and offset to feel pinned to a board. */
-  .polaroid--a { top: 0; left: 0; transform: rotate(-5deg); z-index: 3; }
-  .polaroid--b { top: 80px; right: 0; transform: rotate(4deg); z-index: 2; }
-  .polaroid--c { bottom: 0; left: 18%; transform: rotate(-2deg); z-index: 4; }
+  .polaroid--a { top: 0; left: 10%; transform: rotate(-5deg); z-index: 3; }
+  .polaroid--b { top: 60px; right: 0; transform: rotate(4deg); z-index: 2; }
+  .polaroid--c { bottom: 0; left: 22%; transform: rotate(-2deg); z-index: 4; }
 
   @media (max-width: 600px) {
-    .polaroid { width: 64%; }
-    .polaroid--a { top: 0; left: 4%; }
-    .polaroid--b { top: 60px; right: 4%; }
-    .polaroid--c { bottom: 0; left: 18%; }
+    .polaroid--a { top: 0; left: 0; }
+    .polaroid--b { top: 40px; right: 0; }
+    .polaroid--c { bottom: 0; left: 14%; }
   }
 
   .hero-sticker {
@@ -506,7 +522,7 @@
 
   .proof-card__media {
     width: 100%;
-    aspect-ratio: 3 / 4;
+    padding-bottom: 133.33%;  /* 3:4 ratio via padding-bottom hack — bulletproof. */
     overflow: hidden;
     border: 1px solid rgba(0,0,0,0.12);
     background: #2a1f3d;
@@ -514,6 +530,8 @@
   }
   .proof-card__media img {
     display: block;
+    position: absolute;
+    inset: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -852,17 +870,17 @@
       <span class="hero-sticker hero-sticker--top">Real prints ↓</span>
 
       <div class="polaroid polaroid--a">
-        <img class="polaroid__img" src="img/IMG_1561.jpg" alt="Copper steampunk robot figure with blue eyes and a riveted body, hand-painted." loading="eager" />
+        <div class="polaroid__well"><img class="polaroid__img" src="img/IMG_1561.jpg" alt="Copper steampunk robot figure with blue eyes and a riveted body, hand-painted." loading="eager" /></div>
         <span class="polaroid__caption">Steam · #043</span>
       </div>
 
       <div class="polaroid polaroid--b">
-        <img class="polaroid__img" src="img/IMG_1557.jpg" alt="Pumpkin-headed character with green legs and big white eyes, hand-painted." loading="eager" />
+        <div class="polaroid__well"><img class="polaroid__img" src="img/IMG_1557.jpg" alt="Pumpkin-headed character with green legs and big white eyes, hand-painted." loading="eager" /></div>
         <span class="polaroid__caption">Patch · #051</span>
       </div>
 
       <div class="polaroid polaroid--c">
-        <img class="polaroid__img" src="img/IMG_1563.jpg" alt="Two Dick Tracy 'The Blank' figures, faceless characters in black trench coats and fedoras." loading="eager" />
+        <div class="polaroid__well"><img class="polaroid__img" src="img/IMG_1563.jpg" alt="Two Dick Tracy 'The Blank' figures, faceless characters in black trench coats and fedoras." loading="eager" /></div>
         <span class="polaroid__caption">Blank · #062</span>
       </div>
 
