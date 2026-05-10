@@ -1939,7 +1939,7 @@
             <!-- Success message shown immediately after the concept image lands. -->
             <div class="preview-success" id="preview-success">
               <h4>Concept <em>delivered.</em></h4>
-              <p>Three more angles are <strong>headed to your inbox</strong> — three-quarter, back, and side views. Humans review your request and follow up within 24 hours with pricing and next steps.</p>
+              <p>Check your inbox — we&apos;ve emailed you a copy. A human reviews your request and follows up <strong>within 24 hours</strong> with pricing and next steps.</p>
             </div>
           </div>
 
@@ -3109,7 +3109,7 @@ function runApp() {
           : '// generating concept image...');
         setProgress(45);
 
-        const genBody = { prompt: cleanedPrompt, view: 'front' };
+        const genBody = { prompt: cleanedPrompt };
         if (referenceImageData) {
           genBody.reference_image = {
             mime_type: referenceImageData.mime_type,

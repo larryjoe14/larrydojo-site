@@ -1,21 +1,14 @@
 // netlify/functions/generate-image.js
 //
-// Step 2 of the new image-first pipeline.
-//
-// Takes a cleaned prompt (and optionally a reference image) and calls
-// Google's Gemini 2.5 Flash Image (a.k.a. "Nano Banana") to produce a
-// hyperrealistic plastic figurine concept image. Returns the image as
-// a base64 data URL the browser drops directly into an <img> tag.
-//
-// The prompt is already cleaned by validate-prompt.js — Claude has
-// added the hyperrealistic-plastic-no-background-no-base-plate language
-// before the call lands here.
+// Calls Google's Gemini 2.5 Flash Image ("Nano Banana") to produce a
+// hyperrealistic, photorealistic 3D plastic model concept image. The
+// prompt has already been wrapped in the mandatory boilerplate by
+// validate-prompt.js.
 //
 // Request body:
 //   {
 //     prompt: "<cleaned prompt from validate-prompt>",
-//     reference_image?: { mime_type: "image/jpeg", data: "<base64>" },
-//     view?: "front" | "three-quarter" | "back" | "side"  // default "front"
+//     reference_image?: { mime_type: "image/jpeg", data: "<base64>" }
 //   }
 //
 // Response:
@@ -26,16 +19,6 @@
 //   GEMINI_API_KEY — from aistudio.google.com/app/apikey
 
 const GEMINI_API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-image:generateContent';
-
-// Per-view camera direction. The base hyperrealistic-plastic-no-background
-// language is in the cleaned prompt already. Each view appends a camera
-// direction so the same subject can be shot from four angles.
-const VIEW_INSTRUCTIONS = {
-  'front':         ' Camera facing the subject straight-on, front view, eye level.',
-  'three-quarter': ' Camera at a 45-degree three-quarter angle, slightly above eye level, classic product-photo angle.',
-  'back':          ' Camera facing the back of the subject, eye level, no logo or text visible from this angle.',
-  'side':          ' Camera positioned directly to the subject\'s right, full profile silhouette, eye level.',
-};
 
 exports.handler = async (event) => {
   const cors = {
@@ -53,7 +36,7 @@ exports.handler = async (event) => {
   }
 
   try {
-    const { prompt, reference_image, view } = JSON.parse(event.body || '{}');
+    const { prompt, reference_image } = JSON.parse(event.body || '{}');
 
     if (!prompt || typeof prompt !== 'string' || prompt.trim().length < 5) {
       return {
@@ -73,18 +56,12 @@ exports.handler = async (event) => {
       };
     }
 
-    // Build the prompt with the optional view instruction appended.
-    const viewKey = (view && VIEW_INSTRUCTIONS[view]) ? view : 'front';
-    const finalPrompt = prompt.trim() + VIEW_INSTRUCTIONS[viewKey];
-
     // Build the Gemini request. parts[] takes text and optionally an
     // inlineData block for the reference image. Reference images give
     // Nano Banana a much stronger signal than text alone.
-    const parts = [{ text: finalPrompt }];
+    const parts = [{ text: prompt.trim() }];
 
     if (reference_image && reference_image.data && reference_image.mime_type) {
-      // Validate the reference image: must be JPEG or PNG, base64 string,
-      // not absurdly large (we trust the client to have compressed it).
       const validMime = /^image\/(jpe?g|png|webp)$/i.test(reference_image.mime_type);
       if (validMime && typeof reference_image.data === 'string' && reference_image.data.length < 8_000_000) {
         parts.push({
@@ -122,7 +99,7 @@ exports.handler = async (event) => {
           ok: false,
           error: 'Image generation service returned an error.',
           details: geminiResponse.status === 429
-            ? 'Rate limit hit — try again in a moment.'
+            ? 'Rate limit or quota hit — wait a moment, or check billing in Google Cloud.'
             : geminiResponse.status === 400
             ? 'The prompt was rejected by safety filters. Try rephrasing.'
             : 'Try again in a moment.',
@@ -132,8 +109,6 @@ exports.handler = async (event) => {
 
     const data = await geminiResponse.json();
 
-    // Gemini returns image data inside candidates[0].content.parts[].inlineData.
-    // There can be multiple parts (text + image). We pick the first inlineData.
     const candidates = data?.candidates;
     if (!Array.isArray(candidates) || candidates.length === 0) {
       console.error('Gemini returned no candidates:', JSON.stringify(data).slice(0, 500));
@@ -148,7 +123,6 @@ exports.handler = async (event) => {
     const imagePart = partsResp.find(p => p?.inlineData?.data);
 
     if (!imagePart) {
-      // Sometimes Gemini returns text-only when its safety filter blocks an image.
       const textPart = partsResp.find(p => p?.text)?.text;
       console.warn('No image in response, text was:', textPart?.slice(0, 200));
       return {
@@ -169,7 +143,6 @@ exports.handler = async (event) => {
         ok: true,
         image_b64: imagePart.inlineData.data,
         mime_type: imagePart.inlineData.mimeType || 'image/png',
-        view: viewKey,
       }),
     };
   } catch (err) {

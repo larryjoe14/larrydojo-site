@@ -1,8 +1,8 @@
 // netlify/functions/send-render-email.js
 //
-// Fires when the front-end has a successful image render and wants to email
-// the user a draft of their concept. The browser calls this with the Nano
-// Banana image payload (base64) and the prompts.
+// Sends one styled confirmation email to the user with their concept image
+// embedded inline (CID attachment so it renders in the email body, not just
+// as a download).
 //
 // Request body:
 //   {
@@ -14,19 +14,9 @@
 //     mime_type: "image/png"
 //   }
 //
-// What it does:
-//   1. Sends a confirmation email immediately with the front-view image
-//      embedded inline (data URL — works in Gmail, Apple Mail, Outlook).
-//   2. Kicks off three additional angle generations in the background
-//      (three-quarter, back, side). When each one finishes, sends a
-//      follow-up email with that angle attached.
-//
 // Env vars required:
-//   RESEND        — Resend API key
-//   GEMINI_API_KEY — for the additional-angle generations
-//   FROM_EMAIL    — defaults to "LarryDoJo <hello@larrydojo.com>"
-//   URL           — set automatically by Netlify (used to call generate-image
-//                   from inside this function)
+//   RESEND      — Resend API key
+//   FROM_EMAIL  — defaults to "LarryDoJo <hello@larrydojo.com>"
 
 const RESEND_URL = 'https://api.resend.com/emails';
 
@@ -64,15 +54,20 @@ exports.handler = async (event) => {
 
     const firstName = (name || '').toString().trim().split(' ')[0] || 'there';
     const fromEmail = process.env.FROM_EMAIL || 'LarryDoJo <hello@larrydojo.com>';
+    const imageMime = mime_type || 'image/png';
+    const imageFilename = imageMime === 'image/jpeg' ? 'concept.jpg' : 'concept.png';
 
-    // Send the primary email with the front-view image attached.
-    // We use Resend\'s attachment field rather than embedding base64 in
-    // the HTML — attachments are more reliable across clients and don\'t
-    // bloat the message body.
+    // Resend supports inline attachments via the "content_id" field.
+    // When you reference cid:<content_id> in an <img src=...> tag, the
+    // email client renders the attachment inline. Gmail, Apple Mail,
+    // Outlook, and basically every modern client supports this.
+    const inlineCid = 'concept-image-1';
+
     const html = buildEmailHtml({
       firstName,
       originalPrompt: original_prompt,
       cleanedPrompt: cleaned_prompt,
+      imageCid: inlineCid,
     });
     const text = buildEmailText({
       firstName,
@@ -94,9 +89,10 @@ exports.handler = async (event) => {
         html,
         text,
         attachments: [{
-          filename: 'concept-front.png',
+          filename: imageFilename,
           content: image_b64,
-          content_type: mime_type || 'image/png',
+          content_type: imageMime,
+          content_id: inlineCid,  // Marks this as an inline attachment
         }],
       }),
     });
@@ -105,64 +101,6 @@ exports.handler = async (event) => {
       const errBody = await sendResponse.text();
       console.error('Resend API error:', sendResponse.status, errBody);
       return { statusCode: 502, headers: cors, body: JSON.stringify({ error: 'Could not send email.' }) };
-    }
-
-    // Queue the three additional angle generations in the background.
-    // We don\'t await this — fire and forget. Each angle generation runs
-    // its own generate-image call and sends its own follow-up email.
-    //
-    // CAUTION: Netlify functions stop running after they return. So we
-    // can\'t actually fire-and-forget here — we need to do the work
-    // before returning, OR move it to a background function. The cleanest
-    // approach: do it inline, accepting that this function takes ~30-45
-    // seconds total instead of ~5. The user already sees the front-view
-    // image on screen; this function just runs in the background from
-    // their perspective.
-    //
-    // We use Promise.allSettled so one failure doesn\'t kill the others.
-    const additionalViews = ['three-quarter', 'back', 'side'];
-    const baseUrl = process.env.URL || `https://${event.headers.host || 'larrydojo.com'}`;
-
-    // Don\'t await — let it run as long as the function is allowed to run.
-    // Netlify\'s default sync functions cap at 10s. With Pro, 26s. We have
-    // up to 26s for all three angles in parallel. That\'s tight but workable
-    // since Nano Banana is fast (~3-5s per call).
-    const followUpPromise = (async () => {
-      try {
-        const results = await Promise.allSettled(additionalViews.map(view =>
-          generateAndSendView({
-            baseUrl,
-            view,
-            cleanedPrompt: cleaned_prompt,
-            originalPrompt: original_prompt,
-            firstName,
-            email,
-            fromEmail,
-            resendKey,
-          })
-        ));
-        results.forEach((r, i) => {
-          if (r.status === 'rejected') {
-            console.error(`[follow-up] ${additionalViews[i]} failed:`, r.reason);
-          } else {
-            console.log(`[follow-up] ${additionalViews[i]} sent`);
-          }
-        });
-      } catch (e) {
-        console.error('[follow-up] outer error:', e);
-      }
-    })();
-
-    // Wait for the follow-ups to finish before returning. We only have
-    // ~26s on Pro before timeout, but the front-view email is already sent
-    // so even if this times out, the user got their primary email.
-    try {
-      await Promise.race([
-        followUpPromise,
-        new Promise(resolve => setTimeout(resolve, 23_000)),  // 23s safety cutoff
-      ]);
-    } catch (e) {
-      console.warn('[follow-up] race ended:', e);
     }
 
     return {
@@ -177,71 +115,10 @@ exports.handler = async (event) => {
 };
 
 // ────────────────────────────────────────────────────────────────
-// Helper: generate one additional view and email it
-// ────────────────────────────────────────────────────────────────
-async function generateAndSendView({ baseUrl, view, cleanedPrompt, originalPrompt, firstName, email, fromEmail, resendKey }) {
-  // Call our own generate-image function. We call the live URL rather
-  // than importing because Netlify functions are isolated by default
-  // and the simplest cross-function pattern is HTTP.
-  const genUrl = `${baseUrl}/.netlify/functions/generate-image`;
-  const genRes = await fetch(genUrl, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ prompt: cleanedPrompt, view: view }),
-  });
-  if (!genRes.ok) throw new Error(`generate-image returned ${genRes.status}`);
-
-  const genData = await genRes.json();
-  if (!genData.ok || !genData.image_b64) {
-    throw new Error(genData.error || 'generate-image failed');
-  }
-
-  const viewLabels = {
-    'three-quarter': 'three-quarter view',
-    'back': 'back view',
-    'side': 'side view',
-  };
-  const label = viewLabels[view] || view;
-
-  const html = buildAngleEmailHtml({
-    firstName,
-    label,
-    originalPrompt,
-  });
-  const text = `Hey ${firstName},\n\nHere's the ${label} of your concept. Attached as a PNG.\n\n— Larry\n`;
-
-  const resendResponse = await fetch(RESEND_URL, {
-    method: 'POST',
-    headers: {
-      'Authorization': `Bearer ${resendKey}`,
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      from: fromEmail,
-      to: [email],
-      reply_to: 'hello@larrydojo.com',
-      subject: `Your concept · ${label} — LarryDoJo`,
-      html,
-      text,
-      attachments: [{
-        filename: `concept-${view}.png`,
-        content: genData.image_b64,
-        content_type: genData.mime_type || 'image/png',
-      }],
-    }),
-  });
-
-  if (!resendResponse.ok) {
-    const body = await resendResponse.text();
-    throw new Error(`Resend ${resendResponse.status}: ${body.slice(0, 200)}`);
-  }
-}
-
-// ────────────────────────────────────────────────────────────────
 // Email builders
 // ────────────────────────────────────────────────────────────────
 
-function buildEmailHtml({ firstName, originalPrompt, cleanedPrompt }) {
+function buildEmailHtml({ firstName, originalPrompt, cleanedPrompt, imageCid }) {
   const safeOriginal = escapeHtml(originalPrompt).slice(0, 1000);
   const safeCleaned = escapeHtml(cleanedPrompt).slice(0, 2000);
 
@@ -255,7 +132,7 @@ function buildEmailHtml({ firstName, originalPrompt, cleanedPrompt }) {
 <body style="margin: 0; padding: 0; background: #1a0d2e; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; -webkit-font-smoothing: antialiased;">
 
   <div style="display: none; max-height: 0; overflow: hidden; opacity: 0; visibility: hidden; mso-hide: all; font-size: 1px; line-height: 1px; color: #1a0d2e;">
-    Your concept image is here. Three more angles are generating and will arrive in a few minutes. Humans review within 24 hours.
+    Your concept image is here. Humans review and follow up within 24 hours.
   </div>
 
   <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background: #1a0d2e; padding: 32px 16px;">
@@ -289,12 +166,19 @@ function buildEmailHtml({ firstName, originalPrompt, cleanedPrompt }) {
 
         <tr><td style="padding: 24px 36px 20px;">
           <p style="margin: 0 0 16px; font-size: 18px; line-height: 1.5; color: #0a0a0a;">Hey ${escapeHtml(firstName)},</p>
-          <p style="margin: 0 0 16px; font-size: 16px; line-height: 1.55; color: #0a0a0a;">
-            The front view of your concept is attached as a PNG. <strong style="background: #ffe000; padding: 0 4px;">Three more angles</strong> are generating right now and will land in your inbox in a few minutes (three-quarter, back, and side views).
-          </p>
           <p style="margin: 0; font-size: 16px; line-height: 1.55; color: #0a0a0a;">
-            A human is reviewing your request and will follow up <strong style="background: #ffe000; padding: 0 4px;">within 24 hours</strong> with pricing, tweaks, and next steps.
+            Here's the AI render of what you described. A human is reviewing your request and will follow up <strong style="background: #ffe000; padding: 0 4px;">within 24 hours</strong> with pricing, tweaks, and next steps.
           </p>
+        </td></tr>
+
+        <tr><td style="padding: 0 36px 24px;">
+          <div style="font-family: 'Courier New', monospace; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: #7c5cb8; margin-bottom: 8px;">// your concept</div>
+          <div style="background: linear-gradient(135deg, #1a0d2e 0%, #2a1a4a 60%, #3d1f5e 100%); border: 2px solid #0a0a0a; padding: 18px; text-align: center;">
+            <img src="cid:${imageCid}" alt="Your 3D concept render" style="display: block; width: 100%; max-width: 528px; height: auto; margin: 0 auto;" />
+          </div>
+          <div style="font-family: 'Courier New', monospace; font-size: 11px; color: #7c5cb8; margin-top: 6px;">
+            // ai-generated concept · not the final print
+          </div>
         </td></tr>
 
         <tr><td style="padding: 0 36px 16px;">
@@ -345,7 +229,7 @@ function buildEmailHtml({ firstName, originalPrompt, cleanedPrompt }) {
 function buildEmailText({ firstName, originalPrompt, cleanedPrompt }) {
   return `Hey ${firstName},
 
-Your concept is ready. The front view is attached as a PNG. Three more angles are generating right now (three-quarter, back, side) and will land in your inbox in a few minutes.
+Your concept is ready. See the attached image.
 
 A human is reviewing your request and will follow up within 24 hours with pricing and next steps.
 
@@ -362,35 +246,6 @@ ${cleanedPrompt}
 —
 LarryDoJo · An AI studio
 `;
-}
-
-function buildAngleEmailHtml({ firstName, label, originalPrompt }) {
-  return `<!DOCTYPE html>
-<html lang="en">
-<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>${escapeHtml(label)} — LarryDoJo</title></head>
-<body style="margin: 0; padding: 0; background: #1a0d2e; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">
-  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background: #1a0d2e; padding: 32px 16px;">
-    <tr><td align="center">
-      <table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0" style="max-width: 600px; width: 100%; background: #f4eee4; border: 3px solid #0a0a0a;">
-        <tr><td style="background: #0a0a0a; padding: 18px 24px; font-family: 'Arial Black', sans-serif; font-weight: 900; font-size: 18px; letter-spacing: -0.01em; text-transform: uppercase; color: #f4eee4;">
-          LARRY<span style="color: #ffe000;">·</span>DOJO
-        </td></tr>
-        <tr><td style="padding: 32px 36px 16px;">
-          <p style="margin: 0 0 14px; font-size: 16px; line-height: 1.5; color: #0a0a0a;">Hey ${escapeHtml(firstName)},</p>
-          <p style="margin: 0 0 14px; font-size: 15px; line-height: 1.55; color: #0a0a0a;">Here's the <strong style="background: #ffe000; padding: 0 4px;">${escapeHtml(label)}</strong> of your concept, attached as a PNG.</p>
-          <p style="margin: 0; font-size: 14px; line-height: 1.5; color: #0a0a0a;">More angles still coming if any are pending. Reply if you'd like changes — first edit is on the house.</p>
-        </td></tr>
-        <tr><td style="padding: 0 36px 28px;">
-          <p style="margin: 0; font-family: 'Brush Script MT', cursive; font-size: 22px; color: #0a0a0a;">— Larry</p>
-        </td></tr>
-        <tr><td style="background: #0a0a0a; padding: 16px 24px; font-family: 'Courier New', monospace; font-size: 11px; color: #c9b8e8;">
-          © 2026 <span style="color: #ffe000;">LARRYDOJO</span> · part of your concept request series
-        </td></tr>
-      </table>
-    </td></tr>
-  </table>
-</body>
-</html>`;
 }
 
 function escapeHtml(s) {
