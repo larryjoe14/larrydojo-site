@@ -1215,6 +1215,375 @@
   color: #f4eee4 !important;
 }
 
+/* ─── TYPING GAME ──────────────────────────────────
+   Green-on-black CRT aesthetic. Self-contained inside the wait overlay. */
+
+/* Override the overlay sheet to use the dark CRT styling when game is active */
+#wait-overlay__sheet {
+  background: #050807 !important;
+  border-color: #1a1a1a !important;
+  box-shadow: 0 -8px 0 #00ff41, 0 -16px 40px rgba(0, 255, 65, 0.15) !important;
+}
+#wait-overlay__head {
+  border-bottom: 2px solid #1a1a1a !important;
+  background: #050807 !important;
+}
+#wait-overlay__head .wait-overlay__kicker {
+  color: #00ff41 !important;
+  text-shadow: 0 0 8px rgba(0, 255, 65, 0.4) !important;
+}
+#wait-overlay__head .wait-overlay__title {
+  color: #f4eee4 !important;
+}
+#wait-overlay__head .wait-overlay__title em {
+  background: #00ff41 !important;
+  color: #050807 !important;
+}
+#wait-overlay__head .wait-overlay__sub {
+  color: #00ff41 !important;
+  opacity: 0.7 !important;
+}
+#wait-overlay__close {
+  background: transparent !important;
+  color: #00ff41 !important;
+  border-color: #00ff41 !important;
+}
+#wait-overlay__close:hover {
+  background: #00ff41 !important;
+  color: #050807 !important;
+}
+#wait-overlay__body {
+  background: #050807 !important;
+}
+.wait-overlay__attr {
+  color: #00ff41 !important;
+  opacity: 0.6 !important;
+  font-family: 'JetBrains Mono', monospace !important;
+}
+
+/* Game container */
+#wait-game {
+  display: flex !important;
+  flex-direction: column !important;
+  flex: 1 !important;
+  min-height: 0 !important;
+  font-family: 'JetBrains Mono', 'Courier New', monospace !important;
+  color: #00ff41 !important;
+  background: #050807 !important;
+  position: relative !important;
+}
+
+/* HUD bar */
+#wait-game__hud {
+  display: grid !important;
+  grid-template-columns: repeat(4, 1fr) !important;
+  gap: 8px !important;
+  padding: 10px 0 14px !important;
+  border-bottom: 1px solid rgba(0, 255, 65, 0.3) !important;
+  margin-bottom: 12px !important;
+  flex-shrink: 0 !important;
+}
+.wait-game__hud-cell {
+  background: transparent !important;
+  border: 1px solid rgba(0, 255, 65, 0.3) !important;
+  padding: 6px 10px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  gap: 2px !important;
+  font-family: inherit !important;
+  cursor: default !important;
+}
+.wait-game__hud-label {
+  font-size: 9px !important;
+  letter-spacing: 0.12em !important;
+  color: #00ff41 !important;
+  opacity: 0.55 !important;
+  text-transform: uppercase !important;
+}
+.wait-game__hud-value {
+  font-size: 16px !important;
+  color: #00ff41 !important;
+  font-weight: 700 !important;
+  text-shadow: 0 0 6px rgba(0, 255, 65, 0.4) !important;
+  font-variant-numeric: tabular-nums !important;
+}
+.wait-game__mute {
+  cursor: pointer !important;
+  transition: all 0.1s !important;
+}
+.wait-game__mute:hover {
+  border-color: #00ff41 !important;
+  background: rgba(0, 255, 65, 0.05) !important;
+}
+
+/* Playfield */
+#wait-game__field {
+  position: relative !important;
+  flex: 1 !important;
+  min-height: 320px !important;
+  background: #050807 !important;
+  border: 1px solid rgba(0, 255, 65, 0.2) !important;
+  overflow: hidden !important;
+  /* Subtle scanline texture */
+  background-image: repeating-linear-gradient(
+    0deg,
+    transparent 0px,
+    transparent 2px,
+    rgba(0, 255, 65, 0.02) 2px,
+    rgba(0, 255, 65, 0.02) 3px
+  ) !important;
+}
+@media (max-width: 720px) {
+  #wait-game__field { min-height: 380px !important; }
+}
+
+/* Falling words */
+.wait-game__word {
+  position: absolute !important;
+  font-family: inherit !important;
+  font-size: 18px !important;
+  font-weight: 700 !important;
+  color: #00ff41 !important;
+  text-shadow: 0 0 6px rgba(0, 255, 65, 0.4) !important;
+  letter-spacing: 0.04em !important;
+  white-space: nowrap !important;
+  pointer-events: auto !important;
+  cursor: pointer !important;
+  user-select: none !important;
+  -webkit-user-select: none !important;
+  text-transform: uppercase !important;
+  will-change: transform !important;
+}
+/* Prefix already-typed letters */
+.wait-game__word .wait-game__word-typed {
+  color: #f4eee4 !important;
+  text-shadow: 0 0 8px rgba(244, 238, 228, 0.6) !important;
+  background: rgba(0, 255, 65, 0.15) !important;
+  padding: 0 1px !important;
+}
+.wait-game__word.is-active {
+  color: #f4eee4 !important;
+  font-size: 20px !important;
+  text-shadow: 0 0 12px rgba(244, 238, 228, 0.6) !important;
+  z-index: 5 !important;
+}
+.wait-game__word.is-hit {
+  animation: word-hit 0.4s ease-out forwards !important;
+  pointer-events: none !important;
+}
+.wait-game__word.is-missed {
+  animation: word-miss 0.5s ease-out forwards !important;
+  pointer-events: none !important;
+}
+@keyframes word-hit {
+  0% {
+    color: #00ff41;
+    transform: scale(1);
+    text-shadow: 0 0 6px rgba(0, 255, 65, 0.4);
+  }
+  30% {
+    color: #00ff41;
+    transform: scale(1.4);
+    text-shadow: 0 0 30px rgba(0, 255, 65, 1), 0 0 60px rgba(0, 255, 65, 0.6);
+  }
+  100% {
+    color: #00ff41;
+    transform: scale(1.6);
+    opacity: 0;
+    text-shadow: 0 0 0 transparent;
+  }
+}
+@keyframes word-miss {
+  0% { color: #ff3a3a; text-shadow: 0 0 6px rgba(255, 58, 58, 0.4); transform: scale(1); }
+  20% { transform: translateX(-4px) scale(1.05); }
+  40% { transform: translateX(4px) scale(1.05); }
+  60% { transform: translateX(-2px); }
+  100% { color: #ff3a3a; transform: translateY(20px); opacity: 0; }
+}
+
+/* Field flash overlay for hit/miss feedback */
+#wait-game__field::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 100;
+  background: transparent;
+  transition: background 0.4s ease-out;
+}
+#wait-game__field.flash-hit::after {
+  background: rgba(0, 255, 65, 0.25);
+  transition: background 0.05s ease-out;
+}
+#wait-game__field.flash-miss::after {
+  background: rgba(255, 58, 58, 0.35);
+  transition: background 0.05s ease-out;
+}
+
+/* Hint shown before game starts */
+#wait-game__hint {
+  position: absolute !important;
+  inset: 0 !important;
+  display: none !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-align: center !important;
+  gap: 8px !important;
+  z-index: 50 !important;
+  background: rgba(5, 8, 7, 0.85) !important;
+  pointer-events: none !important;
+}
+#wait-game__hint.is-visible { display: flex !important; }
+.wait-game__hint-headline {
+  font-size: 26px !important;
+  letter-spacing: 0.08em !important;
+  color: #00ff41 !important;
+  text-shadow: 0 0 12px rgba(0, 255, 65, 0.6) !important;
+  animation: hint-blink 1.4s ease-in-out infinite !important;
+}
+@keyframes hint-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+.wait-game__hint-sub, .wait-game__hint-mobile {
+  font-size: 11px !important;
+  color: #00ff41 !important;
+  opacity: 0.7 !important;
+}
+.wait-game__hint-mobile { display: none !important; }
+@media (max-width: 720px) {
+  .wait-game__hint-sub { display: none !important; }
+  .wait-game__hint-mobile { display: block !important; }
+}
+
+/* Render-complete banner */
+#wait-game__render-done {
+  position: absolute !important;
+  top: 12px !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  background: rgba(0, 255, 65, 0.15) !important;
+  border: 1px solid #00ff41 !important;
+  color: #00ff41 !important;
+  padding: 6px 14px !important;
+  font-size: 11px !important;
+  letter-spacing: 0.06em !important;
+  text-transform: uppercase !important;
+  z-index: 60 !important;
+  display: none !important;
+  animation: render-done-pulse 1.6s ease-in-out infinite !important;
+}
+#wait-game__render-done.is-visible { display: block !important; }
+@keyframes render-done-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(0, 255, 65, 0.5); }
+  50% { box-shadow: 0 0 0 10px rgba(0, 255, 65, 0); }
+}
+
+/* Game over screen */
+#wait-game__over {
+  position: absolute !important;
+  inset: 0 !important;
+  display: none !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 14px !important;
+  background: rgba(5, 8, 7, 0.95) !important;
+  z-index: 80 !important;
+  padding: 20px !important;
+}
+#wait-game__over.is-visible { display: flex !important; }
+.wait-game__over-headline {
+  font-size: 32px !important;
+  letter-spacing: 0.1em !important;
+  color: #ff3a3a !important;
+  text-shadow: 0 0 16px rgba(255, 58, 58, 0.6) !important;
+}
+.wait-game__over-stats {
+  display: flex !important;
+  gap: 24px !important;
+  font-size: 13px !important;
+  color: #00ff41 !important;
+}
+.wait-game__over-stats strong {
+  color: #f4eee4 !important;
+  text-shadow: 0 0 6px rgba(244, 238, 228, 0.5) !important;
+}
+.wait-game__over-msg {
+  font-size: 11px !important;
+  color: #00ff41 !important;
+  opacity: 0.7 !important;
+  letter-spacing: 0.04em !important;
+}
+#wait-game__restart {
+  background: transparent !important;
+  border: 2px solid #00ff41 !important;
+  color: #00ff41 !important;
+  padding: 10px 20px !important;
+  font-family: inherit !important;
+  font-size: 12px !important;
+  letter-spacing: 0.08em !important;
+  text-transform: uppercase !important;
+  cursor: pointer !important;
+  transition: all 0.15s !important;
+  margin-top: 8px !important;
+}
+#wait-game__restart:hover {
+  background: #00ff41 !important;
+  color: #050807 !important;
+}
+
+/* Typing buffer (desktop only) */
+#wait-game__buffer {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  padding: 8px 12px !important;
+  margin-top: 12px !important;
+  border: 1px solid rgba(0, 255, 65, 0.25) !important;
+  background: rgba(0, 255, 65, 0.03) !important;
+  flex-shrink: 0 !important;
+  min-height: 30px !important;
+}
+.wait-game__buffer-label {
+  font-size: 9px !important;
+  letter-spacing: 0.1em !important;
+  color: #00ff41 !important;
+  opacity: 0.5 !important;
+  text-transform: uppercase !important;
+}
+.wait-game__buffer-text {
+  font-size: 14px !important;
+  color: #f4eee4 !important;
+  text-shadow: 0 0 6px rgba(244, 238, 228, 0.4) !important;
+  letter-spacing: 0.06em !important;
+  text-transform: uppercase !important;
+  font-weight: 700 !important;
+  min-height: 14px !important;
+}
+.wait-game__buffer-text::after {
+  content: '_';
+  animation: cursor-blink 0.9s steps(1) infinite;
+  margin-left: 2px;
+}
+@keyframes cursor-blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+@media (max-width: 720px) {
+  #wait-game__buffer { display: none !important; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wait-game__word.is-hit, .wait-game__word.is-missed,
+  .wait-game__hint-headline, #wait-game__render-done {
+    animation: none !important;
+  }
+  .wait-game__buffer-text::after { animation: none !important; }
+}
+
 /* ─── PAINT STEP UI ────────────────────────────────
    Shown after a successful preview render. */
 .paint-prompt {
@@ -1379,7 +1748,7 @@
               <span class="preview-progress__label" id="preview-pct">0%</span>
             </div>
             <div class="preview-log" id="preview-log" aria-live="polite"></div>
-            <button type="button" id="reopen-overlay" aria-label="Reopen video overlay">🎥 watch the workshop reel</button>
+            <button type="button" id="reopen-overlay" aria-label="Reopen video overlay">🎮 keep playing</button>
           </div>
 
           <div class="preview-pane__done">
@@ -1677,39 +2046,33 @@
 
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  // ─── Wait-time overlay ────────────────────────────────────
-  // Pops up after 5s of rendering; auto-hides on success/failure.
-  // User can dismiss with X, ESC, or backdrop click. Once dismissed,
-  // a "Watch the workshop reel" pill in the rendering panel lets them
-  // bring it back.
+  // ─── Wait-time overlay + typing game ─────────────────────────
+  // Pops up after 5s of rendering with a falling-words typing game.
+  // Auto-hides on render success/failure. User can dismiss with X, ESC,
+  // backdrop click. Once dismissed, a "keep playing" pill in the
+  // rendering panel brings it back.
   const overlay = document.getElementById('wait-overlay');
   const overlayClose = document.getElementById('wait-overlay__close');
-  const overlayIframe = document.getElementById('wait-overlay__iframe');
   const reopenPill = document.getElementById('reopen-overlay');
-  const VIDEO_SRC = 'https://www.youtube.com/embed/bQmcuDtp9yw?autoplay=1&rel=0&modestbranding=1&playsinline=1';
-  let overlayShownThisRender = false;
   let overlayUserDismissed = false;
   let overlayShowTimer = null;
 
   function showWaitOverlay() {
     if (!overlay) return;
-    if (overlayUserDismissed) return; // respect their dismissal
-    if (overlayIframe) overlayIframe.src = VIDEO_SRC;
+    if (overlayUserDismissed) return;
     overlay.classList.add('is-visible');
     overlay.setAttribute('aria-hidden', 'false');
-    overlayShownThisRender = true;
     if (reopenPill) reopenPill.classList.remove('is-visible');
+    waitGame.start();
   }
 
   function hideWaitOverlay(byUser) {
     if (!overlay) return;
     overlay.classList.remove('is-visible');
     overlay.setAttribute('aria-hidden', 'true');
-    // Stop the video by clearing src — prevents background audio.
-    if (overlayIframe) overlayIframe.src = '';
+    waitGame.stop();
     if (byUser) {
       overlayUserDismissed = true;
-      // Show reopen pill if we're still rendering
       if (previewPane && previewPane.dataset.state === 'rendering' && reopenPill) {
         reopenPill.classList.add('is-visible');
       }
@@ -1717,8 +2080,7 @@
   }
 
   function scheduleOverlay() {
-    overlayUserDismissed = false; // new render = fresh chance to show
-    overlayShownThisRender = false;
+    overlayUserDismissed = false;
     if (overlayShowTimer) clearTimeout(overlayShowTimer);
     overlayShowTimer = setTimeout(showWaitOverlay, 5000);
   }
@@ -1728,6 +2090,7 @@
       clearTimeout(overlayShowTimer);
       overlayShowTimer = null;
     }
+    waitGame.signalRenderDone(); // let player see "render done" if mid-game
     hideWaitOverlay(false);
     if (reopenPill) reopenPill.classList.remove('is-visible');
   }
@@ -1737,7 +2100,6 @@
   }
   if (overlay) {
     overlay.addEventListener('click', (e) => {
-      // Backdrop click only — not when clicking the sheet itself
       if (e.target === overlay) hideWaitOverlay(true);
     });
   }
@@ -1753,10 +2115,8 @@
     });
   }
 
-  // Watch the preview-pane state attribute. When it switches to 'rendering',
-  // schedule the overlay. When it switches away, cancel/hide it.
-  // We use a MutationObserver so this works regardless of which code path
-  // sets the state (preview phase or paint phase).
+  // Watch the preview pane state. When 'rendering', schedule overlay.
+  // Any other state, cancel/hide.
   const previewPaneEl = document.getElementById('preview-pane');
   if (previewPaneEl && 'MutationObserver' in window) {
     const stateObserver = new MutationObserver(() => {
@@ -1769,6 +2129,448 @@
     });
     stateObserver.observe(previewPaneEl, { attributes: true, attributeFilter: ['data-state'] });
   }
+
+  // ──────────────────────────────────────────────────────────────
+  // TYPING GAME MODULE
+  // ──────────────────────────────────────────────────────────────
+  // Self-contained falling-words game. Exposes start/stop/signalRenderDone.
+  // Generic English wordlist. Desktop uses keystrokes; mobile uses taps.
+  // Sound is muted by default with a HUD toggle.
+
+  const waitGame = (function () {
+    // Curated common-English wordlist. 3-7 letters. No profanity, no
+    // homophones that confuse non-native typists. Ordered roughly by
+    // typing difficulty (alternating-hand words come first).
+    const WORDS = [
+      // Easy: 3-4 letters, alternating hands
+      'the', 'and', 'for', 'are', 'but', 'not', 'you', 'all', 'can', 'her',
+      'was', 'one', 'our', 'out', 'day', 'get', 'has', 'him', 'his', 'how',
+      'man', 'new', 'now', 'old', 'see', 'two', 'way', 'who', 'boy', 'did',
+      'its', 'let', 'put', 'say', 'she', 'too', 'use', 'big', 'end', 'eye',
+      'far', 'fly', 'got', 'job', 'lot', 'run', 'set', 'try', 'why', 'cup',
+      'sun', 'red', 'top', 'box', 'cat', 'dog', 'bee', 'pen', 'key', 'map',
+      // Medium: 4-5 letters
+      'time', 'work', 'play', 'help', 'home', 'mind', 'word', 'best', 'kind',
+      'long', 'made', 'name', 'open', 'real', 'star', 'team', 'view', 'book',
+      'cool', 'dark', 'easy', 'fast', 'fire', 'gold', 'good', 'hand', 'idea',
+      'keep', 'life', 'love', 'nice', 'page', 'park', 'rain', 'safe', 'song',
+      'tree', 'true', 'walk', 'warm', 'wind', 'wish', 'year', 'zero',
+      'about', 'above', 'after', 'again', 'alive', 'apple', 'beach', 'bring',
+      'build', 'chair', 'clean', 'clear', 'cloud', 'dance', 'dream', 'drive',
+      'enjoy', 'fresh', 'green', 'happy', 'house', 'light', 'magic', 'music',
+      'night', 'paint', 'piano', 'place', 'plant', 'power', 'quick', 'quiet',
+      'river', 'sharp', 'sleep', 'smile', 'space', 'sweet', 'table', 'think',
+      'today', 'water', 'world', 'write', 'young',
+      // Harder: 6-7 letters
+      'always', 'animal', 'around', 'before', 'better', 'bridge', 'castle',
+      'change', 'circle', 'coffee', 'desert', 'dragon', 'family', 'father',
+      'flower', 'forest', 'friend', 'garden', 'gentle', 'ground', 'island',
+      'jungle', 'kitchen', 'letter', 'listen', 'memory', 'minute', 'mother',
+      'mountain', 'ocean', 'orange', 'people', 'planet', 'rocket', 'school',
+      'simple', 'sister', 'spring', 'square', 'street', 'summer', 'sunset',
+      'thunder', 'window', 'winter',
+    ];
+
+    let canvas, score = 0, streak = 0, bestStreak = 0, lives = 3;
+    let activeWords = []; // [{ el, text, x, y, speed, typed }]
+    let typingBuffer = '';
+    let rafId = null;
+    let lastFrameTime = 0;
+    let spawnTimer = 0;
+    let nextSpawnDelay = 1500;
+    let gameStartTime = 0;
+    let gameRunning = false;
+    let renderDoneSignaled = false;
+    let muted = true;
+    let audioCtx = null;
+
+    let scoreEl, streakEl, livesEl, fieldEl, hintEl, bufferTextEl;
+    let muteIconEl, restartBtn, gameOverEl, finalScoreEl, finalStreakEl, gameOverMsgEl, renderDoneBanner;
+
+    function ensureRefs() {
+      if (scoreEl) return;
+      scoreEl = document.getElementById('wait-game__score');
+      streakEl = document.getElementById('wait-game__streak');
+      livesEl = document.getElementById('wait-game__lives');
+      fieldEl = document.getElementById('wait-game__field');
+      hintEl = document.getElementById('wait-game__hint');
+      bufferTextEl = document.getElementById('wait-game__buffer-text');
+      muteIconEl = document.getElementById('wait-game__mute-icon');
+      restartBtn = document.getElementById('wait-game__restart');
+      gameOverEl = document.getElementById('wait-game__over');
+      finalScoreEl = document.getElementById('wait-game__final-score');
+      finalStreakEl = document.getElementById('wait-game__final-streak');
+      gameOverMsgEl = document.getElementById('wait-game__over-msg');
+      renderDoneBanner = document.getElementById('wait-game__render-done');
+
+      // Mute toggle
+      const muteBtn = document.getElementById('wait-game__mute');
+      if (muteBtn) muteBtn.addEventListener('click', toggleMute);
+
+      // Restart button
+      if (restartBtn) restartBtn.addEventListener('click', () => {
+        resetGame();
+        gameRunning = true;
+        loop();
+      });
+    }
+
+    function pickWord() {
+      // Difficulty ramps with score: early game stays easy, later mixes in harder words
+      const elapsed = (performance.now() - gameStartTime) / 1000;
+      const difficulty = Math.min(1, elapsed / 60); // 0..1 over first 60s
+      const cap = Math.floor(WORDS.length * (0.3 + difficulty * 0.7));
+      const idx = Math.floor(Math.random() * cap);
+      return WORDS[idx];
+    }
+
+    function spawnWord() {
+      const word = pickWord();
+      const el = document.createElement('div');
+      el.className = 'wait-game__word';
+      el.textContent = word.toUpperCase();
+
+      // Choose horizontal position with a small margin so word doesn't clip
+      const fieldRect = fieldEl.getBoundingClientRect();
+      // Approximate word width (we'll measure precisely after insert)
+      el.style.left = '0px';
+      el.style.top = '-30px';
+      fieldEl.appendChild(el);
+      const wordWidth = el.offsetWidth || 80;
+      const minX = 8;
+      const maxX = Math.max(minX, fieldRect.width - wordWidth - 8);
+      const x = minX + Math.random() * (maxX - minX);
+      el.style.left = x + 'px';
+
+      // Speed scales with difficulty
+      const elapsed = (performance.now() - gameStartTime) / 1000;
+      const baseSpeed = 30 + Math.min(40, elapsed * 0.7); // px/sec
+      const speed = baseSpeed + Math.random() * 20;
+
+      // Tap-to-hit (mobile)
+      el.addEventListener('click', (e) => {
+        e.stopPropagation();
+        // Treat tap like instantly-typing the word
+        const w = activeWords.find(w => w.el === el);
+        if (w) hitWord(w);
+      });
+
+      activeWords.push({
+        el: el,
+        text: word.toLowerCase(),
+        x: x,
+        y: -30,
+        speed: speed,
+        typed: 0, // count of letters already matched
+      });
+    }
+
+    function updateWordRender(w) {
+      if (w.typed === 0) {
+        w.el.textContent = w.text.toUpperCase();
+      } else {
+        const typedPart = w.text.slice(0, w.typed).toUpperCase();
+        const restPart = w.text.slice(w.typed).toUpperCase();
+        w.el.innerHTML = '<span class="wait-game__word-typed">' + escapeText(typedPart) + '</span>' + escapeText(restPart);
+      }
+    }
+
+    function escapeText(s) {
+      return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    }
+
+    function hitWord(w) {
+      score += 10 + w.text.length;
+      streak++;
+      if (streak > bestStreak) bestStreak = streak;
+      updateHud();
+      flashField('hit');
+      playBeep('hit');
+
+      w.el.classList.add('is-hit');
+      const idx = activeWords.indexOf(w);
+      if (idx >= 0) activeWords.splice(idx, 1);
+      typingBuffer = '';
+      updateBuffer();
+      // Remove element after animation
+      setTimeout(() => {
+        if (w.el.parentNode) w.el.parentNode.removeChild(w.el);
+      }, 400);
+    }
+
+    function missWord(w) {
+      lives--;
+      streak = 0;
+      updateHud();
+      flashField('miss');
+      playBeep('miss');
+
+      w.el.classList.add('is-missed');
+      const idx = activeWords.indexOf(w);
+      if (idx >= 0) activeWords.splice(idx, 1);
+      // Reset typing buffer if it matched the missed word
+      if (w.text.startsWith(typingBuffer)) {
+        typingBuffer = '';
+        updateBuffer();
+      }
+      setTimeout(() => {
+        if (w.el.parentNode) w.el.parentNode.removeChild(w.el);
+      }, 500);
+
+      if (lives <= 0) {
+        endGame();
+      }
+    }
+
+    function flashField(type) {
+      if (!fieldEl) return;
+      const cls = type === 'hit' ? 'flash-hit' : 'flash-miss';
+      fieldEl.classList.add(cls);
+      setTimeout(() => fieldEl.classList.remove(cls), 200);
+    }
+
+    function updateHud() {
+      if (scoreEl) scoreEl.textContent = score;
+      if (streakEl) streakEl.textContent = streak;
+      if (livesEl) {
+        livesEl.textContent = '♥'.repeat(Math.max(0, lives)) + '·'.repeat(Math.max(0, 3 - lives));
+      }
+    }
+
+    function updateBuffer() {
+      if (bufferTextEl) bufferTextEl.textContent = typingBuffer.toUpperCase();
+    }
+
+    function endGame() {
+      gameRunning = false;
+      if (rafId) cancelAnimationFrame(rafId);
+      // Clear remaining words
+      activeWords.forEach(w => {
+        if (w.el.parentNode) w.el.parentNode.removeChild(w.el);
+      });
+      activeWords = [];
+      // Show game over screen
+      if (finalScoreEl) finalScoreEl.textContent = score;
+      if (finalStreakEl) finalStreakEl.textContent = bestStreak;
+      if (gameOverMsgEl) {
+        const renderState = previewPaneEl ? previewPaneEl.dataset.state : '';
+        if (renderState === 'rendering') {
+          gameOverMsgEl.textContent = '// render still running · hang tight';
+        } else {
+          gameOverMsgEl.textContent = '// nice run · render is ready';
+        }
+      }
+      if (gameOverEl) gameOverEl.classList.add('is-visible');
+    }
+
+    function resetGame() {
+      score = 0; streak = 0; bestStreak = 0; lives = 3;
+      activeWords.forEach(w => { if (w.el.parentNode) w.el.parentNode.removeChild(w.el); });
+      activeWords = [];
+      typingBuffer = '';
+      gameStartTime = performance.now();
+      lastFrameTime = gameStartTime;
+      spawnTimer = 0;
+      nextSpawnDelay = 1500;
+      renderDoneSignaled = false;
+      if (gameOverEl) gameOverEl.classList.remove('is-visible');
+      if (renderDoneBanner) renderDoneBanner.classList.remove('is-visible');
+      if (hintEl) hintEl.classList.add('is-visible');
+      updateHud();
+      updateBuffer();
+    }
+
+    function loop(now) {
+      if (!gameRunning) return;
+      now = now || performance.now();
+      const dt = Math.min(0.05, (now - lastFrameTime) / 1000); // cap at 50ms to prevent jumps after tab unfocus
+      lastFrameTime = now;
+
+      // Spawn logic
+      spawnTimer += dt * 1000;
+      if (spawnTimer >= nextSpawnDelay) {
+        spawnTimer = 0;
+        spawnWord();
+        // Spawn rate accelerates with elapsed time
+        const elapsed = (now - gameStartTime) / 1000;
+        nextSpawnDelay = Math.max(700, 1600 - elapsed * 8);
+
+        // Hide hint after first spawn
+        if (hintEl) hintEl.classList.remove('is-visible');
+      }
+
+      // Update word positions
+      const fieldHeight = fieldEl.clientHeight;
+      for (let i = activeWords.length - 1; i >= 0; i--) {
+        const w = activeWords[i];
+        w.y += w.speed * dt;
+        w.el.style.transform = 'translateY(' + Math.round(w.y) + 'px)';
+        if (w.y > fieldHeight - 20) {
+          missWord(w);
+        }
+      }
+
+      rafId = requestAnimationFrame(loop);
+    }
+
+    // Keyboard input handler (desktop)
+    function handleKey(e) {
+      if (!gameRunning) return;
+      // Ignore modifier-driven keystrokes
+      if (e.ctrlKey || e.metaKey || e.altKey) return;
+
+      if (e.key === 'Backspace') {
+        if (typingBuffer.length > 0) {
+          typingBuffer = typingBuffer.slice(0, -1);
+          // Update any active words that were partially matching
+          activeWords.forEach(w => {
+            if (w.typed > typingBuffer.length) {
+              w.typed = 0;
+              w.el.classList.remove('is-active');
+              updateWordRender(w);
+            }
+          });
+          // Re-find best match
+          let bestMatch = null;
+          activeWords.forEach(w => {
+            if (typingBuffer.length === 0) {
+              w.el.classList.remove('is-active');
+              return;
+            }
+            if (w.text.startsWith(typingBuffer) && (!bestMatch || w.y > bestMatch.y)) {
+              bestMatch = w;
+            }
+          });
+          activeWords.forEach(w => w.el.classList.remove('is-active'));
+          if (bestMatch) {
+            bestMatch.typed = typingBuffer.length;
+            bestMatch.el.classList.add('is-active');
+            updateWordRender(bestMatch);
+          }
+          updateBuffer();
+        }
+        e.preventDefault();
+        return;
+      }
+
+      // Only single character keys
+      if (e.key.length !== 1) return;
+      if (!/^[a-zA-Z]$/.test(e.key)) return;
+
+      e.preventDefault();
+      const ch = e.key.toLowerCase();
+      const candidate = typingBuffer + ch;
+
+      // Find the lowest (most urgent) word that starts with the candidate
+      let target = null;
+      activeWords.forEach(w => {
+        if (w.text.startsWith(candidate)) {
+          if (!target || w.y > target.y) target = w;
+        }
+      });
+
+      if (!target) {
+        // Bad keystroke: reset buffer, deactivate any word
+        typingBuffer = '';
+        activeWords.forEach(w => {
+          w.typed = 0;
+          w.el.classList.remove('is-active');
+          updateWordRender(w);
+        });
+        updateBuffer();
+        return;
+      }
+
+      typingBuffer = candidate;
+      // Deactivate other words
+      activeWords.forEach(w => {
+        if (w !== target) {
+          w.typed = 0;
+          w.el.classList.remove('is-active');
+          updateWordRender(w);
+        }
+      });
+      target.typed = typingBuffer.length;
+      target.el.classList.add('is-active');
+      updateWordRender(target);
+      updateBuffer();
+
+      // Check for completion
+      if (target.typed >= target.text.length) {
+        hitWord(target);
+      }
+    }
+
+    function toggleMute() {
+      muted = !muted;
+      if (muteIconEl) muteIconEl.textContent = muted ? 'OFF' : 'ON';
+    }
+
+    // Synthesized beeps via Web Audio API. No audio files to load.
+    function playBeep(type) {
+      if (muted) return;
+      try {
+        if (!audioCtx) {
+          const Ctx = window.AudioContext || window.webkitAudioContext;
+          if (!Ctx) return;
+          audioCtx = new Ctx();
+        }
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        if (type === 'hit') {
+          osc.type = 'square';
+          osc.frequency.setValueAtTime(880, audioCtx.currentTime);
+          osc.frequency.exponentialRampToValueAtTime(1320, audioCtx.currentTime + 0.08);
+          gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.12);
+          osc.start();
+          osc.stop(audioCtx.currentTime + 0.12);
+        } else {
+          osc.type = 'sawtooth';
+          osc.frequency.setValueAtTime(220, audioCtx.currentTime);
+          osc.frequency.exponentialRampToValueAtTime(80, audioCtx.currentTime + 0.18);
+          gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.2);
+          osc.start();
+          osc.stop(audioCtx.currentTime + 0.2);
+        }
+      } catch (e) { /* swallow audio errors */ }
+    }
+
+    function start() {
+      ensureRefs();
+      resetGame();
+      gameRunning = true;
+      lastFrameTime = performance.now();
+      gameStartTime = lastFrameTime;
+      document.addEventListener('keydown', handleKey);
+      rafId = requestAnimationFrame(loop);
+    }
+
+    function stop() {
+      gameRunning = false;
+      if (rafId) { cancelAnimationFrame(rafId); rafId = null; }
+      document.removeEventListener('keydown', handleKey);
+      // Clear remaining words
+      activeWords.forEach(w => { if (w.el.parentNode) w.el.parentNode.removeChild(w.el); });
+      activeWords = [];
+      typingBuffer = '';
+      if (gameOverEl) gameOverEl.classList.remove('is-visible');
+      if (renderDoneBanner) renderDoneBanner.classList.remove('is-visible');
+    }
+
+    function signalRenderDone() {
+      // Called when render finishes. Show the "render done, finish your word" banner.
+      if (!gameRunning && !overlay.classList.contains('is-visible')) return;
+      if (renderDoneBanner) renderDoneBanner.classList.add('is-visible');
+      renderDoneSignaled = true;
+    }
+
+    return { start, stop, signalRenderDone };
+  })();
 
 
   const reveals = document.querySelectorAll('[data-reveal]');
@@ -2249,16 +3051,68 @@
       <div id="wait-overlay__head">
         <div class="wait-overlay__title-block">
           <span class="wait-overlay__kicker">↓ this might take a sec</span>
-          <h2 id="wait-overlay-title" class="wait-overlay__title">Don&apos;t close <em>the tab.</em></h2>
-          <p class="wait-overlay__sub">// we&apos;re still working · watch this while you wait</p>
+          <h2 id="wait-overlay-title" class="wait-overlay__title">Type while <em>you wait.</em></h2>
+          <p class="wait-overlay__sub">// don&apos;t close the tab · we&apos;re still rendering</p>
         </div>
         <button type="button" id="wait-overlay__close" aria-label="Close overlay">×</button>
       </div>
       <div id="wait-overlay__body">
-        <div class="wait-overlay__video-frame">
-          <iframe id="wait-overlay__iframe" src="" title="Gary Vee on AI" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        <div id="wait-game" aria-label="Typing game — type the falling words before they hit the bottom">
+          <!-- HUD: score, lives, mute toggle -->
+          <div id="wait-game__hud">
+            <div class="wait-game__hud-cell">
+              <span class="wait-game__hud-label">SCORE</span>
+              <span class="wait-game__hud-value" id="wait-game__score">0</span>
+            </div>
+            <div class="wait-game__hud-cell">
+              <span class="wait-game__hud-label">STREAK</span>
+              <span class="wait-game__hud-value" id="wait-game__streak">0</span>
+            </div>
+            <div class="wait-game__hud-cell">
+              <span class="wait-game__hud-label">LIVES</span>
+              <span class="wait-game__hud-value" id="wait-game__lives">♥♥♥</span>
+            </div>
+            <button type="button" id="wait-game__mute" class="wait-game__hud-cell wait-game__mute" aria-label="Toggle sound" title="Toggle sound">
+              <span class="wait-game__hud-label">SOUND</span>
+              <span class="wait-game__hud-value" id="wait-game__mute-icon">OFF</span>
+            </button>
+          </div>
+
+          <!-- Playfield: where words fall -->
+          <div id="wait-game__field" aria-live="polite">
+            <!-- Words injected via JS -->
+
+            <!-- Center hint shown before first interaction -->
+            <div id="wait-game__hint" class="is-visible">
+              <div class="wait-game__hint-headline">TYPE THE WORDS</div>
+              <div class="wait-game__hint-sub">// catch them before they hit the bottom · misses cost a life</div>
+              <div class="wait-game__hint-mobile">// tap the words on mobile</div>
+            </div>
+
+            <!-- Render-complete banner (hidden by default) -->
+            <div id="wait-game__render-done">
+              ✓ render complete · finish your word
+            </div>
+
+            <!-- Game over screen (hidden by default) -->
+            <div id="wait-game__over">
+              <div class="wait-game__over-headline">GAME OVER</div>
+              <div class="wait-game__over-stats">
+                <span>Score: <strong id="wait-game__final-score">0</strong></span>
+                <span>Best streak: <strong id="wait-game__final-streak">0</strong></span>
+              </div>
+              <div class="wait-game__over-msg" id="wait-game__over-msg">// render still running · hang tight</div>
+              <button type="button" id="wait-game__restart">Play again</button>
+            </div>
+          </div>
+
+          <!-- Active typing buffer (desktop only) -->
+          <div id="wait-game__buffer" aria-hidden="true">
+            <span class="wait-game__buffer-label">// you typed:</span>
+            <span class="wait-game__buffer-text" id="wait-game__buffer-text"></span>
+          </div>
         </div>
-        <p class="wait-overlay__attr">— Gary Vaynerchuk · <a href="https://www.youtube.com/watch?v=bQmcuDtp9yw" target="_blank" rel="noopener">watch on YouTube ↗</a></p>
+        <p class="wait-overlay__attr">// type while you wait · keeps your hands busy and the AI happy</p>
       </div>
     </div>
   </div>
