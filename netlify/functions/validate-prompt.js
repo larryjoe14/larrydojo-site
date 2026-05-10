@@ -56,7 +56,17 @@ Your job has three parts, in order:
    - Add specific visual details (color, material, pose, expression)
    - Avoid thin/fragile features (text under 5mm, wires, hair strands)
    - Avoid extreme overhangs (capes flowing horizontally, etc)
-   - Solid base / standing pose preferred
+
+   IMPORTANT — base plate handling:
+   - DO NOT add base plates, pedestals, stands, or platforms unless the user
+     explicitly asks for one ("on a pedestal", "with a base", "on a stand").
+   - The figure should appear as a standalone object — standing on its own
+     feet, sitting in its own pose, floating freely.
+   - ALWAYS append this exact phrase to the end of the cleaned_prompt:
+     " rendered as a standalone figure with no base plate, pedestal, or stand"
+     UNLESS the user explicitly requested a base/stand/pedestal.
+   - This is critical: Meshy adds base plates by default. The phrase above
+     overrides that bias.
 
 Return ONLY valid JSON, no markdown fences, no preamble:
 {
