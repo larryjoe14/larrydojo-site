@@ -1461,6 +1461,205 @@
     color: var(--acid);
   }
 
+  /* ─── FROM THE LAB ──────────────────────────────────
+     Lab section sits between Services and FAQ. It's not a fourth
+     service tier — it's a live POC that proves the pitch above it.
+     The "live build" badge differentiates it from the Service cards
+     and links out to the working landing page. Visual treatment
+     borrows from the .case-study-callout in the hero (acid-yellow
+     drop shadow, ink background) so it reads as a recognized
+     callout component rather than a new module. */
+  .lab { background: var(--paper); }
+
+  .lab__callout {
+    background: var(--ink);
+    color: var(--paper);
+    border: 3px solid var(--ink);
+    box-shadow: 12px 12px 0 var(--acid);
+    padding: 0;
+    overflow: hidden;
+    display: grid;
+    grid-template-columns: 1.05fr 1fr;
+    align-items: stretch;
+    transform: rotate(-0.4deg);
+    margin-top: 20px;
+  }
+  @media (max-width: 900px) {
+    .lab__callout {
+      grid-template-columns: 1fr;
+      transform: rotate(-0.2deg);
+      box-shadow: 8px 8px 0 var(--acid);
+    }
+  }
+
+  .lab__media {
+    position: relative;
+    background: var(--plum);
+    border-right: 2.5px solid var(--paper);
+    overflow: hidden;
+    min-height: 420px;
+  }
+  @media (max-width: 900px) {
+    .lab__media {
+      border-right: none;
+      border-bottom: 2.5px solid var(--paper);
+      min-height: 320px;
+    }
+  }
+  .lab__media img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .lab__media-tag {
+    position: absolute;
+    top: 16px; left: 16px;
+    background: var(--acid);
+    color: var(--ink);
+    border: 2px solid var(--ink);
+    padding: 6px 12px 7px;
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    box-shadow: 3px 3px 0 var(--ink);
+    z-index: 5;
+    transform: rotate(-3deg);
+  }
+  .lab__media-pulse {
+    position: absolute;
+    bottom: 16px; right: 16px;
+    background: rgba(10,10,10,0.85);
+    color: var(--mint);
+    border: 1.5px solid var(--mint);
+    padding: 5px 10px 6px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    z-index: 5;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .lab__media-pulse::before {
+    content: '';
+    width: 8px; height: 8px;
+    background: var(--mint);
+    border-radius: 50%;
+    animation: lab-pulse 1.8s ease-in-out infinite;
+  }
+  @keyframes lab-pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(0.85); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .lab__media-pulse::before { animation: none; }
+  }
+
+  .lab__body {
+    padding: 40px 36px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  @media (max-width: 720px) { .lab__body { padding: 30px 22px; } }
+
+  .lab__kicker {
+    font-family: 'Caveat', cursive;
+    font-size: 24px;
+    color: var(--acid);
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+
+  .lab__title {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: clamp(28px, 4.2vw, 42px);
+    line-height: 0.95;
+    text-transform: uppercase;
+    letter-spacing: -0.02em;
+    margin-bottom: 14px;
+    color: var(--paper);
+  }
+  .lab__title em {
+    font-style: normal;
+    color: var(--tangerine);
+    -webkit-text-stroke: 1.5px var(--paper);
+  }
+
+  .lab__meta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--orchid);
+    letter-spacing: 0.04em;
+    margin-bottom: 18px;
+    text-transform: uppercase;
+  }
+
+  .lab__copy { font-size: 15px; line-height: 1.55; color: var(--paper); margin-bottom: 12px; }
+  .lab__copy strong { background: var(--acid); color: var(--ink); padding: 0 4px; }
+
+  .lab__stack {
+    margin: 18px 0 22px;
+    padding: 12px 14px;
+    border: 1.5px dashed var(--orchid);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    align-items: center;
+  }
+  .lab__stack-label {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--orchid);
+    margin-right: 4px;
+  }
+  .lab__stack-chip {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    padding: 4px 8px;
+    background: rgba(244,238,228,0.08);
+    border: 1.5px solid var(--paper);
+    color: var(--paper);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .lab__links { display: flex; gap: 10px; flex-wrap: wrap; }
+  .lab__link {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 12px 18px;
+    text-decoration: none;
+    border: 2.5px solid var(--paper);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+    display: inline-block;
+  }
+  .lab__link--primary {
+    background: var(--acid);
+    color: var(--ink);
+    border-color: var(--paper);
+  }
+  .lab__link--primary:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 4px 4px 0 var(--tangerine);
+  }
+  .lab__link--ghost {
+    background: transparent;
+    color: var(--paper);
+  }
+  .lab__link--ghost:hover {
+    background: var(--paper);
+    color: var(--ink);
+  }
+
   /* ─── FAQ SECTION ──────────────────────────────────────
      Sits between Services and Contact as the final objection-handler.
      Uses native <details>/<summary> for accordion behavior — accessible
@@ -1984,6 +2183,7 @@
     <a href="#work">Work</a>
     <a href="#agency">Studio</a>
     <a href="#services">Services</a>
+    <a href="#lab">Lab</a>
     <a href="#faq">FAQ</a>
   </div>
   <a href="#contact" class="nav__cta">Start a Project →</a>
@@ -2354,6 +2554,57 @@
         <span class="service__cta">Inquire →</span>
       </a>
     </div>
+  </div>
+</section>
+
+<!-- ─── FROM THE LAB ─────────────────────────────────
+     Live POC that demonstrates the kind of work pitched above. The
+     studio built it for itself to prove the build pattern (prompt →
+     AI validation → 3D model → human approval loop), then opened it
+     up as a working product. Sits between Services and FAQ so the
+     pattern is: services pitch → lab proof → answers. -->
+<section class="lab" id="lab">
+  <div class="container">
+    <div class="section-head" data-stagger>
+      <span class="section-head__kicker" data-reveal="sticker">↓ from the lab</span>
+      <h2 data-reveal>Live POCs.<br>Not just <span class="scribble" data-reveal="scribble">slides.</span></h2>
+      <p class="section-head__desc" data-reveal>
+        We build live POCs to prove the patterns we recommend. Below is one we shipped this quarter — a working product, not a screenshot.
+      </p>
+    </div>
+
+    <article class="lab__callout" data-reveal>
+      <div class="lab__media">
+        <span class="lab__media-tag">↓ live build</span>
+        <img src="print-your-prompt/img/IMG_1561.jpg" alt="Custom 3D-printed copper steampunk robot, hand-finished, from a customer prompt." loading="lazy" />
+        <span class="lab__media-pulse">// shipping orders</span>
+      </div>
+
+      <div class="lab__body">
+        <div class="lab__kicker">↓ poc · print-your-prompt</div>
+        <h3 class="lab__title">Describe a thing.<br>We <em>print</em> it.</h3>
+        <div class="lab__meta">// prompt → AI validation → 3D model → approval loop → fulfillment</div>
+
+        <p class="lab__copy">A landing page that takes a customer prompt, validates it with an LLM, generates a 3D model via the Meshy API, emails the customer a render proof, and runs the approval-and-edit loop through a chat interface. Then a real printer prints it.</p>
+        <p class="lab__copy">It's the entire <strong>capture-to-convert pattern</strong> in one product: content captures the audience, custom apps and payments convert them. Built end-to-end in days, not quarters.</p>
+
+        <div class="lab__stack">
+          <span class="lab__stack-label">// stack</span>
+          <span class="lab__stack-chip">Netlify</span>
+          <span class="lab__stack-chip">Forms</span>
+          <span class="lab__stack-chip">Resend</span>
+          <span class="lab__stack-chip">Claude API</span>
+          <span class="lab__stack-chip">Meshy</span>
+          <span class="lab__stack-chip">FDM Print</span>
+        </div>
+
+        <div class="lab__links">
+          <a href="print-your-prompt/" class="lab__link lab__link--primary">See the Live POC →</a>
+          <a href="#contact" class="lab__link lab__link--ghost">Want one for your team?</a>
+        </div>
+      </div>
+    </article>
+
   </div>
 </section>
 
