@@ -381,7 +381,80 @@
     letter-spacing: 0.03em;
   }
 
-  .examples {
+  .upload-zone {
+    position: relative;
+    border: 2px dashed var(--ink);
+    background: rgba(255, 224, 0, 0.06);
+    cursor: pointer;
+    transition: background 0.15s ease, border-color 0.15s ease;
+  }
+  .upload-zone:hover { background: rgba(255, 224, 0, 0.15); }
+  .upload-zone.is-dragging {
+    background: rgba(255, 224, 0, 0.25);
+    border-style: solid;
+    border-color: var(--tangerine);
+  }
+  .upload-zone__placeholder {
+    padding: 18px 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    text-align: center;
+  }
+  .upload-zone__icon {
+    font-family: 'Anton', sans-serif;
+    font-size: 28px;
+    line-height: 1;
+    color: var(--tangerine);
+    -webkit-text-stroke: 1.5px var(--ink);
+  }
+  .upload-zone__text {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+  .upload-zone__hint {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--orchid-deep);
+    letter-spacing: 0.03em;
+  }
+  .upload-zone__preview {
+    position: relative;
+    padding: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .upload-zone__preview img {
+    max-height: 140px;
+    max-width: 100%;
+    border: 1.5px solid var(--ink);
+    display: block;
+  }
+  .upload-zone__remove {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    width: 28px;
+    height: 28px;
+    border: 2px solid var(--ink);
+    background: var(--punch);
+    color: var(--paper);
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 16px;
+    line-height: 1;
+    cursor: pointer;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .upload-zone__remove:hover { background: var(--ink); color: var(--punch); }
+
+    .examples {
     display: flex;
     flex-wrap: wrap;
     gap: 6px;
@@ -942,6 +1015,23 @@
             <span class="field__hint">// keep it simple — AI does the work</span>
           </div>
 
+          <div class="field">
+            <label for="reference-image">Reference image <span style="color: var(--orchid-deep); font-weight: 400; text-transform: lowercase; letter-spacing: 0;">(optional)</span></label>
+            <div class="upload-zone" id="upload-zone">
+              <input type="file" id="reference-image" accept="image/jpeg,image/png,image/webp" hidden />
+              <div class="upload-zone__placeholder" id="upload-placeholder">
+                <span class="upload-zone__icon">↑</span>
+                <span class="upload-zone__text">Tap to attach a sketch or photo</span>
+                <span class="upload-zone__hint">// jpg, png, webp · up to 5MB</span>
+              </div>
+              <div class="upload-zone__preview" id="upload-preview" style="display: none;">
+                <img id="upload-preview-img" alt="Your reference" />
+                <button type="button" class="upload-zone__remove" id="upload-remove" aria-label="Remove reference image">×</button>
+              </div>
+            </div>
+            <span class="field__hint">// helps the AI nail what you have in mind</span>
+          </div>
+
           <div class="examples" aria-label="Example prompts">
             <span class="example-chip__lbl">try one →</span>
             <button type="button" class="example-chip" data-example="A pumpkin-headed creature about 5 inches tall, with skinny green legs, black goggle eyes, and tiny clawed hands. Cute and slightly creepy, hand-painted look.">pumpkin creature</button>
@@ -949,10 +1039,10 @@
             <button type="button" class="example-chip" data-example="A medieval knight in silver plate armor with a green stone-textured face mask, about 6 inches tall, dramatic pose.">silver knight</button>
           </div>
 
-          <button type="submit" class="submit-btn" id="submit-btn">Generate AI preview →</button>
+          <button type="submit" class="submit-btn" id="submit-btn">Generate concept →</button>
 
           <p class="fine-print">
-            // ~90 seconds · no charge · by submitting you agree we&apos;ll email you about your request
+            // ~10 seconds · no charge · by submitting you agree we&apos;ll email you about your request
           </p>
 
           <div class="rate-notice" id="rate-notice">
@@ -1788,8 +1878,8 @@
               </g>
             </svg>
             <span class="preview-pane__idle-tag">↓ ready when you are</span>
-            <h3 class="preview-pane__idle-headline">Submit a prompt.<br>Watch it <em>render.</em></h3>
-            <p class="preview-pane__idle-sub">The AI will clean up your prompt, hand it to Meshy, and stream the 3D preview right here. Takes about a minute.</p>
+            <h3 class="preview-pane__idle-headline">Submit a prompt.<br>See the <em>concept.</em></h3>
+            <p class="preview-pane__idle-sub">The AI will polish your prompt and generate a hyperrealistic concept image right here. Takes about 10 seconds.</p>
           </div>
 
           <div class="preview-pane__rendering">
@@ -1803,33 +1893,14 @@
 
           <div class="preview-pane__done">
             <div class="preview-result">
-              <span class="preview-result__sticker">↓ AI Preview</span>
+              <span class="preview-result__sticker">↓ AI Concept</span>
               <img id="preview-img" src="" alt="3D preview render of your prompt" />
             </div>
 
-            <!-- Paint UI: shown by default after a successful preview.
-                 Hidden via JS once the user chooses (apply or skip). -->
-            <div class="paint-prompt" id="paint-prompt">
-              <div class="paint-prompt__head">↓ optional · add paint</div>
-              <h4>Want to <em>color it in?</em></h4>
-              <p class="paint-prompt__sub">// describe colors, materials, finish · ~90 sec</p>
-              <textarea id="paint-input" placeholder="weathered copper with verdigris, brass rivets, glowing blue eyes..." maxlength="500"></textarea>
-              <div class="paint-chips">
-                <span class="paint-chips__lbl">try one →</span>
-                <button type="button" class="paint-chip" data-paint="weathered copper with green verdigris patina, polished brass accents">copper · verdigris</button>
-                <button type="button" class="paint-chip" data-paint="hand-painted matte finish, vibrant cartoon colors, soft shadows, like a stop-motion figure">stop-motion</button>
-                <button type="button" class="paint-chip" data-paint="glossy black armor with neon pink edge highlights, chrome details, cyberpunk vibe">cyberpunk</button>
-              </div>
-              <div class="paint-buttons">
-                <button type="button" class="paint-btn paint-btn--apply" id="paint-apply">Apply paint →</button>
-                <button type="button" class="paint-btn paint-btn--skip" id="paint-skip">Skip — looks good</button>
-              </div>
-            </div>
-
-            <!-- Success message: hidden until they choose, then replaces paint UI. -->
-            <div class="preview-success" id="preview-success" style="display: none;">
-              <h4>This is a <em>draft.</em></h4>
-              <p>Humans are <strong>evaluating your request</strong>. Watch your inbox — we&apos;ll follow up within 24 hours with pricing, tweaks, and next steps.</p>
+            <!-- Success message shown immediately after the concept image lands. -->
+            <div class="preview-success" id="preview-success">
+              <h4>Concept <em>delivered.</em></h4>
+              <p>Three more angles are <strong>headed to your inbox</strong> — three-quarter, back, and side views. Humans review your request and follow up within 24 hours with pricing and next steps.</p>
             </div>
           </div>
 
@@ -2133,7 +2204,7 @@ function runApp() {
   function scheduleOverlay() {
     overlayUserDismissed = false;
     if (overlayShowTimer) clearTimeout(overlayShowTimer);
-    overlayShowTimer = setTimeout(showWaitOverlay, 5000);
+    overlayShowTimer = setTimeout(showWaitOverlay, 4000);
   }
 
   function cancelOverlay() {
@@ -2721,9 +2792,9 @@ function runApp() {
     });
   });
 
-  // ─── Live preview pipeline ─────────────────────────────────
-  // Validate prompt → start preview → poll → optional paint step → email.
-  // Lead capture (Netlify Forms) fires up front so leads land regardless.
+  // ─── Image-first pipeline (Nano Banana) ────────────────────
+  // validate prompt -> generate image -> show in pane -> email user
+  // Image upload (optional) goes in alongside the prompt.
 
   const form = document.getElementById('prompt-form');
   const submitBtn = document.getElementById('submit-btn');
@@ -2736,24 +2807,114 @@ function runApp() {
   const errorMsg = document.getElementById('preview-error-msg');
   const retryBtn = document.getElementById('preview-retry');
   const rateNotice = document.getElementById('rate-notice');
-
-  // Paint UI elements
-  const paintPromptEl = document.getElementById('paint-prompt');
-  const paintInput = document.getElementById('paint-input');
-  const paintApplyBtn = document.getElementById('paint-apply');
-  const paintSkipBtn = document.getElementById('paint-skip');
   const previewSuccess = document.getElementById('preview-success');
 
-  // Paint chip clicks
-  document.querySelectorAll('.paint-chip[data-paint]').forEach(btn => {
-    btn.addEventListener('click', () => {
-      if (paintInput) {
-        paintInput.value = btn.dataset.paint;
-        paintInput.focus();
-      }
-    });
-  });
+  // Upload field
+  const uploadZone = document.getElementById('upload-zone');
+  const fileInput = document.getElementById('reference-image');
+  const uploadPlaceholder = document.getElementById('upload-placeholder');
+  const uploadPreview = document.getElementById('upload-preview');
+  const uploadPreviewImg = document.getElementById('upload-preview-img');
+  const uploadRemove = document.getElementById('upload-remove');
 
+  // State for the uploaded reference image (compressed, base64).
+  let referenceImageData = null;  // { mime_type, data, dataUrl }
+
+  // ─── Image upload handling ───────────────────────────────
+  // Compress to max 1024px on the longest edge, JPEG quality 0.85.
+  // That brings most photos to ~150-400KB, well under the 5MB cap.
+  function compressImage(file) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => {
+        const img = new Image();
+        img.onload = () => {
+          const MAX_DIM = 1024;
+          let { width, height } = img;
+          if (width > MAX_DIM || height > MAX_DIM) {
+            const scale = MAX_DIM / Math.max(width, height);
+            width = Math.round(width * scale);
+            height = Math.round(height * scale);
+          }
+          const canvas = document.createElement('canvas');
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, width, height);
+          const dataUrl = canvas.toDataURL('image/jpeg', 0.85);
+          const base64 = dataUrl.split(',')[1];
+          resolve({
+            mime_type: 'image/jpeg',
+            data: base64,
+            dataUrl: dataUrl,
+          });
+        };
+        img.onerror = reject;
+        img.src = reader.result;
+      };
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
+  }
+
+  function handleFile(file) {
+    if (!file) return;
+    if (file.size > 5 * 1024 * 1024) {
+      alert('Image must be under 5MB.');
+      return;
+    }
+    if (!/^image\/(jpe?g|png|webp)$/i.test(file.type)) {
+      alert('Please use a JPEG, PNG, or WebP image.');
+      return;
+    }
+    compressImage(file).then(result => {
+      referenceImageData = result;
+      if (uploadPreviewImg) uploadPreviewImg.src = result.dataUrl;
+      if (uploadPlaceholder) uploadPlaceholder.style.display = 'none';
+      if (uploadPreview) uploadPreview.style.display = 'flex';
+    }).catch(err => {
+      console.error('Compression failed:', err);
+      alert('Could not read that image. Try a different file.');
+    });
+  }
+
+  function clearUpload() {
+    referenceImageData = null;
+    if (fileInput) fileInput.value = '';
+    if (uploadPlaceholder) uploadPlaceholder.style.display = 'flex';
+    if (uploadPreview) uploadPreview.style.display = 'none';
+  }
+
+  if (uploadZone && fileInput) {
+    uploadZone.addEventListener('click', (e) => {
+      // Don't trigger if they clicked the remove button
+      if (e.target.closest('#upload-remove')) return;
+      fileInput.click();
+    });
+    fileInput.addEventListener('change', (e) => {
+      const file = e.target.files && e.target.files[0];
+      if (file) handleFile(file);
+    });
+    uploadZone.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      uploadZone.classList.add('is-dragging');
+    });
+    uploadZone.addEventListener('dragleave', () => {
+      uploadZone.classList.remove('is-dragging');
+    });
+    uploadZone.addEventListener('drop', (e) => {
+      e.preventDefault();
+      uploadZone.classList.remove('is-dragging');
+      const file = e.dataTransfer.files && e.dataTransfer.files[0];
+      if (file) handleFile(file);
+    });
+  }
+
+  if (uploadRemove) {
+    uploadRemove.addEventListener('click', clearUpload);
+  }
+
+  // ─── Rate limit ─────────────────────────────────
   const RENDER_LIMIT = 3;
   function getRenderCount() {
     try { return parseInt(sessionStorage.getItem('renderCount') || '0', 10); }
@@ -2773,13 +2934,14 @@ function runApp() {
   }
   checkRateLimit();
 
+  // ─── State / log helpers ──────────────────────────
   function setState(state) {
     if (!previewPane) return;
     previewPane.dataset.state = state;
     if (statusLabel) {
       statusLabel.textContent = ({
         idle: 'Idle',
-        rendering: 'Rendering...',
+        rendering: 'Generating...',
         done: 'Complete',
         error: 'Failed',
       })[state] || state;
@@ -2811,129 +2973,21 @@ function runApp() {
     setState('error');
   }
 
-  function showSuccessMessage() {
-    if (paintPromptEl) paintPromptEl.style.display = 'none';
-    if (previewSuccess) previewSuccess.style.display = 'block';
-  }
-
-  function fireRenderEmail({ name, email, originalPrompt, cleanedPrompt, taskId }) {
-    if (!email || !taskId) return;
-    fetch('/.netlify/functions/send-render-email', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        name: name,
-        email: email,
-        original_prompt: originalPrompt,
-        cleaned_prompt: cleanedPrompt,
-        task_id: taskId,
-      }),
-    })
-      .then(r => r.json())
-      .then(d => {
-        if (d.ok) {
-          logLine('// email queued to ' + email, 'ok');
-        } else {
-          console.warn('Email send failed:', d.error);
-        }
-      })
-      .catch(err => console.warn('Email request failed:', err));
-  }
-
   if (retryBtn) {
     retryBtn.addEventListener('click', () => {
       setState('idle');
       submitBtn.disabled = false;
-      submitBtn.textContent = 'Generate AI preview →';
+      submitBtn.textContent = 'Generate concept →';
     });
   }
 
-  // Generic poller used for both preview and paint phases.
-  function pollUntilDone(taskId, opts) {
-    const phase = opts.phase || 'preview';
-    const onSuccess = opts.onSuccess || (() => {});
-    const onFailure = opts.onFailure || (() => {});
-
-    return new Promise((resolve) => {
-      const maxAttempts = 50;
-      let attempts = 0;
-      let lastReportedProgress = phase === 'paint' ? 5 : 20;
-
-      const milestonesPreview = [
-        { p: 30, msg: '// generating geometry...' },
-        { p: 50, msg: '// shaping the form...' },
-        { p: 70, msg: '// refining details...' },
-        { p: 85, msg: '// almost there...' },
-      ];
-      const milestonesPaint = [
-        { p: 30, msg: '// laying down base coat...' },
-        { p: 55, msg: '// adding texture detail...' },
-        { p: 80, msg: '// final pass...' },
-      ];
-      const milestones = phase === 'paint' ? milestonesPaint : milestonesPreview;
-      const milestonesShown = new Set();
-
-      function tick() {
-        attempts++;
-        if (attempts > maxAttempts) {
-          onFailure('timed out waiting for render');
-          resolve();
-          return;
-        }
-
-        fetch('/.netlify/functions/render-status?id=' + encodeURIComponent(taskId))
-          .then(r => r.json())
-          .then(data => {
-            if (data.error) {
-              onFailure(data.error);
-              resolve();
-              return;
-            }
-
-            const apiProgress = typeof data.progress === 'number' ? data.progress : lastReportedProgress;
-            const baseStart = phase === 'paint' ? 5 : 20;
-            const range = phase === 'paint' ? 90 : 75;
-            const displayProgress = baseStart + (apiProgress / 100) * range;
-            if (displayProgress > lastReportedProgress) {
-              setProgress(displayProgress);
-              lastReportedProgress = displayProgress;
-            }
-
-            milestones.forEach(m => {
-              if (displayProgress >= m.p && !milestonesShown.has(m.p)) {
-                logLine(m.msg);
-                milestonesShown.add(m.p);
-              }
-            });
-
-            if (data.status === 'SUCCEEDED') {
-              onSuccess(data);
-              resolve();
-              return;
-            }
-
-            if (data.status === 'FAILED') {
-              onFailure(data.error || 'unknown');
-              resolve();
-              return;
-            }
-
-            setTimeout(tick, 4000);
-          })
-          .catch(err => {
-            console.warn('Polling error:', err);
-            setTimeout(tick, 6000);
-          });
-      }
-
-      setTimeout(tick, 3000);
-    });
-  }
-
+  // ─── Submit pipeline ──────────────────────────────
   if (form && submitBtn && previewPane) {
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
 
+      // Always fire Netlify Forms submission first so the lead lands
+      // regardless of what happens with the image generation.
       const formData = new FormData(form);
       fetch('/', {
         method: 'POST',
@@ -2946,37 +3000,30 @@ function runApp() {
       const userEmail = (formData.get('email') || '').toString().trim();
       if (!prompt) return;
 
-      // Rate limit check
+      // Rate limit
       if (getRenderCount() >= RENDER_LIMIT) {
         submitBtn.disabled = true;
         submitBtn.textContent = 'Sent — check email';
         setState('done');
         if (previewImg) previewImg.removeAttribute('src');
-        showSuccessMessage();
         return;
       }
 
-      // Reset paint UI for fresh render
-      if (paintPromptEl) paintPromptEl.style.display = 'block';
-      if (previewSuccess) previewSuccess.style.display = 'none';
-      if (paintInput) paintInput.value = '';
-      if (paintApplyBtn) paintApplyBtn.disabled = false;
-      if (paintSkipBtn) paintSkipBtn.disabled = false;
-
       submitBtn.disabled = true;
-      submitBtn.textContent = 'Rendering...';
+      submitBtn.textContent = 'Generating...';
       setState('rendering');
       setProgress(0);
       if (logEl) logEl.innerHTML = '';
 
+      // Mobile: scroll preview into view
       if (window.matchMedia('(max-width: 900px)').matches && previewPane) {
         previewPane.scrollIntoView({ behavior: 'smooth', block: 'center' });
       }
 
       try {
         // Step 1: validate
-        logLine('// cleaning your prompt...');
-        setProgress(5);
+        logLine('// polishing your prompt...');
+        setProgress(15);
         const validateRes = await fetch('/.netlify/functions/validate-prompt', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -2988,176 +3035,96 @@ function runApp() {
           logLine('// ' + (validateData.reason || 'prompt rejected'), 'err');
           showError(validateData.reason || 'That prompt cannot be rendered. Try a different idea.');
           submitBtn.disabled = false;
-          submitBtn.textContent = 'Generate AI preview →';
+          submitBtn.textContent = 'Generate concept →';
           return;
         }
 
         const cleanedPrompt = validateData.cleaned_prompt;
-        logLine('// prompt cleaned', 'ok');
-        setProgress(15);
+        logLine('// prompt polished', 'ok');
+        setProgress(30);
 
-        // Step 2: start preview render
-        logLine('// queuing 3D model build...');
-        const startRes = await fetch('/.netlify/functions/start-render', {
+        // Step 2: generate image
+        logLine(referenceImageData
+          ? '// generating with your reference...'
+          : '// generating concept image...');
+        setProgress(45);
+
+        const genBody = { prompt: cleanedPrompt, view: 'front' };
+        if (referenceImageData) {
+          genBody.reference_image = {
+            mime_type: referenceImageData.mime_type,
+            data: referenceImageData.data,
+          };
+        }
+
+        // Smooth progress bar movement during the call (visual only)
+        let fakeProgress = 45;
+        const progressInterval = setInterval(() => {
+          fakeProgress = Math.min(90, fakeProgress + 2);
+          setProgress(fakeProgress);
+        }, 800);
+
+        const genRes = await fetch('/.netlify/functions/generate-image', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ prompt: cleanedPrompt }),
+          body: JSON.stringify(genBody),
         });
-        const startData = await startRes.json();
+        clearInterval(progressInterval);
 
-        if (!startRes.ok || !startData.task_id) {
-          logLine('// could not start render', 'err');
-          showError(startData.details || startData.error || 'Render service is taking a breather. Try again in a moment.');
+        const genData = await genRes.json();
+
+        if (!genRes.ok || !genData.ok) {
+          logLine('// generation failed: ' + (genData.error || 'unknown'), 'err');
+          showError(genData.details || genData.error || 'Could not generate the image. Try a simpler prompt or wait a moment.');
           submitBtn.disabled = false;
-          submitBtn.textContent = 'Generate AI preview →';
+          submitBtn.textContent = 'Generate concept →';
           return;
         }
 
-        const previewTaskId = startData.task_id;
-        logLine('// job queued: ' + previewTaskId.slice(0, 8) + '...', 'ok');
-        setProgress(20);
+        logLine('// image ready', 'ok');
+        setProgress(100);
         incrementRenderCount();
 
-        // Step 3: poll for preview completion
-        await pollUntilDone(previewTaskId, {
-          phase: 'preview',
-          onSuccess: function (data) {
-            logLine('// render complete', 'ok');
-            setProgress(100);
-            if (data.thumbnail_url && previewImg) {
-              previewImg.src = data.thumbnail_url;
-              previewImg.onload = function () { setState('done'); };
-              previewImg.onerror = function () { setState('done'); };
-            } else {
-              setState('done');
-            }
-            submitBtn.disabled = false;
-            submitBtn.textContent = 'Generate AI preview →';
-            checkRateLimit();
+        // Display the image (data URL from the base64 response)
+        const dataUrl = 'data:' + (genData.mime_type || 'image/png') + ';base64,' + genData.image_b64;
+        if (previewImg) {
+          previewImg.src = dataUrl;
+          previewImg.onload = () => setState('done');
+          previewImg.onerror = () => setState('done');
+        } else {
+          setState('done');
+        }
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Generate concept →';
+        checkRateLimit();
 
-            // Wire up paint apply/skip
-            if (paintApplyBtn) {
-              paintApplyBtn.onclick = async function () {
-                const paintPromptText = (paintInput && paintInput.value || '').trim();
-                if (paintPromptText.length < 3) {
-                  paintInput && paintInput.focus();
-                  return;
-                }
-                paintApplyBtn.disabled = true;
-                if (paintSkipBtn) paintSkipBtn.disabled = true;
-
-                setState('rendering');
-                setProgress(0);
-                if (logEl) logEl.innerHTML = '';
-                logLine('// applying paint...');
-                setProgress(5);
-
-                try {
-                  const paintStart = await fetch('/.netlify/functions/start-paint', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                      preview_task_id: previewTaskId,
-                      paint_prompt: paintPromptText,
-                    }),
-                  });
-                  const paintStartData = await paintStart.json();
-
-                  if (!paintStart.ok || !paintStartData.task_id) {
-                    logLine('// paint failed: ' + (paintStartData.details || paintStartData.error || 'unknown'), 'err');
-                    fireRenderEmail({
-                      name: userName,
-                      email: userEmail,
-                      originalPrompt: prompt,
-                      cleanedPrompt: cleanedPrompt,
-                      taskId: previewTaskId,
-                    });
-                    setState('done');
-                    showSuccessMessage();
-                    return;
-                  }
-
-                  const paintTaskId = paintStartData.task_id;
-                  logLine('// paint job queued: ' + paintTaskId.slice(0, 8) + '...', 'ok');
-
-                  await pollUntilDone(paintTaskId, {
-                    phase: 'paint',
-                    onSuccess: function (paintData) {
-                      logLine('// paint complete', 'ok');
-                      setProgress(100);
-                      if (paintData.thumbnail_url && previewImg) {
-                        previewImg.src = paintData.thumbnail_url;
-                        previewImg.onload = function () { setState('done'); };
-                        previewImg.onerror = function () { setState('done'); };
-                      } else {
-                        setState('done');
-                      }
-                      fireRenderEmail({
-                        name: userName,
-                        email: userEmail,
-                        originalPrompt: prompt,
-                        cleanedPrompt: cleanedPrompt + '\n\nPaint: ' + paintPromptText,
-                        taskId: paintTaskId,
-                      });
-                      showSuccessMessage();
-                    },
-                    onFailure: function (errMsg) {
-                      logLine('// paint failed: ' + errMsg, 'err');
-                      fireRenderEmail({
-                        name: userName,
-                        email: userEmail,
-                        originalPrompt: prompt,
-                        cleanedPrompt: cleanedPrompt,
-                        taskId: previewTaskId,
-                      });
-                      setState('done');
-                      showSuccessMessage();
-                    },
-                  });
-                } catch (paintErr) {
-                  console.error('Paint pipeline error:', paintErr);
-                  logLine('// paint network error', 'err');
-                  fireRenderEmail({
-                    name: userName,
-                    email: userEmail,
-                    originalPrompt: prompt,
-                    cleanedPrompt: cleanedPrompt,
-                    taskId: previewTaskId,
-                  });
-                  setState('done');
-                  showSuccessMessage();
-                }
-              };
-            }
-
-            if (paintSkipBtn) {
-              paintSkipBtn.onclick = function () {
-                if (paintApplyBtn) paintApplyBtn.disabled = true;
-                paintSkipBtn.disabled = true;
-                fireRenderEmail({
-                  name: userName,
-                  email: userEmail,
-                  originalPrompt: prompt,
-                  cleanedPrompt: cleanedPrompt,
-                  taskId: previewTaskId,
-                });
-                showSuccessMessage();
-              };
-            }
-          },
-          onFailure: function (errMsg) {
-            logLine('// render failed: ' + errMsg, 'err');
-            showError(errMsg || 'Render failed. Try a different prompt — fine details and complex assemblies sometimes trip up the AI.');
-            submitBtn.disabled = false;
-            submitBtn.textContent = 'Generate AI preview →';
-          },
-        });
+        // Fire send-render-email so the user gets the email + queued angles.
+        if (userEmail) {
+          fetch('/.netlify/functions/send-render-email', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              name: userName,
+              email: userEmail,
+              original_prompt: prompt,
+              cleaned_prompt: cleanedPrompt,
+              image_b64: genData.image_b64,
+              mime_type: genData.mime_type,
+            }),
+          })
+            .then(r => r.json())
+            .then(d => {
+              if (d.ok) logLine('// email queued to ' + userEmail, 'ok');
+              else console.warn('Email send failed:', d.error);
+            })
+            .catch(err => console.warn('Email request failed:', err));
+        }
 
       } catch (err) {
         console.error('Pipeline error:', err);
         showError('Something glitched on our end. We have your prompt and will email you.');
         submitBtn.disabled = false;
-        submitBtn.textContent = 'Generate AI preview →';
+        submitBtn.textContent = 'Generate concept →';
       }
     });
   }
