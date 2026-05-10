@@ -1047,7 +1047,7 @@
 
           <div class="rate-notice" id="rate-notice">
             <strong>// session limit reached</strong><br>
-            You&apos;ve used your 3 free previews this session. Submit your prompt below — we&apos;ll send you the next render by email.
+            You&apos;ve used your 10 free previews this session. Submit your prompt below — we&apos;ll send you the next render by email.
           </div>
         </form>
       </div>
@@ -2915,16 +2915,29 @@ function runApp() {
   }
 
   // ─── Rate limit ─────────────────────────────────
-  const RENDER_LIMIT = 3;
+  const RENDER_LIMIT = 10;
   function getRenderCount() {
     try { return parseInt(sessionStorage.getItem('renderCount') || '0', 10); }
     catch (e) { return 0; }
   }
   function incrementRenderCount() {
+    // Don't count renders against the admin email (so testing doesn't
+    // burn through the session counter).
+    const emailField = document.getElementById('email');
+    const currentEmail = emailField ? emailField.value.trim().toLowerCase() : '';
+    if (currentEmail === 'ayoung14@gmail.com') return;
     try { sessionStorage.setItem('renderCount', String(getRenderCount() + 1)); }
     catch (e) {}
   }
   function checkRateLimit() {
+    const emailField = document.getElementById('email');
+    const currentEmail = emailField ? emailField.value.trim().toLowerCase() : '';
+    if (currentEmail === 'ayoung14@gmail.com') {
+      // Admin: hide the notice if it was previously shown
+      if (rateNotice) rateNotice.classList.remove('is-visible');
+      submitBtn.textContent = 'Generate concept →';
+      return false;
+    }
     if (getRenderCount() >= RENDER_LIMIT && rateNotice) {
       rateNotice.classList.add('is-visible');
       submitBtn.textContent = 'Send for offline render →';
@@ -2933,6 +2946,13 @@ function runApp() {
     return false;
   }
   checkRateLimit();
+
+  // Re-check on email field changes so the admin override applies live
+  const emailFieldForRate = document.getElementById('email');
+  if (emailFieldForRate) {
+    emailFieldForRate.addEventListener('input', checkRateLimit);
+    emailFieldForRate.addEventListener('change', checkRateLimit);
+  }
 
   // ─── State / log helpers ──────────────────────────
   function setState(state) {
@@ -3000,8 +3020,9 @@ function runApp() {
       const userEmail = (formData.get('email') || '').toString().trim();
       if (!prompt) return;
 
-      // Rate limit
-      if (getRenderCount() >= RENDER_LIMIT) {
+      // Rate limit (skipped for the studio's own admin email)
+      const isAdmin = userEmail.toLowerCase() === 'ayoung14@gmail.com';
+      if (!isAdmin && getRenderCount() >= RENDER_LIMIT) {
         submitBtn.disabled = true;
         submitBtn.textContent = 'Sent — check email';
         setState('done');
