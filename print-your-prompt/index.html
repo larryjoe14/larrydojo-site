@@ -962,7 +962,97 @@
         </form>
       </div>
 
-      <aside class="preview-pane" id="preview-pane" data-state="idle" aria-live="polite">
+      <style>
+/* Bulletproof preview pane styles — inlined so they can't get lost in
+   a stylesheet truncation or override race. !important on the layout
+   rules ensures these win over anything earlier in the cascade. */
+#preview-pane {
+  background: #0a0a0a !important;
+  color: #f4eee4 !important;
+  border: 3px solid #0a0a0a !important;
+  box-shadow: 12px 12px 0 #ffe000 !important;
+  overflow: hidden !important;
+  position: relative !important;
+  min-height: 540px !important;
+  display: flex !important;
+  flex-direction: column !important;
+}
+@media (max-width: 900px) {
+  #preview-pane { min-height: 480px !important; box-shadow: 7px 7px 0 #ffe000 !important; }
+}
+#preview-pane > .preview-pane__header {
+  background: #0a0a0a !important;
+  color: #f4eee4 !important;
+  padding: 14px 18px !important;
+  border-bottom: 2px solid #f4eee4 !important;
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  flex-shrink: 0 !important;
+}
+#preview-pane > .preview-pane__body {
+  flex: 1 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  padding: 22px 20px !important;
+  gap: 18px !important;
+}
+
+/* State toggles — !important on display so any later rule cannot win. */
+#preview-pane .preview-pane__idle,
+#preview-pane .preview-pane__rendering,
+#preview-pane .preview-pane__done,
+#preview-pane .preview-pane__error {
+  display: none !important;
+}
+#preview-pane[data-state="idle"] .preview-pane__idle {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-align: center !important;
+  gap: 18px !important;
+  padding: 20px !important;
+  flex: 1 !important;
+}
+#preview-pane[data-state="rendering"] .preview-pane__rendering {
+  display: flex !important;
+  flex-direction: column !important;
+  flex: 1 !important;
+  gap: 18px !important;
+}
+#preview-pane[data-state="done"] .preview-pane__done {
+  display: flex !important;
+  flex-direction: column !important;
+  flex: 1 !important;
+  gap: 16px !important;
+}
+#preview-pane[data-state="error"] .preview-pane__error {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-align: center !important;
+  gap: 12px !important;
+  padding: 20px !important;
+  flex: 1 !important;
+}
+
+/* Two-column grid — bulletproof version */
+.start-grid {
+  display: grid !important;
+  grid-template-columns: 1fr 1fr !important;
+  gap: 32px !important;
+  align-items: start !important;
+  max-width: 1100px !important;
+  margin: 0 auto !important;
+}
+@media (max-width: 900px) {
+  .start-grid { grid-template-columns: 1fr !important; gap: 28px !important; }
+}
+</style>
+
+<aside class="preview-pane" id="preview-pane" data-state="idle" aria-live="polite">
         <div class="preview-pane__header">
           <span class="preview-pane__title">// Live Preview</span>
           <span class="preview-pane__status" id="preview-status">Idle</span>
