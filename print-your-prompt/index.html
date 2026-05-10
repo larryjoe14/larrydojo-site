@@ -2042,6 +2042,7 @@
 
 <script>
 (function () {
+function runApp() {
   'use strict';
 
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -3039,6 +3040,13 @@
     });
   }
 
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', runApp);
+} else {
+  runApp();
+}
 })();
 </script>
 
