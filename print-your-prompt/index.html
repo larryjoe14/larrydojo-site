@@ -952,7 +952,7 @@
           <button type="submit" class="submit-btn" id="submit-btn">Generate AI preview →</button>
 
           <p class="fine-print">
-            // ~60 seconds · no charge · we follow up by email
+            // ~60 seconds · no charge · by submitting you agree we&apos;ll email you about your request
           </p>
 
           <div class="rate-notice" id="rate-notice">
@@ -1038,6 +1038,128 @@
   flex: 1 !important;
 }
 
+
+/* ─── PAINT STEP UI ────────────────────────────────
+   Shown after a successful preview render. */
+.paint-prompt {
+  background: #f4eee4 !important;
+  color: #0a0a0a !important;
+  padding: 18px 18px 16px !important;
+  border: 2px solid #f4eee4 !important;
+}
+.paint-prompt__head {
+  font-family: 'Caveat', cursive !important;
+  font-size: 22px !important;
+  color: #ff5b1f !important;
+  line-height: 1 !important;
+  margin-bottom: 4px !important;
+}
+.paint-prompt h4 {
+  font-family: 'Archivo Black', sans-serif !important;
+  font-size: 17px !important;
+  text-transform: uppercase !important;
+  line-height: 1.05 !important;
+  margin: 0 0 4px !important;
+  color: #0a0a0a !important;
+}
+.paint-prompt h4 em { font-style: normal !important; color: #ff5b1f !important; }
+.paint-prompt__sub {
+  font-size: 12px !important;
+  line-height: 1.5 !important;
+  color: #0a0a0a !important;
+  opacity: 0.7 !important;
+  margin: 0 0 12px !important;
+  font-family: 'JetBrains Mono', monospace !important;
+}
+.paint-prompt textarea {
+  width: 100% !important;
+  box-sizing: border-box !important;
+  padding: 10px 12px !important;
+  border: 2px solid #0a0a0a !important;
+  background: #fffaef !important;
+  font-family: inherit !important;
+  font-size: 14px !important;
+  line-height: 1.4 !important;
+  color: #0a0a0a !important;
+  resize: vertical !important;
+  min-height: 60px !important;
+  margin-bottom: 10px !important;
+}
+.paint-prompt textarea:focus {
+  outline: none !important;
+  border-color: #ff5b1f !important;
+  box-shadow: 0 0 0 2px #ffe000 !important;
+}
+.paint-chips {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 6px !important;
+  align-items: center !important;
+  margin-bottom: 12px !important;
+}
+.paint-chips__lbl {
+  font-family: 'JetBrains Mono', monospace !important;
+  font-size: 10px !important;
+  letter-spacing: 0.06em !important;
+  color: #7c5cb8 !important;
+  text-transform: lowercase !important;
+}
+.paint-chip {
+  background: transparent !important;
+  border: 1.5px dashed #0a0a0a !important;
+  color: #0a0a0a !important;
+  padding: 4px 10px !important;
+  font-family: 'JetBrains Mono', monospace !important;
+  font-size: 11px !important;
+  letter-spacing: 0.02em !important;
+  cursor: pointer !important;
+  transition: all 0.15s ease !important;
+}
+.paint-chip:hover {
+  background: #ffe000 !important;
+  border-style: solid !important;
+  transform: translate(-1px, -1px) !important;
+}
+.paint-buttons {
+  display: flex !important;
+  gap: 8px !important;
+  flex-wrap: wrap !important;
+}
+.paint-btn {
+  flex: 1 !important;
+  min-width: 130px !important;
+  padding: 11px 14px !important;
+  border: 2px solid #0a0a0a !important;
+  font-family: 'Archivo Black', sans-serif !important;
+  font-size: 12px !important;
+  letter-spacing: 0.04em !important;
+  text-transform: uppercase !important;
+  cursor: pointer !important;
+  transition: all 0.15s ease !important;
+}
+.paint-btn--apply {
+  background: #0a0a0a !important;
+  color: #ffe000 !important;
+}
+.paint-btn--apply:hover {
+  background: #ff5b1f !important;
+  color: #f4eee4 !important;
+  transform: translate(-1px, -1px) !important;
+  box-shadow: 3px 3px 0 #0a0a0a !important;
+}
+.paint-btn--skip {
+  background: transparent !important;
+  color: #0a0a0a !important;
+}
+.paint-btn--skip:hover {
+  background: #f4eee4 !important;
+}
+.paint-btn:disabled {
+  opacity: 0.5 !important;
+  cursor: not-allowed !important;
+  transform: none !important;
+}
+
 /* Two-column grid — bulletproof version */
 .start-grid {
   display: grid !important;
@@ -1088,7 +1210,28 @@
               <span class="preview-result__sticker">↓ AI Preview</span>
               <img id="preview-img" src="" alt="3D preview render of your prompt" />
             </div>
-            <div class="preview-success">
+
+            <!-- Paint UI: shown by default after a successful preview.
+                 Hidden via JS once the user chooses (apply or skip). -->
+            <div class="paint-prompt" id="paint-prompt">
+              <div class="paint-prompt__head">↓ optional · add paint</div>
+              <h4>Want to <em>color it in?</em></h4>
+              <p class="paint-prompt__sub">// describe colors, materials, finish · ~90 sec</p>
+              <textarea id="paint-input" placeholder="weathered copper with verdigris, brass rivets, glowing blue eyes..." maxlength="500"></textarea>
+              <div class="paint-chips">
+                <span class="paint-chips__lbl">try one →</span>
+                <button type="button" class="paint-chip" data-paint="weathered copper with green verdigris patina, polished brass accents">copper · verdigris</button>
+                <button type="button" class="paint-chip" data-paint="hand-painted matte finish, vibrant cartoon colors, soft shadows, like a stop-motion figure">stop-motion</button>
+                <button type="button" class="paint-chip" data-paint="glossy black armor with neon pink edge highlights, chrome details, cyberpunk vibe">cyberpunk</button>
+              </div>
+              <div class="paint-buttons">
+                <button type="button" class="paint-btn paint-btn--apply" id="paint-apply">Apply paint →</button>
+                <button type="button" class="paint-btn paint-btn--skip" id="paint-skip">Skip — looks good</button>
+              </div>
+            </div>
+
+            <!-- Success message: hidden until they choose, then replaces paint UI. -->
+            <div class="preview-success" id="preview-success" style="display: none;">
               <h4>This is a <em>draft.</em></h4>
               <p>Humans are <strong>evaluating your request</strong>. Watch your inbox — we&apos;ll follow up within 24 hours with pricing, tweaks, and next steps.</p>
             </div>
@@ -1383,6 +1526,9 @@
   });
 
   // ─── Live preview pipeline ─────────────────────────────────
+  // Validate prompt → start preview → poll → optional paint step → email.
+  // Lead capture (Netlify Forms) fires up front so leads land regardless.
+
   const form = document.getElementById('prompt-form');
   const submitBtn = document.getElementById('submit-btn');
   const previewPane = document.getElementById('preview-pane');
@@ -1394,6 +1540,23 @@
   const errorMsg = document.getElementById('preview-error-msg');
   const retryBtn = document.getElementById('preview-retry');
   const rateNotice = document.getElementById('rate-notice');
+
+  // Paint UI elements
+  const paintPromptEl = document.getElementById('paint-prompt');
+  const paintInput = document.getElementById('paint-input');
+  const paintApplyBtn = document.getElementById('paint-apply');
+  const paintSkipBtn = document.getElementById('paint-skip');
+  const previewSuccess = document.getElementById('preview-success');
+
+  // Paint chip clicks
+  document.querySelectorAll('.paint-chip[data-paint]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      if (paintInput) {
+        paintInput.value = btn.dataset.paint;
+        paintInput.focus();
+      }
+    });
+  });
 
   const RENDER_LIMIT = 3;
   function getRenderCount() {
@@ -1452,11 +1615,122 @@
     setState('error');
   }
 
+  function showSuccessMessage() {
+    if (paintPromptEl) paintPromptEl.style.display = 'none';
+    if (previewSuccess) previewSuccess.style.display = 'block';
+  }
+
+  function fireRenderEmail({ name, email, originalPrompt, cleanedPrompt, taskId }) {
+    if (!email || !taskId) return;
+    fetch('/.netlify/functions/send-render-email', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        name: name,
+        email: email,
+        original_prompt: originalPrompt,
+        cleaned_prompt: cleanedPrompt,
+        task_id: taskId,
+      }),
+    })
+      .then(r => r.json())
+      .then(d => {
+        if (d.ok) {
+          logLine('// email queued to ' + email, 'ok');
+        } else {
+          console.warn('Email send failed:', d.error);
+        }
+      })
+      .catch(err => console.warn('Email request failed:', err));
+  }
+
   if (retryBtn) {
     retryBtn.addEventListener('click', () => {
       setState('idle');
       submitBtn.disabled = false;
       submitBtn.textContent = 'Generate AI preview →';
+    });
+  }
+
+  // Generic poller used for both preview and paint phases.
+  function pollUntilDone(taskId, opts) {
+    const phase = opts.phase || 'preview';
+    const onSuccess = opts.onSuccess || (() => {});
+    const onFailure = opts.onFailure || (() => {});
+
+    return new Promise((resolve) => {
+      const maxAttempts = 50;
+      let attempts = 0;
+      let lastReportedProgress = phase === 'paint' ? 5 : 20;
+
+      const milestonesPreview = [
+        { p: 30, msg: '// generating geometry...' },
+        { p: 50, msg: '// shaping the form...' },
+        { p: 70, msg: '// refining details...' },
+        { p: 85, msg: '// almost there...' },
+      ];
+      const milestonesPaint = [
+        { p: 30, msg: '// laying down base coat...' },
+        { p: 55, msg: '// adding texture detail...' },
+        { p: 80, msg: '// final pass...' },
+      ];
+      const milestones = phase === 'paint' ? milestonesPaint : milestonesPreview;
+      const milestonesShown = new Set();
+
+      function tick() {
+        attempts++;
+        if (attempts > maxAttempts) {
+          onFailure('timed out waiting for render');
+          resolve();
+          return;
+        }
+
+        fetch('/.netlify/functions/render-status?id=' + encodeURIComponent(taskId))
+          .then(r => r.json())
+          .then(data => {
+            if (data.error) {
+              onFailure(data.error);
+              resolve();
+              return;
+            }
+
+            const apiProgress = typeof data.progress === 'number' ? data.progress : lastReportedProgress;
+            const baseStart = phase === 'paint' ? 5 : 20;
+            const range = phase === 'paint' ? 90 : 75;
+            const displayProgress = baseStart + (apiProgress / 100) * range;
+            if (displayProgress > lastReportedProgress) {
+              setProgress(displayProgress);
+              lastReportedProgress = displayProgress;
+            }
+
+            milestones.forEach(m => {
+              if (displayProgress >= m.p && !milestonesShown.has(m.p)) {
+                logLine(m.msg);
+                milestonesShown.add(m.p);
+              }
+            });
+
+            if (data.status === 'SUCCEEDED') {
+              onSuccess(data);
+              resolve();
+              return;
+            }
+
+            if (data.status === 'FAILED') {
+              onFailure(data.error || 'unknown');
+              resolve();
+              return;
+            }
+
+            setTimeout(tick, 4000);
+          })
+          .catch(err => {
+            console.warn('Polling error:', err);
+            setTimeout(tick, 6000);
+          });
+      }
+
+      setTimeout(tick, 3000);
     });
   }
 
@@ -1472,15 +1746,26 @@
       }).catch(err => console.warn('Background form submission failed:', err));
 
       const prompt = (formData.get('prompt') || '').toString().trim();
+      const userName = (formData.get('name') || '').toString().trim();
+      const userEmail = (formData.get('email') || '').toString().trim();
       if (!prompt) return;
 
+      // Rate limit check
       if (getRenderCount() >= RENDER_LIMIT) {
         submitBtn.disabled = true;
         submitBtn.textContent = 'Sent — check email';
         setState('done');
         if (previewImg) previewImg.removeAttribute('src');
+        showSuccessMessage();
         return;
       }
+
+      // Reset paint UI for fresh render
+      if (paintPromptEl) paintPromptEl.style.display = 'block';
+      if (previewSuccess) previewSuccess.style.display = 'none';
+      if (paintInput) paintInput.value = '';
+      if (paintApplyBtn) paintApplyBtn.disabled = false;
+      if (paintSkipBtn) paintSkipBtn.disabled = false;
 
       submitBtn.disabled = true;
       submitBtn.textContent = 'Rendering...';
@@ -1493,6 +1778,7 @@
       }
 
       try {
+        // Step 1: validate
         logLine('// cleaning your prompt...');
         setProgress(5);
         const validateRes = await fetch('/.netlify/functions/validate-prompt', {
@@ -1514,6 +1800,7 @@
         logLine('// prompt cleaned', 'ok');
         setProgress(15);
 
+        // Step 2: start preview render
         logLine('// queuing 3D model build...');
         const startRes = await fetch('/.netlify/functions/start-render', {
           method: 'POST',
@@ -1530,118 +1817,145 @@
           return;
         }
 
-        logLine('// job queued: ' + startData.task_id.slice(0, 8) + '...', 'ok');
+        const previewTaskId = startData.task_id;
+        logLine('// job queued: ' + previewTaskId.slice(0, 8) + '...', 'ok');
         setProgress(20);
         incrementRenderCount();
 
-        const taskId = startData.task_id;
-        const maxAttempts = 50;
-        let attempts = 0;
-        let lastReportedProgress = 20;
-
-        const milestones = [
-          { p: 30, msg: '// generating geometry...' },
-          { p: 50, msg: '// shaping the form...' },
-          { p: 70, msg: '// refining details...' },
-          { p: 85, msg: '// almost there...' },
-        ];
-        const milestonesShown = new Set();
-
-        function poll() {
-          attempts++;
-          if (attempts > maxAttempts) {
-            logLine('// timed out waiting for render', 'err');
-            showError('Render is taking longer than usual. We have your details and will email you the result when it is ready.');
+        // Step 3: poll for preview completion
+        await pollUntilDone(previewTaskId, {
+          phase: 'preview',
+          onSuccess: function (data) {
+            logLine('// render complete', 'ok');
+            setProgress(100);
+            if (data.thumbnail_url && previewImg) {
+              previewImg.src = data.thumbnail_url;
+              previewImg.onload = function () { setState('done'); };
+              previewImg.onerror = function () { setState('done'); };
+            } else {
+              setState('done');
+            }
             submitBtn.disabled = false;
             submitBtn.textContent = 'Generate AI preview →';
-            return;
-          }
+            checkRateLimit();
 
-          fetch('/.netlify/functions/render-status?id=' + encodeURIComponent(taskId))
-            .then(r => r.json())
-            .then(data => {
-              if (data.error) {
-                logLine('// status check error: ' + data.error, 'err');
-                showError('Lost the connection to the render service. We will email you the result.');
-                return;
-              }
-
-              const apiProgress = typeof data.progress === 'number' ? data.progress : lastReportedProgress;
-              const displayProgress = 20 + (apiProgress / 100) * 75;
-              if (displayProgress > lastReportedProgress) {
-                setProgress(displayProgress);
-                lastReportedProgress = displayProgress;
-              }
-
-              milestones.forEach(m => {
-                if (displayProgress >= m.p && !milestonesShown.has(m.p)) {
-                  logLine(m.msg);
-                  milestonesShown.add(m.p);
+            // Wire up paint apply/skip
+            if (paintApplyBtn) {
+              paintApplyBtn.onclick = async function () {
+                const paintPromptText = (paintInput && paintInput.value || '').trim();
+                if (paintPromptText.length < 3) {
+                  paintInput && paintInput.focus();
+                  return;
                 }
-              });
+                paintApplyBtn.disabled = true;
+                if (paintSkipBtn) paintSkipBtn.disabled = true;
 
-              if (data.status === 'SUCCEEDED') {
-                logLine('// render complete', 'ok');
-                setProgress(100);
-                if (data.thumbnail_url && previewImg) {
-                  previewImg.src = data.thumbnail_url;
-                  previewImg.onload = () => setState('done');
-                  previewImg.onerror = () => setState('done');
-                } else {
-                  setState('done');
-                }
-                submitBtn.disabled = false;
-                submitBtn.textContent = 'Generate AI preview →';
-                checkRateLimit();
+                setState('rendering');
+                setProgress(0);
+                if (logEl) logEl.innerHTML = '';
+                logLine('// applying paint...');
+                setProgress(5);
 
-                // Fire the human-review email. Don't block UI on it.
-                // The email sends via Resend with the verified Meshy task ID,
-                // so we can't spoof the image URL even though the call is
-                // initiated from the browser.
-                const userName = (formData.get('name') || '').toString().trim();
-                const userEmail = (formData.get('email') || '').toString().trim();
-                if (userEmail && taskId) {
-                  fetch('/.netlify/functions/send-render-email', {
+                try {
+                  const paintStart = await fetch('/.netlify/functions/start-paint', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
+                      preview_task_id: previewTaskId,
+                      paint_prompt: paintPromptText,
+                    }),
+                  });
+                  const paintStartData = await paintStart.json();
+
+                  if (!paintStart.ok || !paintStartData.task_id) {
+                    logLine('// paint failed: ' + (paintStartData.details || paintStartData.error || 'unknown'), 'err');
+                    fireRenderEmail({
                       name: userName,
                       email: userEmail,
-                      original_prompt: prompt,
-                      cleaned_prompt: cleanedPrompt,
-                      task_id: taskId,
-                    }),
-                  })
-                    .then(r => r.json())
-                    .then(d => {
-                      if (d.ok) {
-                        logLine('// email queued to ' + userEmail, 'ok');
+                      originalPrompt: prompt,
+                      cleanedPrompt: cleanedPrompt,
+                      taskId: previewTaskId,
+                    });
+                    setState('done');
+                    showSuccessMessage();
+                    return;
+                  }
+
+                  const paintTaskId = paintStartData.task_id;
+                  logLine('// paint job queued: ' + paintTaskId.slice(0, 8) + '...', 'ok');
+
+                  await pollUntilDone(paintTaskId, {
+                    phase: 'paint',
+                    onSuccess: function (paintData) {
+                      logLine('// paint complete', 'ok');
+                      setProgress(100);
+                      if (paintData.thumbnail_url && previewImg) {
+                        previewImg.src = paintData.thumbnail_url;
+                        previewImg.onload = function () { setState('done'); };
+                        previewImg.onerror = function () { setState('done'); };
                       } else {
-                        console.warn('Email send failed:', d.error);
+                        setState('done');
                       }
-                    })
-                    .catch(err => console.warn('Email request failed:', err));
+                      fireRenderEmail({
+                        name: userName,
+                        email: userEmail,
+                        originalPrompt: prompt,
+                        cleanedPrompt: cleanedPrompt + '\n\nPaint: ' + paintPromptText,
+                        taskId: paintTaskId,
+                      });
+                      showSuccessMessage();
+                    },
+                    onFailure: function (errMsg) {
+                      logLine('// paint failed: ' + errMsg, 'err');
+                      fireRenderEmail({
+                        name: userName,
+                        email: userEmail,
+                        originalPrompt: prompt,
+                        cleanedPrompt: cleanedPrompt,
+                        taskId: previewTaskId,
+                      });
+                      setState('done');
+                      showSuccessMessage();
+                    },
+                  });
+                } catch (paintErr) {
+                  console.error('Paint pipeline error:', paintErr);
+                  logLine('// paint network error', 'err');
+                  fireRenderEmail({
+                    name: userName,
+                    email: userEmail,
+                    originalPrompt: prompt,
+                    cleanedPrompt: cleanedPrompt,
+                    taskId: previewTaskId,
+                  });
+                  setState('done');
+                  showSuccessMessage();
                 }
-                return;
-              }
+              };
+            }
 
-              if (data.status === 'FAILED') {
-                logLine('// render failed: ' + (data.error || 'unknown'), 'err');
-                showError(data.error || 'Render failed. Try a different prompt — fine details and complex assemblies sometimes trip up the AI.');
-                submitBtn.disabled = false;
-                submitBtn.textContent = 'Generate AI preview →';
-                return;
-              }
-
-              setTimeout(poll, 4000);
-            })
-            .catch(err => {
-              console.warn('Polling error:', err);
-              setTimeout(poll, 6000);
-            });
-        }
-
-        setTimeout(poll, 3000);
+            if (paintSkipBtn) {
+              paintSkipBtn.onclick = function () {
+                if (paintApplyBtn) paintApplyBtn.disabled = true;
+                paintSkipBtn.disabled = true;
+                fireRenderEmail({
+                  name: userName,
+                  email: userEmail,
+                  originalPrompt: prompt,
+                  cleanedPrompt: cleanedPrompt,
+                  taskId: previewTaskId,
+                });
+                showSuccessMessage();
+              };
+            }
+          },
+          onFailure: function (errMsg) {
+            logLine('// render failed: ' + errMsg, 'err');
+            showError(errMsg || 'Render failed. Try a different prompt — fine details and complex assemblies sometimes trip up the AI.');
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Generate AI preview →';
+          },
+        });
 
       } catch (err) {
         console.error('Pipeline error:', err);
@@ -1651,6 +1965,7 @@
       }
     });
   }
+
 })();
 </script>
 
