@@ -939,7 +939,7 @@
           <div class="field">
             <label for="prompt">Describe the object <span class="req">*</span></label>
             <textarea id="prompt" name="prompt" required placeholder="A miniature 1980s arcade cabinet, pixel-style, about the size of a coffee mug..."></textarea>
-            <span class="field__hint">// be specific about size, style, and what it&apos;s for</span>
+            <span class="field__hint">// keep it simple — AI does the work</span>
           </div>
 
           <div class="examples" aria-label="Example prompts">
@@ -1038,6 +1038,182 @@
   flex: 1 !important;
 }
 
+
+/* ─── WAIT-TIME OVERLAY ───────────────────────────
+   Bottom-anchored sheet that pops up while rendering.
+   Shows the Gary Vee video to occupy the user during the wait.
+   Auto-shows after 5s of rendering, auto-hides on success/failure.
+   User can dismiss with X, ESC, or backdrop click. */
+#wait-overlay {
+  position: fixed !important;
+  inset: 0 !important;
+  z-index: 9999 !important;
+  display: none !important;
+  background: rgba(10, 10, 10, 0.55) !important;
+  backdrop-filter: blur(2px) !important;
+  -webkit-backdrop-filter: blur(2px) !important;
+  align-items: flex-end !important;
+  justify-content: center !important;
+  animation: wait-overlay-fade 0.25s ease-out !important;
+}
+#wait-overlay.is-visible {
+  display: flex !important;
+}
+@keyframes wait-overlay-fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  #wait-overlay { animation: none !important; }
+}
+
+#wait-overlay__sheet {
+  width: 100% !important;
+  max-width: 880px !important;
+  max-height: 70vh !important;
+  background: #f4eee4 !important;
+  border: 3px solid #0a0a0a !important;
+  border-bottom: none !important;
+  box-shadow: 0 -8px 0 #ffe000, 0 -16px 40px rgba(0, 0, 0, 0.4) !important;
+  display: flex !important;
+  flex-direction: column !important;
+  position: relative !important;
+  animation: wait-overlay-slide 0.35s cubic-bezier(0.2, 0.7, 0.3, 1) !important;
+}
+@keyframes wait-overlay-slide {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  #wait-overlay__sheet { animation: none !important; }
+}
+@media (max-width: 720px) {
+  #wait-overlay { align-items: stretch !important; }
+  #wait-overlay__sheet {
+    max-height: 100vh !important;
+    height: 100vh !important;
+    border-bottom: 3px solid #0a0a0a !important;
+  }
+}
+
+#wait-overlay__head {
+  display: flex !important;
+  align-items: flex-start !important;
+  justify-content: space-between !important;
+  padding: 18px 22px 12px !important;
+  border-bottom: 2px solid #0a0a0a !important;
+  flex-shrink: 0 !important;
+  gap: 14px !important;
+}
+.wait-overlay__title-block {
+  flex: 1 !important;
+  min-width: 0 !important;
+}
+.wait-overlay__kicker {
+  font-family: 'Caveat', cursive !important;
+  font-size: 22px !important;
+  color: #ff5b1f !important;
+  line-height: 1 !important;
+  margin-bottom: 4px !important;
+  display: block !important;
+}
+.wait-overlay__title {
+  font-family: 'Archivo Black', sans-serif !important;
+  font-size: 22px !important;
+  line-height: 1 !important;
+  text-transform: uppercase !important;
+  color: #0a0a0a !important;
+  margin: 0 0 4px !important;
+}
+.wait-overlay__title em {
+  font-style: normal !important;
+  background: #ffe000 !important;
+  padding: 0 4px !important;
+}
+.wait-overlay__sub {
+  font-family: 'JetBrains Mono', monospace !important;
+  font-size: 11px !important;
+  color: #0a0a0a !important;
+  opacity: 0.65 !important;
+  margin: 0 !important;
+}
+#wait-overlay__close {
+  background: #0a0a0a !important;
+  color: #ffe000 !important;
+  border: 2px solid #0a0a0a !important;
+  width: 36px !important;
+  height: 36px !important;
+  font-family: 'Archivo Black', sans-serif !important;
+  font-size: 18px !important;
+  line-height: 1 !important;
+  cursor: pointer !important;
+  flex-shrink: 0 !important;
+  padding: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+#wait-overlay__close:hover {
+  background: #ff5b1f !important;
+  color: #f4eee4 !important;
+}
+
+#wait-overlay__body {
+  padding: 18px 22px !important;
+  flex: 1 !important;
+  min-height: 0 !important;
+  display: flex !important;
+  flex-direction: column !important;
+}
+.wait-overlay__video-frame {
+  position: relative !important;
+  width: 100% !important;
+  padding-bottom: 56.25% !important;
+  background: #0a0a0a !important;
+  border: 2px solid #0a0a0a !important;
+  flex-shrink: 0 !important;
+}
+.wait-overlay__video-frame iframe {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  border: 0 !important;
+}
+.wait-overlay__attr {
+  font-family: 'JetBrains Mono', monospace !important;
+  font-size: 11px !important;
+  color: #0a0a0a !important;
+  margin: 10px 0 0 !important;
+  opacity: 0.7 !important;
+}
+.wait-overlay__attr a {
+  color: #0a0a0a !important;
+  text-decoration: underline !important;
+}
+
+/* Reopen pill: shown in the rendering panel after the user dismisses
+   the overlay, so they can bring it back. */
+#reopen-overlay {
+  display: none;
+  background: var(--acid, #ffe000) !important;
+  color: #0a0a0a !important;
+  border: 2px solid #0a0a0a !important;
+  padding: 6px 12px !important;
+  font-family: 'JetBrains Mono', monospace !important;
+  font-size: 11px !important;
+  letter-spacing: 0.04em !important;
+  cursor: pointer !important;
+  margin-top: 8px !important;
+  align-self: flex-start !important;
+}
+#reopen-overlay.is-visible {
+  display: inline-block !important;
+}
+#reopen-overlay:hover {
+  background: #ff5b1f !important;
+  color: #f4eee4 !important;
+}
 
 /* ─── PAINT STEP UI ────────────────────────────────
    Shown after a successful preview render. */
@@ -1203,6 +1379,7 @@
               <span class="preview-progress__label" id="preview-pct">0%</span>
             </div>
             <div class="preview-log" id="preview-log" aria-live="polite"></div>
+            <button type="button" id="reopen-overlay" aria-label="Reopen video overlay">🎥 watch the workshop reel</button>
           </div>
 
           <div class="preview-pane__done">
@@ -1499,6 +1676,100 @@
   'use strict';
 
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // ─── Wait-time overlay ────────────────────────────────────
+  // Pops up after 5s of rendering; auto-hides on success/failure.
+  // User can dismiss with X, ESC, or backdrop click. Once dismissed,
+  // a "Watch the workshop reel" pill in the rendering panel lets them
+  // bring it back.
+  const overlay = document.getElementById('wait-overlay');
+  const overlayClose = document.getElementById('wait-overlay__close');
+  const overlayIframe = document.getElementById('wait-overlay__iframe');
+  const reopenPill = document.getElementById('reopen-overlay');
+  const VIDEO_SRC = 'https://www.youtube.com/embed/bQmcuDtp9yw?autoplay=1&rel=0&modestbranding=1&playsinline=1';
+  let overlayShownThisRender = false;
+  let overlayUserDismissed = false;
+  let overlayShowTimer = null;
+
+  function showWaitOverlay() {
+    if (!overlay) return;
+    if (overlayUserDismissed) return; // respect their dismissal
+    if (overlayIframe) overlayIframe.src = VIDEO_SRC;
+    overlay.classList.add('is-visible');
+    overlay.setAttribute('aria-hidden', 'false');
+    overlayShownThisRender = true;
+    if (reopenPill) reopenPill.classList.remove('is-visible');
+  }
+
+  function hideWaitOverlay(byUser) {
+    if (!overlay) return;
+    overlay.classList.remove('is-visible');
+    overlay.setAttribute('aria-hidden', 'true');
+    // Stop the video by clearing src — prevents background audio.
+    if (overlayIframe) overlayIframe.src = '';
+    if (byUser) {
+      overlayUserDismissed = true;
+      // Show reopen pill if we're still rendering
+      if (previewPane && previewPane.dataset.state === 'rendering' && reopenPill) {
+        reopenPill.classList.add('is-visible');
+      }
+    }
+  }
+
+  function scheduleOverlay() {
+    overlayUserDismissed = false; // new render = fresh chance to show
+    overlayShownThisRender = false;
+    if (overlayShowTimer) clearTimeout(overlayShowTimer);
+    overlayShowTimer = setTimeout(showWaitOverlay, 5000);
+  }
+
+  function cancelOverlay() {
+    if (overlayShowTimer) {
+      clearTimeout(overlayShowTimer);
+      overlayShowTimer = null;
+    }
+    hideWaitOverlay(false);
+    if (reopenPill) reopenPill.classList.remove('is-visible');
+  }
+
+  if (overlayClose) {
+    overlayClose.addEventListener('click', () => hideWaitOverlay(true));
+  }
+  if (overlay) {
+    overlay.addEventListener('click', (e) => {
+      // Backdrop click only — not when clicking the sheet itself
+      if (e.target === overlay) hideWaitOverlay(true);
+    });
+  }
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && overlay && overlay.classList.contains('is-visible')) {
+      hideWaitOverlay(true);
+    }
+  });
+  if (reopenPill) {
+    reopenPill.addEventListener('click', () => {
+      overlayUserDismissed = false;
+      showWaitOverlay();
+    });
+  }
+
+  // Watch the preview-pane state attribute. When it switches to 'rendering',
+  // schedule the overlay. When it switches away, cancel/hide it.
+  // We use a MutationObserver so this works regardless of which code path
+  // sets the state (preview phase or paint phase).
+  const previewPaneEl = document.getElementById('preview-pane');
+  if (previewPaneEl && 'MutationObserver' in window) {
+    const stateObserver = new MutationObserver(() => {
+      const state = previewPaneEl.dataset.state;
+      if (state === 'rendering') {
+        scheduleOverlay();
+      } else {
+        cancelOverlay();
+      }
+    });
+    stateObserver.observe(previewPaneEl, { attributes: true, attributeFilter: ['data-state'] });
+  }
+
 
   const reveals = document.querySelectorAll('[data-reveal]');
   if (reduceMotion) {
@@ -1968,6 +2239,29 @@
 
 })();
 </script>
+
+
+  <!-- ─── WAIT-TIME OVERLAY ───────────────────────────
+       Pops up during long renders to occupy the user.
+       Hidden by default, shown via JS when rendering takes >5s. -->
+  <div id="wait-overlay" role="dialog" aria-modal="true" aria-labelledby="wait-overlay-title" aria-hidden="true">
+    <div id="wait-overlay__sheet">
+      <div id="wait-overlay__head">
+        <div class="wait-overlay__title-block">
+          <span class="wait-overlay__kicker">↓ this might take a sec</span>
+          <h2 id="wait-overlay-title" class="wait-overlay__title">Don&apos;t close <em>the tab.</em></h2>
+          <p class="wait-overlay__sub">// we&apos;re still working · watch this while you wait</p>
+        </div>
+        <button type="button" id="wait-overlay__close" aria-label="Close overlay">×</button>
+      </div>
+      <div id="wait-overlay__body">
+        <div class="wait-overlay__video-frame">
+          <iframe id="wait-overlay__iframe" src="" title="Gary Vee on AI" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+        <p class="wait-overlay__attr">— Gary Vaynerchuk · <a href="https://www.youtube.com/watch?v=bQmcuDtp9yw" target="_blank" rel="noopener">watch on YouTube ↗</a></p>
+      </div>
+    </div>
+  </div>
 
 </body>
 </html>
