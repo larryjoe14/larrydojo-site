@@ -890,70 +890,129 @@
   </div>
 </header>
 
-<!-- ─── PROMPT FORM ─────────────────────────────────── -->
-<section id="start" style="background: var(--paper);">
-  <div class="container" style="max-width: 720px;">
-    <div class="section-head" data-reveal>
+<!-- ─── PROMPT FORM SECTION (now with live preview) ──
+     Two-column layout: form on the left, live render preview on the
+     right. The preview pane goes through three states — idle, rendering,
+     done — driven by JS that orchestrates the validate → start-render
+     → poll-status pipeline. -->
+<section id="start" class="start-section">
+  <div class="container" style="max-width: 1280px;">
+    <div class="section-head" data-reveal style="max-width: 720px;">
       <span class="section-head__kicker">↓ start here</span>
       <h2>Tell us<br>what to <em style="font-style: normal; color: var(--tangerine);">make.</em></h2>
       <p class="section-head__desc">
-        One line, one paragraph, or a half-formed napkin sketch in words. Our AI will tighten the prompt before it goes to the model — you'll see the proof before anything prints.
+        One line, one paragraph, or a half-formed napkin sketch in words. Watch the AI render it live on the right — then we follow up by email with the order details.
       </p>
     </div>
 
-    <form
-      class="prompt-card"
-      id="prompt-form"
-      name="print-prompt"
-      method="POST"
-      data-netlify="true"
-      netlify-honeypot="bot-field"
-      data-reveal
-    >
-      <input type="hidden" name="form-name" value="print-prompt" />
-      <p style="display:none;"><label>Don't fill this out: <input name="bot-field" /></label></p>
+    <div class="start-grid">
 
-      <div class="prompt-card__head">
-        <span class="prompt-card__title">// New Print Order</span>
-        <span class="prompt-card__meta">v1.0 · proof first</span>
+      <div>
+        <form
+          class="prompt-card"
+          id="prompt-form"
+          name="print-prompt"
+          method="POST"
+          data-netlify="true"
+          netlify-honeypot="bot-field"
+          data-reveal
+        >
+          <input type="hidden" name="form-name" value="print-prompt" />
+          <p style="display:none;"><label>Don't fill this out: <input name="bot-field" /></label></p>
+
+          <div class="prompt-card__head">
+            <span class="prompt-card__title">// New Print Order</span>
+            <span class="prompt-card__meta">v1.0 · live preview</span>
+          </div>
+
+          <div class="field">
+            <label for="name">Your name <span class="req">*</span></label>
+            <input type="text" id="name" name="name" required placeholder="Alec" autocomplete="name" />
+          </div>
+
+          <div class="field">
+            <label for="email">Email <span class="req">*</span></label>
+            <input type="email" id="email" name="email" required placeholder="you@example.com" autocomplete="email" />
+            <span class="field__hint">// follow-up + order details land here</span>
+          </div>
+
+          <div class="field">
+            <label for="prompt">Describe the object <span class="req">*</span></label>
+            <textarea id="prompt" name="prompt" required placeholder="A miniature 1980s arcade cabinet, pixel-style, about the size of a coffee mug..."></textarea>
+            <span class="field__hint">// be specific about size, style, and what it&apos;s for</span>
+          </div>
+
+          <div class="examples" aria-label="Example prompts">
+            <span class="example-chip__lbl">try one →</span>
+            <button type="button" class="example-chip" data-example="A pumpkin-headed creature about 5 inches tall, with skinny green legs, black goggle eyes, and tiny clawed hands. Cute and slightly creepy, hand-painted look.">pumpkin creature</button>
+            <button type="button" class="example-chip" data-example="A copper steampunk robot, round riveted body, big blue glass eyes, brass mustache, with little antenna ears. About 6 inches tall, weathered patina finish.">steampunk robot</button>
+            <button type="button" class="example-chip" data-example="A medieval knight in silver plate armor with a green stone-textured face mask, about 6 inches tall, dramatic pose.">silver knight</button>
+          </div>
+
+          <button type="submit" class="submit-btn" id="submit-btn">Generate AI preview →</button>
+
+          <p class="fine-print">
+            // ~60 seconds · no charge · we follow up by email
+          </p>
+
+          <div class="rate-notice" id="rate-notice">
+            <strong>// session limit reached</strong><br>
+            You&apos;ve used your 3 free previews this session. Submit your prompt below — we&apos;ll send you the next render by email.
+          </div>
+        </form>
       </div>
 
-      <div class="field">
-        <label for="name">Your name <span class="req">*</span></label>
-        <input type="text" id="name" name="name" required placeholder="Alec" autocomplete="name" />
-      </div>
+      <aside class="preview-pane" id="preview-pane" data-state="idle" aria-live="polite">
+        <div class="preview-pane__header">
+          <span class="preview-pane__title">// Live Preview</span>
+          <span class="preview-pane__status" id="preview-status">Idle</span>
+        </div>
 
-      <div class="field">
-        <label for="email">Email <span class="req">*</span></label>
-        <input type="email" id="email" name="email" required placeholder="you@example.com" autocomplete="email" />
-        <span class="field__hint">// proof and approval link go here</span>
-      </div>
+        <div class="preview-pane__body">
 
-      <div class="field">
-        <label for="prompt">Describe the object <span class="req">*</span></label>
-        <textarea id="prompt" name="prompt" required placeholder="A miniature 1980s arcade cabinet, pixel-style, about the size of a coffee mug..."></textarea>
-        <span class="field__hint">// be specific about size, style, and what it's for</span>
-      </div>
+          <div class="preview-pane__idle">
+            <svg class="preview-pane__idle-art" viewBox="0 0 140 140" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <g stroke="#ffe000" stroke-width="2.5" fill="none" stroke-linejoin="round">
+                <path d="M40 50 L70 35 L100 50 L100 90 L70 105 L40 90 Z" />
+                <path d="M40 50 L70 65 L100 50" />
+                <path d="M70 65 L70 105" />
+                <circle cx="70" cy="20" r="4" fill="#ff5b1f" stroke="none" />
+                <path d="M70 24 L70 35" stroke-dasharray="3 3" />
+              </g>
+            </svg>
+            <span class="preview-pane__idle-tag">↓ ready when you are</span>
+            <h3 class="preview-pane__idle-headline">Submit a prompt.<br>Watch it <em>render.</em></h3>
+            <p class="preview-pane__idle-sub">The AI will clean up your prompt, hand it to Meshy, and stream the 3D preview right here. Takes about a minute.</p>
+          </div>
 
-      <div class="examples" aria-label="Example prompts">
-        <span class="example-chip__lbl">try one →</span>
-        <button type="button" class="example-chip" data-example="A pumpkin-headed creature about 5 inches tall, with skinny green legs, black goggle eyes, and tiny clawed hands. Cute and slightly creepy, hand-painted look.">pumpkin creature</button>
-        <button type="button" class="example-chip" data-example="A copper steampunk robot, round riveted body, big blue glass eyes, brass mustache, with little antenna ears. About 6 inches tall, weathered patina finish.">steampunk robot</button>
-        <button type="button" class="example-chip" data-example="A medieval knight in silver plate armor with a green stone-textured face mask, about 6 inches tall, dramatic pose.">silver knight</button>
-      </div>
+          <div class="preview-pane__rendering">
+            <div class="preview-progress" aria-label="Render progress">
+              <div class="preview-progress__bar" id="preview-bar"></div>
+              <span class="preview-progress__label" id="preview-pct">0%</span>
+            </div>
+            <div class="preview-log" id="preview-log" aria-live="polite"></div>
+          </div>
 
-      <button type="submit" class="submit-btn" id="submit-btn">Send it for an AI proof →</button>
+          <div class="preview-pane__done">
+            <div class="preview-result">
+              <span class="preview-result__sticker">↓ AI Preview</span>
+              <img id="preview-img" src="" alt="3D preview render of your prompt" />
+            </div>
+            <div class="preview-success">
+              <h4>Preview <em>delivered.</em></h4>
+              <p>Looking good? Our team will <strong>follow up by email</strong> with order options, pricing, and any tweaks before we print.</p>
+            </div>
+          </div>
 
-      <p class="fine-print">
-        // no charge until you approve the print · proof emailed within minutes
-      </p>
-    </form>
+          <div class="preview-pane__error">
+            <h4>// render failed</h4>
+            <p id="preview-error-msg">Something went sideways. Try a different prompt or come back in a minute.</p>
+            <button type="button" id="preview-retry">Try again</button>
+          </div>
 
-    <div class="prompt-card success-state" id="success-state" aria-live="polite" style="display:none;">
-      <h3>Got it. Proof on the <em>way.</em></h3>
-      <p>Your prompt is queued. We'll email you a 3D render in the next few minutes. Reply with <strong>"approve"</strong>, <strong>"edit"</strong>, or send a tweak.</p>
-      <p>If you don't see it, check spam — and add <strong>hello@larrydojo.com</strong> to your contacts.</p>
-      <p class="success-state__caveat">// you can close this tab. the link in the email is your way back in.</p>
+        </div>
+      </aside>
+
     </div>
   </div>
 </section>
@@ -1205,9 +1264,10 @@
 <script>
 (function () {
   'use strict';
-  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const reveals = document.querySelectorAll('[data-reveal]');
 
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  const reveals = document.querySelectorAll('[data-reveal]');
   if (reduceMotion) {
     reveals.forEach(el => el.classList.add('is-in'));
   } else {
@@ -1222,8 +1282,6 @@
     reveals.forEach(el => io.observe(el));
   }
 
-  // Example chips drop their text into the prompt textarea so people
-  // can edit from a starting point instead of staring at an empty field.
   const promptField = document.getElementById('prompt');
   document.querySelectorAll('.example-chip[data-example]').forEach(btn => {
     btn.addEventListener('click', () => {
@@ -1234,39 +1292,243 @@
     });
   });
 
-  // Form submission. Netlify handles the actual POST; we intercept to
-  // swap in a clean success state without a page reload.
+  // ─── Live preview pipeline ─────────────────────────────────
   const form = document.getElementById('prompt-form');
-  const successState = document.getElementById('success-state');
   const submitBtn = document.getElementById('submit-btn');
+  const previewPane = document.getElementById('preview-pane');
+  const statusLabel = document.getElementById('preview-status');
+  const progressBar = document.getElementById('preview-bar');
+  const progressPct = document.getElementById('preview-pct');
+  const logEl = document.getElementById('preview-log');
+  const previewImg = document.getElementById('preview-img');
+  const errorMsg = document.getElementById('preview-error-msg');
+  const retryBtn = document.getElementById('preview-retry');
+  const rateNotice = document.getElementById('rate-notice');
 
-  if (form && successState && submitBtn) {
+  const RENDER_LIMIT = 3;
+  function getRenderCount() {
+    try { return parseInt(sessionStorage.getItem('renderCount') || '0', 10); }
+    catch (e) { return 0; }
+  }
+  function incrementRenderCount() {
+    try { sessionStorage.setItem('renderCount', String(getRenderCount() + 1)); }
+    catch (e) {}
+  }
+  function checkRateLimit() {
+    if (getRenderCount() >= RENDER_LIMIT && rateNotice) {
+      rateNotice.classList.add('is-visible');
+      submitBtn.textContent = 'Send for offline render →';
+      return true;
+    }
+    return false;
+  }
+  checkRateLimit();
+
+  function setState(state) {
+    if (!previewPane) return;
+    previewPane.dataset.state = state;
+    if (statusLabel) {
+      statusLabel.textContent = ({
+        idle: 'Idle',
+        rendering: 'Rendering...',
+        done: 'Complete',
+        error: 'Failed',
+      })[state] || state;
+    }
+  }
+
+  function logLine(text, kind) {
+    if (!logEl) return;
+    logEl.querySelectorAll('.preview-log__line--latest').forEach(el => {
+      el.classList.remove('preview-log__line--latest');
+    });
+    const line = document.createElement('div');
+    line.className = 'preview-log__line preview-log__line--latest';
+    if (kind === 'ok') line.classList.add('preview-log__line--ok');
+    if (kind === 'err') line.classList.add('preview-log__line--err');
+    line.textContent = text;
+    logEl.appendChild(line);
+    logEl.scrollTop = logEl.scrollHeight;
+  }
+
+  function setProgress(pct) {
+    const clamped = Math.max(0, Math.min(100, Math.round(pct)));
+    if (progressBar) progressBar.style.width = clamped + '%';
+    if (progressPct) progressPct.textContent = clamped + '%';
+  }
+
+  function showError(msg) {
+    if (errorMsg) errorMsg.textContent = msg || 'Something went sideways.';
+    setState('error');
+  }
+
+  if (retryBtn) {
+    retryBtn.addEventListener('click', () => {
+      setState('idle');
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Generate AI preview →';
+    });
+  }
+
+  if (form && submitBtn && previewPane) {
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
-      submitBtn.disabled = true;
-      submitBtn.textContent = 'Sending...';
 
       const formData = new FormData(form);
+      fetch('/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams(formData).toString(),
+      }).catch(err => console.warn('Background form submission failed:', err));
+
+      const prompt = (formData.get('prompt') || '').toString().trim();
+      if (!prompt) return;
+
+      if (getRenderCount() >= RENDER_LIMIT) {
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Sent — check email';
+        setState('done');
+        if (previewImg) previewImg.removeAttribute('src');
+        return;
+      }
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Rendering...';
+      setState('rendering');
+      setProgress(0);
+      if (logEl) logEl.innerHTML = '';
+
+      if (window.matchMedia('(max-width: 900px)').matches && previewPane) {
+        previewPane.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
 
       try {
-        const response = await fetch('/', {
+        logLine('// cleaning your prompt...');
+        setProgress(5);
+        const validateRes = await fetch('/.netlify/functions/validate-prompt', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-          body: new URLSearchParams(formData).toString(),
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ prompt }),
         });
+        const validateData = await validateRes.json();
 
-        if (response.ok) {
-          form.style.display = 'none';
-          successState.style.display = 'block';
-          successState.classList.add('is-visible');
-          successState.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        } else {
-          throw new Error('Submission failed');
+        if (!validateData.ok) {
+          logLine('// ' + (validateData.reason || 'prompt rejected'), 'err');
+          showError(validateData.reason || 'That prompt cannot be rendered. Try a different idea.');
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Generate AI preview →';
+          return;
         }
+
+        const cleanedPrompt = validateData.cleaned_prompt;
+        logLine('// prompt cleaned', 'ok');
+        setProgress(15);
+
+        logLine('// queuing 3D model build...');
+        const startRes = await fetch('/.netlify/functions/start-render', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ prompt: cleanedPrompt }),
+        });
+        const startData = await startRes.json();
+
+        if (!startRes.ok || !startData.task_id) {
+          logLine('// could not start render', 'err');
+          showError(startData.details || startData.error || 'Render service is taking a breather. Try again in a moment.');
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Generate AI preview →';
+          return;
+        }
+
+        logLine('// job queued: ' + startData.task_id.slice(0, 8) + '...', 'ok');
+        setProgress(20);
+        incrementRenderCount();
+
+        const taskId = startData.task_id;
+        const maxAttempts = 50;
+        let attempts = 0;
+        let lastReportedProgress = 20;
+
+        const milestones = [
+          { p: 30, msg: '// generating geometry...' },
+          { p: 50, msg: '// shaping the form...' },
+          { p: 70, msg: '// refining details...' },
+          { p: 85, msg: '// almost there...' },
+        ];
+        const milestonesShown = new Set();
+
+        function poll() {
+          attempts++;
+          if (attempts > maxAttempts) {
+            logLine('// timed out waiting for render', 'err');
+            showError('Render is taking longer than usual. We have your details and will email you the result when it is ready.');
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Generate AI preview →';
+            return;
+          }
+
+          fetch('/.netlify/functions/render-status?id=' + encodeURIComponent(taskId))
+            .then(r => r.json())
+            .then(data => {
+              if (data.error) {
+                logLine('// status check error: ' + data.error, 'err');
+                showError('Lost the connection to the render service. We will email you the result.');
+                return;
+              }
+
+              const apiProgress = typeof data.progress === 'number' ? data.progress : lastReportedProgress;
+              const displayProgress = 20 + (apiProgress / 100) * 75;
+              if (displayProgress > lastReportedProgress) {
+                setProgress(displayProgress);
+                lastReportedProgress = displayProgress;
+              }
+
+              milestones.forEach(m => {
+                if (displayProgress >= m.p && !milestonesShown.has(m.p)) {
+                  logLine(m.msg);
+                  milestonesShown.add(m.p);
+                }
+              });
+
+              if (data.status === 'SUCCEEDED') {
+                logLine('// render complete', 'ok');
+                setProgress(100);
+                if (data.thumbnail_url && previewImg) {
+                  previewImg.src = data.thumbnail_url;
+                  previewImg.onload = () => setState('done');
+                  previewImg.onerror = () => setState('done');
+                } else {
+                  setState('done');
+                }
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Generate AI preview →';
+                checkRateLimit();
+                return;
+              }
+
+              if (data.status === 'FAILED') {
+                logLine('// render failed: ' + (data.error || 'unknown'), 'err');
+                showError(data.error || 'Render failed. Try a different prompt — fine details and complex assemblies sometimes trip up the AI.');
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Generate AI preview →';
+                return;
+              }
+
+              setTimeout(poll, 4000);
+            })
+            .catch(err => {
+              console.warn('Polling error:', err);
+              setTimeout(poll, 6000);
+            });
+        }
+
+        setTimeout(poll, 3000);
+
       } catch (err) {
+        console.error('Pipeline error:', err);
+        showError('Something glitched on our end. We have your prompt and will email you.');
         submitBtn.disabled = false;
-        submitBtn.textContent = 'Send it for an AI proof →';
-        form.submit();
+        submitBtn.textContent = 'Generate AI preview →';
       }
     });
   }
