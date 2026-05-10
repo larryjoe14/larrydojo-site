@@ -1089,8 +1089,8 @@
               <img id="preview-img" src="" alt="3D preview render of your prompt" />
             </div>
             <div class="preview-success">
-              <h4>Preview <em>delivered.</em></h4>
-              <p>Looking good? Our team will <strong>follow up by email</strong> with order options, pricing, and any tweaks before we print.</p>
+              <h4>This is a <em>draft.</em></h4>
+              <p>Humans are <strong>evaluating your request</strong>. Watch your inbox — we&apos;ll follow up within 24 hours with pricing, tweaks, and next steps.</p>
             </div>
           </div>
 
@@ -1593,6 +1593,35 @@
                 submitBtn.disabled = false;
                 submitBtn.textContent = 'Generate AI preview →';
                 checkRateLimit();
+
+                // Fire the human-review email. Don't block UI on it.
+                // The email sends via Resend with the verified Meshy task ID,
+                // so we can't spoof the image URL even though the call is
+                // initiated from the browser.
+                const userName = (formData.get('name') || '').toString().trim();
+                const userEmail = (formData.get('email') || '').toString().trim();
+                if (userEmail && taskId) {
+                  fetch('/.netlify/functions/send-render-email', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                      name: userName,
+                      email: userEmail,
+                      original_prompt: prompt,
+                      cleaned_prompt: cleanedPrompt,
+                      task_id: taskId,
+                    }),
+                  })
+                    .then(r => r.json())
+                    .then(d => {
+                      if (d.ok) {
+                        logLine('// email queued to ' + userEmail, 'ok');
+                      } else {
+                        console.warn('Email send failed:', d.error);
+                      }
+                    })
+                    .catch(err => console.warn('Email request failed:', err));
+                }
                 return;
               }
 
