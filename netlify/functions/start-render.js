@@ -2,9 +2,10 @@
 //
 // Step 2 of the preview pipeline.
 //
-// Takes a cleaned prompt, kicks off a Meshy Text-to-3D preview job (5 credits,
-// no texture — just the geometry preview). Returns the Meshy task_id so the
-// browser can poll for status.
+// Takes a cleaned prompt, kicks off a Meshy Text-to-3D preview job
+// (20 credits with meshy-6 — sharper geometry, better faces/hands, worth the
+// cost for the lead-gen preview the user sees on screen and in their email).
+// Returns the Meshy task_id so the browser can poll for status.
 //
 // We intentionally use the PREVIEW stage only (not Refine), because:
 //   - Preview is 5 credits, Refine adds 10 more for texture.
@@ -55,11 +56,17 @@ exports.handler = async (event) => {
     }
 
     // Meshy Text-to-3D Preview parameters.
-    // - mode: "preview" → just geometry, no texture (cheaper, faster)
+    // - mode: "preview" → just geometry, no texture
     // - art_style: "realistic" → matches a "collectible figurine" aesthetic
-    // - ai_model: "meshy-5" → cheaper than meshy-6 (5 credits vs 20)
-    //   Meshy-5 is more than good enough for a preview render. Meshy-6 only
-    //   makes sense when they convert to an order.
+    // - ai_model: "meshy-6" → 20 credits (vs 5 for meshy-5). Sharper geometry,
+    //   fewer artifacts, much better at faces and hands. Worth the cost on a
+    //   product where the preview render is the lead-gen hook.
+    // - should_remesh: true → cleaner topology, better for printing
+    // - target_polycount: 60000 → roughly 2x the default. Adds detail to the
+    //   preview render at no extra cost. Caps below the 100k ceiling so render
+    //   time stays in the 60-90s range.
+    // - symmetry_mode: "auto" → Meshy decides. Helpful for figurines and
+    //   characters which are usually bilaterally symmetric.
     const meshyResponse = await fetch(MESHY_API_URL, {
       method: 'POST',
       headers: {
@@ -70,8 +77,10 @@ exports.handler = async (event) => {
         mode: 'preview',
         prompt: prompt,
         art_style: 'realistic',
-        ai_model: 'meshy-5',
+        ai_model: 'meshy-6',
         should_remesh: true,
+        target_polycount: 60000,
+        symmetry_mode: 'auto',
       }),
     });
 

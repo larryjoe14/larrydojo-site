@@ -952,7 +952,7 @@
           <button type="submit" class="submit-btn" id="submit-btn">Generate AI preview →</button>
 
           <p class="fine-print">
-            // ~60 seconds · no charge · by submitting you agree we&apos;ll email you about your request
+            // ~90 seconds · no charge · by submitting you agree we&apos;ll email you about your request
           </p>
 
           <div class="rate-notice" id="rate-notice">
@@ -1576,6 +1576,56 @@
   #wait-game__buffer { display: none !important; }
 }
 
+/* Mobile keyboard input. On desktop it's hidden because typing happens
+   via the document keydown listener anyway. On mobile (touch devices),
+   we show the trigger button which focuses the input and opens the
+   soft keyboard. The input itself stays visually hidden — we only need
+   it to receive focus and capture keystrokes. */
+#wait-game__keyboard-input {
+  position: absolute !important;
+  left: -9999px !important;
+  top: 0 !important;
+  opacity: 0 !important;
+  width: 1px !important;
+  height: 1px !important;
+  border: 0 !important;
+  padding: 0 !important;
+  background: transparent !important;
+  pointer-events: none !important;
+}
+#wait-game__keyboard-trigger {
+  display: none;
+  background: rgba(0, 255, 65, 0.1) !important;
+  color: #00ff41 !important;
+  border: 1.5px solid #00ff41 !important;
+  padding: 8px 14px !important;
+  font-family: 'JetBrains Mono', monospace !important;
+  font-size: 12px !important;
+  letter-spacing: 0.06em !important;
+  text-transform: lowercase !important;
+  cursor: pointer !important;
+  margin-bottom: 10px !important;
+  flex-shrink: 0 !important;
+  align-self: center !important;
+  text-shadow: 0 0 8px rgba(0, 255, 65, 0.4) !important;
+  transition: all 0.15s !important;
+}
+#wait-game__keyboard-trigger:hover,
+#wait-game__keyboard-trigger:active {
+  background: rgba(0, 255, 65, 0.25) !important;
+}
+#wait-game__keyboard-trigger.is-active {
+  background: #00ff41 !important;
+  color: #050807 !important;
+  text-shadow: none !important;
+}
+
+/* Show the trigger only on touch devices. Using both pointer:coarse
+   (touch-primary) and the existing 720px breakpoint to be safe. */
+@media (max-width: 720px), (pointer: coarse) {
+  #wait-game__keyboard-trigger { display: inline-block !important; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .wait-game__word.is-hit, .wait-game__word.is-missed,
   .wait-game__hint-headline, #wait-game__render-done {
@@ -2143,33 +2193,30 @@ function runApp() {
     // homophones that confuse non-native typists. Ordered roughly by
     // typing difficulty (alternating-hand words come first).
     const WORDS = [
-      // Easy: 3-4 letters, alternating hands
-      'the', 'and', 'for', 'are', 'but', 'not', 'you', 'all', 'can', 'her',
-      'was', 'one', 'our', 'out', 'day', 'get', 'has', 'him', 'his', 'how',
-      'man', 'new', 'now', 'old', 'see', 'two', 'way', 'who', 'boy', 'did',
-      'its', 'let', 'put', 'say', 'she', 'too', 'use', 'big', 'end', 'eye',
-      'far', 'fly', 'got', 'job', 'lot', 'run', 'set', 'try', 'why', 'cup',
-      'sun', 'red', 'top', 'box', 'cat', 'dog', 'bee', 'pen', 'key', 'map',
-      // Medium: 4-5 letters
-      'time', 'work', 'play', 'help', 'home', 'mind', 'word', 'best', 'kind',
-      'long', 'made', 'name', 'open', 'real', 'star', 'team', 'view', 'book',
-      'cool', 'dark', 'easy', 'fast', 'fire', 'gold', 'good', 'hand', 'idea',
-      'keep', 'life', 'love', 'nice', 'page', 'park', 'rain', 'safe', 'song',
-      'tree', 'true', 'walk', 'warm', 'wind', 'wish', 'year', 'zero',
-      'about', 'above', 'after', 'again', 'alive', 'apple', 'beach', 'bring',
-      'build', 'chair', 'clean', 'clear', 'cloud', 'dance', 'dream', 'drive',
-      'enjoy', 'fresh', 'green', 'happy', 'house', 'light', 'magic', 'music',
-      'night', 'paint', 'piano', 'place', 'plant', 'power', 'quick', 'quiet',
-      'river', 'sharp', 'sleep', 'smile', 'space', 'sweet', 'table', 'think',
-      'today', 'water', 'world', 'write', 'young',
-      // Harder: 6-7 letters
-      'always', 'animal', 'around', 'before', 'better', 'bridge', 'castle',
-      'change', 'circle', 'coffee', 'desert', 'dragon', 'family', 'father',
-      'flower', 'forest', 'friend', 'garden', 'gentle', 'ground', 'island',
-      'jungle', 'kitchen', 'letter', 'listen', 'memory', 'minute', 'mother',
-      'mountain', 'ocean', 'orange', 'people', 'planet', 'rocket', 'school',
-      'simple', 'sister', 'spring', 'square', 'street', 'summer', 'sunset',
-      'thunder', 'window', 'winter',
+      // Matrix-coded short stuff. Brain pattern-matches the vibe from
+      // single words even though they're falling in random order.
+      'wake', 'up', 'neo', 'the', 'one', 'rabbit', 'follow', 'pill',
+      'red', 'blue', 'choose', 'real', 'glitch', 'free', 'code',
+      'matrix', 'agent', 'smith', 'oracle', 'dojo', 'morpheus', 'zion',
+      'system', 'load', 'jack', 'unplug', 'awaken', 'desert', 'prison',
+      'mind', 'control', 'bullet', 'time', 'ghost', 'shell', 'host',
+      'human', 'machine', 'dream', 'awake', 'truth', 'lie', 'door',
+      'open', 'enter', 'exit', 'reboot', 'crash', 'compile', 'build',
+      // LarryDoJo / print-your-prompt vocab — make the game feel
+      // native to this site, not generic.
+      'larry', 'studio', 'render', 'mesh', 'print', 'prompt', 'paint',
+      'model', 'scene', 'frame', 'pixel', 'shape', 'craft', 'design',
+      'forge', 'mold', 'sketch', 'draft', 'layer', 'pose', 'prop',
+      // Filler short words to keep it playable for non-gamers
+      'and', 'are', 'all', 'now', 'then', 'this', 'that', 'with',
+      'see', 'feel', 'know', 'find', 'lose', 'win', 'play', 'make',
+      'take', 'give', 'show', 'hide', 'run', 'walk', 'fall', 'rise',
+      'fast', 'slow', 'cold', 'warm', 'dark', 'light', 'silent', 'loud',
+      'spark', 'flash', 'pulse', 'shift', 'break', 'fix', 'turn', 'spin',
+      // A few longer ones for ramp-up difficulty
+      'reality', 'illusion', 'trinity', 'sentinel', 'protocol',
+      'override', 'firewall', 'kernel', 'pattern', 'signal',
+      'echo', 'static', 'cipher', 'binary', 'string', 'thread',
     ];
 
     let canvas, score = 0, streak = 0, bestStreak = 0, lives = 3;
@@ -2214,6 +2261,9 @@ function runApp() {
         gameRunning = true;
         loop();
       });
+
+      // Wire up mobile keyboard input
+      setupMobileKeyboard();
     }
 
     function pickWord() {
@@ -2502,7 +2552,76 @@ function runApp() {
       }
     }
 
-    function toggleMute() {
+    // ─── Mobile keyboard input handler ───────────────
+    // The hidden input captures keystrokes from the soft keyboard. We
+    // listen to its 'input' event (fires on each character) and forward
+    // each new character through the same hit-detection used by
+    // handleKey. We also handle backspace by detecting length decreases.
+    let lastInputValue = '';
+
+    function handleMobileInput(e) {
+      if (!gameRunning) return;
+      const inputEl = e.target;
+      const newValue = inputEl.value;
+
+      // If new value is shorter, treat as backspace
+      if (newValue.length < lastInputValue.length) {
+        // Synthesize a Backspace
+        handleKey({ key: 'Backspace', preventDefault: () => {} });
+      } else if (newValue.length > lastInputValue.length) {
+        // New character(s) typed — process each one
+        const newChars = newValue.slice(lastInputValue.length);
+        for (let i = 0; i < newChars.length; i++) {
+          const ch = newChars[i];
+          if (/^[a-zA-Z]$/.test(ch)) {
+            handleKey({
+              key: ch,
+              ctrlKey: false, metaKey: false, altKey: false,
+              preventDefault: () => {}
+            });
+          }
+        }
+      }
+
+      // Reset the input so it doesn't grow unbounded.
+      // Do this carefully — clearing on every input would stop iOS from
+      // detecting the next character. We clear when length gets long.
+      if (newValue.length > 20) {
+        inputEl.value = '';
+        lastInputValue = '';
+      } else {
+        lastInputValue = newValue;
+      }
+    }
+
+    function setupMobileKeyboard() {
+      const inputEl = document.getElementById('wait-game__keyboard-input');
+      const triggerBtn = document.getElementById('wait-game__keyboard-trigger');
+      if (!inputEl || !triggerBtn) return;
+
+      // Trigger button focuses the input → soft keyboard opens
+      triggerBtn.addEventListener('click', () => {
+        inputEl.focus();
+      });
+
+      // Reflect focus state on the trigger button so the user sees it's "active"
+      inputEl.addEventListener('focus', () => {
+        triggerBtn.classList.add('is-active');
+        triggerBtn.textContent = '⌨ keyboard open · type away';
+        // Reset stored value when freshly focused
+        inputEl.value = '';
+        lastInputValue = '';
+      });
+      inputEl.addEventListener('blur', () => {
+        triggerBtn.classList.remove('is-active');
+        triggerBtn.textContent = '⌨ tap to type';
+      });
+
+      // Capture characters
+      inputEl.addEventListener('input', handleMobileInput);
+    }
+
+        function toggleMute() {
       muted = !muted;
       if (muteIconEl) muteIconEl.textContent = muted ? 'OFF' : 'ON';
     }
@@ -2555,6 +2674,9 @@ function runApp() {
       gameRunning = false;
       if (rafId) { cancelAnimationFrame(rafId); rafId = null; }
       document.removeEventListener('keydown', handleKey);
+      // Close the mobile keyboard if it's open
+      const inputEl = document.getElementById('wait-game__keyboard-input');
+      if (inputEl) inputEl.blur();
       // Clear remaining words
       activeWords.forEach(w => { if (w.el.parentNode) w.el.parentNode.removeChild(w.el); });
       activeWords = [];
@@ -3085,6 +3207,18 @@ if (document.readyState === 'loading') {
               <span class="wait-game__hud-value" id="wait-game__mute-icon">OFF</span>
             </button>
           </div>
+
+          <!-- Hidden input that lets mobile users invoke the keyboard.
+               iOS/Android only open the soft keyboard when an input has focus
+               via user gesture, so we make it visibly tappable rather than
+               trying to programmatically focus on game start (which Safari
+               blocks). Users on desktop never need to interact with this. -->
+          <input type="text" id="wait-game__keyboard-input"
+                 autocomplete="off" autocorrect="off" autocapitalize="off"
+                 spellcheck="false" inputmode="latin" aria-label="Type letters here on mobile to control the game" />
+          <button type="button" id="wait-game__keyboard-trigger" aria-label="Open keyboard to type">
+            ⌨ tap to type
+          </button>
 
           <!-- Playfield: where words fall -->
           <div id="wait-game__field" aria-live="polite">

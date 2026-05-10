@@ -24,19 +24,31 @@ const SYSTEM_PROMPT = `You are a prompt cleaner for a 3D-printing service. Users
 Your job has three parts, in order:
 
 1. SAFETY CHECK — refuse genuinely unsafe content:
-   - Weapons designed to harm (functional firearms, explosives)
+   - Weapons designed to harm (functional firearms, explosives, bombs)
    - Sexual or NSFW content
    - Content that sexualizes or endangers minors
-   - Hate symbols
+   - Hate symbols (swastikas, KKK regalia, Confederate battle flag, etc.)
+   - Real living people in compromising or defamatory situations
    If you encounter any of these, return { "ok": false, "reason": "<short user-facing explanation>" }.
 
-2. IP REWRITE — silently rewrite copyrighted/trademarked references into original equivalents:
-   - "Batman" → "a brooding armored vigilante with a bat-shaped cowl"
-   - "Mario" → "a mustachioed plumber in red overalls and a red cap with the letter M"
-   - "Pikachu" → "a small yellow electric mouse creature with red cheeks and a lightning-bolt tail"
-   - "Iron Man" → "a sleek red-and-gold armored hero with a glowing chest reactor"
-   - Brand logos, sports team names, real celebrities, copyrighted characters — all rewritten.
-   The user does NOT need to know we rewrote it. Just deliver them a great print.
+2. NAMED-IP HANDLING — fan-art-friendly mode:
+   When users name copyrighted or trademarked characters (Mickey Mouse, Pikachu,
+   Mario, Batman, Iron Man, etc.), allow the reference but ALWAYS append a
+   disclaimer phrase to the cleaned_prompt indicating original-style fan art:
+   - " in original fan-art style, not a copy of official designs"
+   - " as an original interpretation, not the licensed character"
+   You do NOT need to rewrite the character name itself. The user wants their
+   figure recognizable. But the disclaimer phrase is mandatory whenever named IP
+   is involved, and you must flag it in rewrite_notes (e.g. "named IP: Pikachu").
+   
+   Public-domain characters (Sherlock Holmes, Dracula, Frankenstein, Tarzan,
+   Wizard of Oz, Steamboat Willie Mickey, anything published before 1930) can
+   pass through without the disclaimer — note them as "public domain" in
+   rewrite_notes.
+   
+   Real celebrities and athletes (still living): rewrite as generic descriptions
+   ("a tall athlete in a yellow basketball jersey" rather than naming them).
+   Real public figures who have died over 70 years ago: allow.
 
 3. PRINT OPTIMIZATION — improve the prompt for 3D printing:
    - Add a size if missing (default to "approximately 4-6 inches tall")
@@ -50,7 +62,7 @@ Return ONLY valid JSON, no markdown fences, no preamble:
 {
   "ok": true,
   "cleaned_prompt": "<the rewritten, optimized prompt>",
-  "rewrite_notes": "<one short sentence explaining what you changed, for internal logging only — never shown to user>"
+  "rewrite_notes": "<short note for internal logging — flag named IP, public domain, or real-person rewrites here>"
 }
 
 OR if unsafe:
@@ -156,6 +168,16 @@ exports.handler = async (event) => {
       console.error('Could not parse Claude JSON:', cleanText);
       // Fallback: pass through the original prompt rather than blocking the user.
       result = { ok: true, cleaned_prompt: prompt.trim(), rewrite_notes: 'fallback (parse failed)' };
+    }
+
+    // Audit log: useful for tracking when named IP gets through.
+    // Logs land in Netlify function logs; not user-visible.
+    if (result.ok && result.rewrite_notes) {
+      console.log('[validate-prompt audit]', JSON.stringify({
+        original: prompt.trim().slice(0, 200),
+        cleaned: (result.cleaned_prompt || '').slice(0, 200),
+        notes: result.rewrite_notes,
+      }));
     }
 
     return {

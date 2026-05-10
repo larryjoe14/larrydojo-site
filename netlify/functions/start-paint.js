@@ -6,11 +6,17 @@
 // We run Meshy's Refine pass on the same preview task — same geometry,
 // adds texture from the paint prompt.
 //
-// Costs: 10 credits (vs 5 for the preview alone, so total per opt-in
-// user is 15 credits / ~$0.30 of plan budget).
+// Costs: ~10 credits for refine on top of the 20 from preview = ~30 total
+// per opt-in user with paint. Approximately $0.60 in plan budget per fully
+// painted preview, so plan ceiling is ~33 painted previews/mo on the 1000-
+// credit Pro plan.
 //
 // Takes:
-//   { preview_task_id: "...", paint_prompt: "..." }
+//   { preview_task_id: "...", paint_prompt: "...", production?: bool }
+//
+// The "production" flag is for the future paid-order flow. When true, we
+// can later swap in tighter quality settings or a different model. For now
+// it's a no-op; the parameter is reserved.
 //
 // Returns:
 //   { task_id: "<the-refine-task-id>" }
@@ -39,7 +45,8 @@ exports.handler = async (event) => {
   }
 
   try {
-    const { preview_task_id, paint_prompt } = JSON.parse(event.body || '{}');
+    const { preview_task_id, paint_prompt, production } = JSON.parse(event.body || '{}');
+    const isProduction = production === true;
 
     if (!preview_task_id || typeof preview_task_id !== 'string') {
       return {
@@ -85,7 +92,12 @@ exports.handler = async (event) => {
         mode: 'refine',
         preview_task_id: preview_task_id,
         texture_prompt: paint_prompt.trim(),
-        enable_pbr: true,  // Physically-based rendering — better-looking textures
+        enable_pbr: true,  // Physically-based rendering — sharper, more material-aware textures
+        // texture_richness: production ⇒ richer textures for paid prints. Range
+        // is roughly 0–1; default ~0.5. We bump non-production paints to 0.6
+        // (still cheap-ish) and production to 0.85 (the highest quality refine
+        // Meshy will run for the texture pass).
+        texture_richness: isProduction ? 0.85 : 0.6,
       }),
     });
 
