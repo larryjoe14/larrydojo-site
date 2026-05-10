@@ -1,0 +1,1259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Print Your Prompt — LarryDoJo</title>
+<meta name="description" content="Describe a thing. We turn it into a custom 3D-printed object. AI-validated, machine-rendered, human-approved before print." />
+
+<link rel="canonical" href="https://larrydojo.com/print-your-prompt/" />
+
+<!-- Open Graph -->
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://larrydojo.com/print-your-prompt/" />
+<meta property="og:title" content="Print Your Prompt — LarryDoJo" />
+<meta property="og:description" content="Describe a thing. We 3D print it. From your words, to a model on your desk — in days, not weeks." />
+<meta property="og:image" content="https://larrydojo.com/print-your-prompt/img/IMG_1561.jpg" />
+<meta property="og:site_name" content="LarryDoJo" />
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Print Your Prompt — LarryDoJo" />
+<meta name="twitter:description" content="Describe a thing. We 3D print it." />
+<meta name="twitter:image" content="https://larrydojo.com/print-your-prompt/img/IMG_1561.jpg" />
+
+<!-- Plausible -->
+<script defer data-domain="larrydojo.com" src="https://plausible.io/js/script.js"></script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo+Black&family=Caveat:wght@500;700&family=JetBrains+Mono:wght@400;700&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --ink: #0a0a0a;
+    --paper: #f4eee4;
+    --plum: #1a0d2e;
+    --orchid: #c9b8e8;
+    --orchid-deep: #7c5cb8;
+    --acid: #ffe000;
+    --tangerine: #ff5b1f;
+    --punch: #ff2a6d;
+    --mint: #b8f2c9;
+    --rule: 3px;
+    --ease-settle: cubic-bezier(0.22, 1, 0.36, 1);
+    --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Space Grotesk', system-ui, sans-serif;
+    background: var(--paper);
+    color: var(--ink);
+    line-height: 1.5;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3CfeColorMatrix values='0 0 0 0 0.05 0 0 0 0 0.05 0 0 0 0 0.05 0 0 0 0.18 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    opacity: .35;
+    pointer-events: none;
+    mix-blend-mode: multiply;
+    z-index: 1;
+  }
+
+  main, header, footer, section { position: relative; z-index: 2; }
+
+  /* ─── NAV ─────────────────────────────────────────── */
+  .nav {
+    position: sticky; top: 0; z-index: 50;
+    background: var(--ink);
+    color: var(--paper);
+    border-bottom: var(--rule) solid var(--ink);
+    padding: 14px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  .nav__brand { display: flex; align-items: center; text-decoration: none; color: var(--paper); }
+  .nav__logo {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 22px;
+    letter-spacing: -0.01em;
+    text-transform: uppercase;
+  }
+  .nav__logo em { color: var(--acid); font-style: normal; }
+  .nav__links { display: flex; gap: 28px; }
+  .nav__links a {
+    color: var(--paper);
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 14px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    position: relative;
+    padding-bottom: 3px;
+  }
+  .nav__links a::after {
+    content: '';
+    position: absolute; left: 0; bottom: 0;
+    width: 0; height: 2px;
+    background: var(--acid);
+    transition: width 0.25s ease;
+  }
+  .nav__links a:hover::after { width: 100%; }
+  .nav__cta {
+    background: var(--acid);
+    color: var(--ink);
+    padding: 10px 16px;
+    border: 2px solid var(--acid);
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 12px;
+    text-transform: uppercase;
+    text-decoration: none;
+    letter-spacing: 0.05em;
+    transition: transform 0.15s ease;
+    display: inline-block;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  .nav__cta:hover { transform: rotate(-2deg) scale(1.04); }
+  @media (max-width: 720px) {
+    .nav__links { display: none; }
+    .nav__logo { font-size: 18px; }
+    .nav__cta { font-size: 11px; padding: 8px 12px; }
+  }
+
+  /* ─── HERO ────────────────────────────────────────── */
+  .hero {
+    background: var(--orchid);
+    padding: 50px 20px 70px;
+    border-bottom: var(--rule) solid var(--ink);
+    overflow: hidden;
+  }
+  @media (max-width: 720px) { .hero { padding: 50px 18px 80px; } }
+
+  .hero__inner {
+    max-width: 1280px; margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1.05fr 1fr;
+    gap: 50px;
+    align-items: start;
+  }
+  @media (max-width: 980px) {
+    .hero__inner { grid-template-columns: 1fr; gap: 40px; }
+  }
+
+  .eyebrow {
+    font-family: 'Caveat', cursive;
+    font-size: 26px;
+    color: var(--ink);
+    background: var(--acid);
+    display: inline-block;
+    padding: 4px 14px 6px;
+    transform: rotate(-2deg);
+    border: 2px solid var(--ink);
+    margin-bottom: 24px;
+    box-shadow: 4px 4px 0 var(--ink);
+  }
+
+  .hero h1 {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: clamp(44px, 7.5vw, 96px);
+    line-height: 0.88;
+    letter-spacing: -0.03em;
+    text-transform: uppercase;
+    color: var(--ink);
+    margin-bottom: 28px;
+    word-wrap: break-word;
+  }
+  .hero h1 em {
+    font-style: normal;
+    color: var(--tangerine);
+    -webkit-text-stroke: 2px var(--ink);
+    text-shadow: 6px 6px 0 var(--ink);
+  }
+  @media (max-width: 720px) {
+    .hero h1 em { text-shadow: 4px 4px 0 var(--ink); -webkit-text-stroke: 1.5px var(--ink); }
+  }
+  .hero__lead {
+    font-size: clamp(16px, 2.2vw, 19px);
+    max-width: 540px;
+    margin-bottom: 28px;
+    color: var(--ink);
+  }
+  .hero__lead strong { background: var(--acid); padding: 0 4px; }
+
+  /* "How it works" tape — inline three steps under the lead */
+  .how-strip {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 28px;
+    max-width: 540px;
+  }
+  @media (max-width: 600px) { .how-strip { grid-template-columns: 1fr; gap: 10px; } }
+  .how-step {
+    background: var(--paper);
+    border: 2px solid var(--ink);
+    padding: 12px 14px;
+    box-shadow: 4px 4px 0 var(--ink);
+  }
+  .how-step__num {
+    font-family: 'Anton', sans-serif;
+    font-size: 28px;
+    line-height: 1;
+    color: var(--tangerine);
+    -webkit-text-stroke: 1.5px var(--ink);
+    margin-bottom: 4px;
+  }
+  .how-step__label {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    line-height: 1.15;
+  }
+
+  /* ─── HERO POLAROID STACK (right column, real photos) ─ */
+  .hero-stack {
+    position: relative;
+    min-height: 560px;
+    margin: 0 auto;
+    max-width: 540px;
+  }
+  @media (max-width: 980px) { .hero-stack { min-height: 480px; max-width: 480px; } }
+  @media (max-width: 600px) { .hero-stack { min-height: 420px; } }
+
+  .polaroid {
+    position: absolute;
+    background: var(--paper);
+    padding: 12px 12px 46px;
+    border: 2.5px solid var(--ink);
+    box-shadow: 8px 8px 0 var(--ink);
+    transition: transform 0.4s var(--ease-spring), box-shadow 0.3s ease;
+    width: 60%;
+  }
+  .polaroid:hover { transform: rotate(0deg) scale(1.04) !important; box-shadow: 12px 12px 0 var(--ink); z-index: 10; }
+  .polaroid__img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 3 / 4;
+    object-fit: cover;
+    background: #2a1f3d;
+    border: 1px solid rgba(0,0,0,0.15);
+  }
+  .polaroid__caption {
+    position: absolute;
+    bottom: 12px; left: 0; right: 0;
+    text-align: center;
+    font-family: 'Caveat', cursive;
+    font-size: 22px;
+    color: var(--ink);
+    line-height: 1;
+  }
+
+  /* The three-card stagger. Each rotated and offset to feel pinned to a board. */
+  .polaroid--a { top: 0; left: 0; transform: rotate(-5deg); z-index: 3; }
+  .polaroid--b { top: 80px; right: 0; transform: rotate(4deg); z-index: 2; }
+  .polaroid--c { bottom: 0; left: 18%; transform: rotate(-2deg); z-index: 4; }
+
+  @media (max-width: 600px) {
+    .polaroid { width: 64%; }
+    .polaroid--a { top: 0; left: 4%; }
+    .polaroid--b { top: 60px; right: 4%; }
+    .polaroid--c { bottom: 0; left: 18%; }
+  }
+
+  .hero-sticker {
+    position: absolute;
+    background: var(--acid);
+    border: 2.5px solid var(--ink);
+    padding: 6px 12px 7px;
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    box-shadow: 4px 4px 0 var(--ink);
+    z-index: 5;
+    white-space: nowrap;
+  }
+  .hero-sticker--top {
+    top: -16px; right: 8%;
+    background: var(--tangerine);
+    color: var(--paper);
+    transform: rotate(6deg);
+  }
+  .hero-sticker--bottom {
+    bottom: 12px; right: -4%;
+    background: var(--ink);
+    color: var(--acid);
+    transform: rotate(-4deg);
+    font-size: 10px;
+  }
+
+  /* ─── PROMPT FORM ─────────────────────────────────── */
+  .prompt-card {
+    background: var(--paper);
+    border: 3px solid var(--ink);
+    box-shadow: 12px 12px 0 var(--ink);
+    padding: 28px;
+    transform: rotate(0.6deg);
+  }
+  @media (max-width: 600px) {
+    .prompt-card { padding: 22px; box-shadow: 7px 7px 0 var(--ink); transform: rotate(0.3deg); }
+  }
+  .prompt-card__head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    border-bottom: 2px solid var(--ink);
+    padding-bottom: 12px;
+    margin-bottom: 18px;
+  }
+  .prompt-card__title {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 14px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .prompt-card__meta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--orchid-deep);
+    letter-spacing: 0.05em;
+  }
+
+  .field { display: flex; flex-direction: column; margin-bottom: 16px; }
+  .field label {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 6px;
+  }
+  .field label .req { color: var(--tangerine); }
+  .field input,
+  .field textarea {
+    background: var(--paper);
+    border: 2.5px solid var(--ink);
+    padding: 12px 14px;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 16px;
+    color: var(--ink);
+    width: 100%;
+    transition: box-shadow 0.15s ease, transform 0.15s ease;
+  }
+  .field input:focus,
+  .field textarea:focus {
+    outline: none;
+    box-shadow: 4px 4px 0 var(--tangerine);
+    transform: translate(-2px, -2px);
+  }
+  .field textarea { resize: vertical; min-height: 120px; }
+  .field__hint {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--orchid-deep);
+    margin-top: 6px;
+    letter-spacing: 0.03em;
+  }
+
+  .examples {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 18px;
+    align-items: center;
+  }
+  .example-chip {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    background: transparent;
+    border: 1.5px dashed var(--ink);
+    color: var(--ink);
+    padding: 5px 9px;
+    cursor: pointer;
+    letter-spacing: 0.02em;
+    transition: background 0.15s ease, transform 0.15s ease;
+  }
+  .example-chip:hover { background: var(--acid); transform: translate(-1px, -1px); }
+  .example-chip__lbl {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--orchid-deep);
+    margin-right: 6px;
+  }
+
+  .submit-btn {
+    width: 100%;
+    background: var(--ink);
+    color: var(--acid);
+    padding: 18px 24px;
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 16px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    border: 3px solid var(--ink);
+    cursor: pointer;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+    box-shadow: 5px 5px 0 var(--tangerine);
+  }
+  .submit-btn:hover { transform: translate(-3px, -3px); box-shadow: 8px 8px 0 var(--tangerine); }
+  .submit-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+  .fine-print {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--orchid-deep);
+    margin-top: 12px;
+    text-align: center;
+    letter-spacing: 0.04em;
+  }
+
+  .success-state { text-align: center; padding: 16px 8px 8px; display: none; }
+  .success-state.is-visible { display: block; }
+  .success-state h3 {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: clamp(28px, 5vw, 40px);
+    text-transform: uppercase;
+    line-height: 0.95;
+    margin-bottom: 14px;
+  }
+  .success-state h3 em { font-style: normal; color: var(--tangerine); }
+  .success-state p { font-size: 16px; margin-bottom: 12px; line-height: 1.5; }
+  .success-state__caveat {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--orchid-deep);
+    margin-top: 18px;
+    letter-spacing: 0.04em;
+  }
+
+  /* ─── SECTIONS ────────────────────────────────────── */
+  section {
+    padding: 90px 20px;
+    border-bottom: var(--rule) solid var(--ink);
+  }
+  @media (max-width: 720px) { section { padding: 60px 18px; } }
+  .container { max-width: 1280px; margin: 0 auto; }
+
+  .section-head { margin-bottom: 50px; }
+  .section-head__kicker {
+    font-family: 'Caveat', cursive;
+    font-size: 30px;
+    color: var(--tangerine);
+    margin-bottom: 8px;
+    transform: rotate(-1deg);
+    display: inline-block;
+  }
+  .section-head h2 {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: clamp(38px, 7vw, 88px);
+    line-height: 0.9;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+  }
+  .section-head__desc {
+    font-size: clamp(16px, 2vw, 18px);
+    max-width: 620px;
+    margin-top: 24px;
+  }
+
+  /* ─── PROOF GALLERY ───────────────────────────────── */
+  /* Real customer prints, laid out as a maximalist sticker board.
+     Each photo is a polaroid with a hand-written caption; the
+     featured Blank video sits in line as the first item, sized to
+     match the surrounding photos so it reads as part of the grid. */
+  .proof { background: var(--plum); color: var(--paper); }
+  .proof .section-head h2 { color: var(--paper); }
+  .proof .section-head__kicker { color: var(--acid); }
+  .proof .section-head__desc { color: var(--orchid); }
+
+  .proof__grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px 24px;
+    align-items: start;
+  }
+  @media (max-width: 900px) { .proof__grid { grid-template-columns: repeat(2, 1fr); gap: 28px 20px; } }
+  @media (max-width: 600px) { .proof__grid { grid-template-columns: 1fr; gap: 28px; } }
+
+  .proof-card {
+    background: var(--paper);
+    color: var(--ink);
+    padding: 14px 14px 50px;
+    border: 2.5px solid var(--ink);
+    box-shadow: 8px 8px 0 var(--ink);
+    position: relative;
+    transition: transform 0.3s var(--ease-spring), box-shadow 0.25s ease;
+  }
+  .proof-card:hover { transform: rotate(0) scale(1.03) !important; box-shadow: 12px 12px 0 var(--acid); z-index: 5; }
+  .proof-card:nth-child(1) { transform: rotate(-1.6deg); }
+  .proof-card:nth-child(2) { transform: rotate(1.2deg); }
+  .proof-card:nth-child(3) { transform: rotate(-0.8deg); }
+  .proof-card:nth-child(4) { transform: rotate(0.6deg); }
+  .proof-card:nth-child(5) { transform: rotate(-1.2deg); }
+  .proof-card:nth-child(6) { transform: rotate(1.4deg); }
+
+  .proof-card__media {
+    width: 100%;
+    aspect-ratio: 3 / 4;
+    overflow: hidden;
+    border: 1px solid rgba(0,0,0,0.12);
+    background: #2a1f3d;
+    position: relative;
+  }
+  .proof-card__media img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .proof-card__media iframe {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
+  .proof-card__caption {
+    position: absolute;
+    bottom: 14px; left: 0; right: 0;
+    text-align: center;
+    font-family: 'Caveat', cursive;
+    font-size: 22px;
+    color: var(--ink);
+    line-height: 1;
+    padding: 0 12px;
+  }
+  .proof-card__sticker {
+    position: absolute;
+    top: -10px; left: -10px;
+    background: var(--tangerine);
+    color: var(--paper);
+    border: 2px solid var(--ink);
+    padding: 4px 10px 5px;
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    transform: rotate(-6deg);
+    box-shadow: 3px 3px 0 var(--ink);
+    z-index: 2;
+  }
+  .proof-card__sticker--video {
+    background: var(--acid);
+    color: var(--ink);
+    transform: rotate(-8deg);
+  }
+
+  /* ─── HOW IT WORKS ────────────────────────────────── */
+  .how { background: var(--paper); }
+  .how-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 18px;
+  }
+  @media (max-width: 980px) { .how-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 600px) { .how-grid { grid-template-columns: 1fr; } }
+
+  .how-card {
+    background: var(--paper);
+    border: 2.5px solid var(--ink);
+    box-shadow: 8px 8px 0 var(--ink);
+    padding: 24px 22px 22px;
+  }
+  .how-card:nth-child(1) { transform: rotate(-0.8deg); }
+  .how-card:nth-child(2) { transform: rotate(0.6deg); }
+  .how-card:nth-child(3) { transform: rotate(-0.4deg); }
+  .how-card:nth-child(4) { transform: rotate(0.5deg); }
+  .how-card__num {
+    font-family: 'Anton', sans-serif;
+    font-size: 64px;
+    line-height: 0.85;
+    color: var(--tangerine);
+    -webkit-text-stroke: 2.5px var(--ink);
+    margin-bottom: 8px;
+  }
+  .how-card__time {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--orchid-deep);
+    margin-bottom: 12px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+  .how-card h3 {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 18px;
+    text-transform: uppercase;
+    line-height: 1.05;
+    margin-bottom: 10px;
+  }
+  .how-card p { font-size: 14px; line-height: 1.5; }
+
+  /* ─── FEATURED PROCESS — second video alongside copy ─ */
+  /* Two-column module: short pitch on the left, vertical YouTube
+     video on the right framed like a polaroid, with an acid-yellow
+     drop-shadow that matches the rest of the site's video frames. */
+  .featured { background: var(--paper); }
+
+  .featured__grid {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 56px;
+    align-items: center;
+  }
+  @media (max-width: 900px) { .featured__grid { grid-template-columns: 1fr; gap: 40px; } }
+
+  .featured__copy h3 {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: clamp(28px, 4.5vw, 40px);
+    text-transform: uppercase;
+    line-height: 0.95;
+    margin-bottom: 20px;
+  }
+  .featured__copy h3 em { font-style: normal; color: var(--tangerine); }
+  .featured__copy p {
+    font-size: clamp(15px, 2vw, 17px);
+    margin-bottom: 16px;
+  }
+  .featured__copy p strong { background: var(--acid); padding: 0 4px; }
+
+  .featured__video {
+    position: relative;
+    aspect-ratio: 9 / 16;
+    background: #000;
+    border: 2.5px solid var(--ink);
+    box-shadow: 10px 10px 0 var(--acid);
+    overflow: hidden;
+    max-width: 360px;
+    margin: 0 auto;
+    transform: rotate(0.8deg);
+  }
+  .featured__video iframe {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
+  .featured__video-tag {
+    position: absolute;
+    top: -16px; left: -10px;
+    background: var(--tangerine);
+    color: var(--paper);
+    border: 2.5px solid var(--ink);
+    padding: 5px 12px 6px;
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    transform: rotate(-5deg);
+    box-shadow: 3px 3px 0 var(--ink);
+    z-index: 5;
+  }
+
+  /* ─── WHY US ──────────────────────────────────────── */
+  .why { background: var(--ink); color: var(--paper); }
+  .why .section-head h2 { color: var(--paper); }
+  .why .section-head__kicker { color: var(--acid); }
+  .why .section-head__desc { color: var(--orchid); }
+  .why-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 22px;
+  }
+  @media (max-width: 900px) { .why-row { grid-template-columns: 1fr; } }
+  .why-card {
+    background: var(--paper);
+    color: var(--ink);
+    border: 2.5px solid var(--ink);
+    padding: 28px 24px;
+  }
+  .why-card:nth-child(1) { transform: rotate(-0.6deg); }
+  .why-card:nth-child(2) { transform: rotate(0.5deg); }
+  .why-card:nth-child(3) { transform: rotate(-0.3deg); }
+  .why-card__icon {
+    width: 52px; height: 52px;
+    background: var(--acid);
+    border: 2.5px solid var(--ink);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 26px;
+    margin-bottom: 16px;
+    box-shadow: 4px 4px 0 var(--ink);
+  }
+  .why-card h3 {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 18px;
+    text-transform: uppercase;
+    line-height: 1.05;
+    margin-bottom: 10px;
+  }
+  .why-card p { font-size: 14px; line-height: 1.5; }
+  .why-card p strong { background: var(--acid); padding: 0 4px; }
+
+  /* ─── FAQ ─────────────────────────────────────────── */
+  .faq { background: var(--paper); }
+  .faq__list { display: flex; flex-direction: column; gap: 18px; margin-top: 12px; }
+  .faq-item {
+    background: var(--paper);
+    border: 2.5px solid var(--ink);
+    box-shadow: 6px 6px 0 var(--ink);
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+  }
+  .faq-item:hover { box-shadow: 8px 8px 0 var(--ink); transform: translate(-1px, -1px); }
+  .faq-item[open] { box-shadow: 8px 8px 0 var(--tangerine); }
+  .faq-item[open]:hover { box-shadow: 10px 10px 0 var(--tangerine); }
+  .faq-item__q {
+    list-style: none;
+    cursor: pointer;
+    padding: 22px 26px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 18px;
+    align-items: center;
+    font-family: 'Archivo Black', sans-serif;
+    font-size: clamp(16px, 2.2vw, 20px);
+    text-transform: uppercase;
+    line-height: 1.15;
+    user-select: none;
+  }
+  .faq-item__q::-webkit-details-marker { display: none; }
+  .faq-item__q::marker { content: ''; }
+  .faq-item__icon {
+    width: 38px; height: 38px;
+    background: var(--acid);
+    border: 2.5px solid var(--ink);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Anton', sans-serif;
+    font-size: 28px;
+    line-height: 1;
+    color: var(--ink);
+    flex-shrink: 0;
+    transition: transform 0.25s var(--ease-spring);
+  }
+  .faq-item[open] .faq-item__icon {
+    background: var(--tangerine);
+    color: var(--paper);
+    transform: rotate(45deg);
+  }
+  .faq-item__a {
+    padding: 0 26px 26px;
+    font-size: clamp(14px, 1.8vw, 16px);
+    line-height: 1.55;
+  }
+  .faq-item__a p { margin-bottom: 12px; }
+  .faq-item__a p:last-child { margin-bottom: 0; }
+  .faq-item__a strong { background: var(--acid); padding: 0 4px; }
+  @media (max-width: 720px) {
+    .faq-item__q { padding: 18px 20px; gap: 14px; }
+    .faq-item__icon { width: 32px; height: 32px; font-size: 22px; }
+    .faq-item__a { padding: 0 20px 22px; }
+  }
+
+  /* ─── FOOTER ──────────────────────────────────────── */
+  footer {
+    background: var(--ink);
+    color: var(--orchid);
+    padding: 30px 20px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  footer span { color: var(--acid); }
+  footer a { color: var(--acid); text-decoration: none; }
+  footer a:hover { text-decoration: underline; }
+
+  /* ─── Reveal motion ───────────────────────────────── */
+  [data-reveal] {
+    opacity: 0;
+    transform: translateY(20px);
+    transition:
+      opacity 0.55s var(--ease-settle),
+      transform 0.55s var(--ease-settle);
+  }
+  [data-reveal].is-in { opacity: 1; transform: translateY(0); }
+  @media (prefers-reduced-motion: reduce) {
+    [data-reveal] { opacity: 1 !important; transform: none !important; transition: none !important; }
+    .polaroid, .proof-card, .how-card, .why-card { transition: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Static form for Netlify build-time detection. -->
+<form name="print-prompt" netlify netlify-honeypot="bot-field" hidden>
+  <input type="text" name="name" />
+  <input type="email" name="email" />
+  <textarea name="prompt"></textarea>
+</form>
+
+<!-- ─── NAV ─────────────────────────────────────────── -->
+<nav class="nav">
+  <a href="/" class="nav__brand">
+    <span class="nav__logo">LARRY<em>·</em>DOJO</span>
+  </a>
+  <div class="nav__links">
+    <a href="/#about">About</a>
+    <a href="/#work">Work</a>
+    <a href="/#services">Services</a>
+    <a href="/#faq">FAQ</a>
+  </div>
+  <a href="#start" class="nav__cta">Print Yours →</a>
+</nav>
+
+<!-- ─── HERO ────────────────────────────────────────── -->
+<header class="hero" id="top">
+  <div class="hero__inner">
+
+    <div class="hero__copy">
+      <span class="eyebrow" data-reveal>↓ a new thing from larrydojo</span>
+      <h1 data-reveal>Describe<br>a thing.<br>We <em>print</em> it.</h1>
+      <p class="hero__lead" data-reveal>
+        Type what's in your head. Our AI cleans it up, builds the 3D model, and emails you a proof. <strong>Approve it, edit it, or scrap it</strong> — then we ship it to your door.
+      </p>
+
+      <div class="how-strip" data-reveal>
+        <div class="how-step">
+          <div class="how-step__num">1</div>
+          <div class="how-step__label">Prompt &amp; email</div>
+        </div>
+        <div class="how-step">
+          <div class="how-step__num">2</div>
+          <div class="how-step__label">AI render proof</div>
+        </div>
+        <div class="how-step">
+          <div class="how-step__num">3</div>
+          <div class="how-step__label">Approve &amp; print</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right column: real customer prints, scattered like polaroids on a corkboard -->
+    <div class="hero-stack" data-reveal aria-label="Recent custom prints from the studio">
+      <span class="hero-sticker hero-sticker--top">Real prints ↓</span>
+
+      <div class="polaroid polaroid--a">
+        <img class="polaroid__img" src="img/IMG_1561.jpg" alt="Copper steampunk robot figure with blue eyes and a riveted body, hand-painted." loading="eager" />
+        <span class="polaroid__caption">Steam · #043</span>
+      </div>
+
+      <div class="polaroid polaroid--b">
+        <img class="polaroid__img" src="img/IMG_1557.jpg" alt="Pumpkin-headed character with green legs and big white eyes, hand-painted." loading="eager" />
+        <span class="polaroid__caption">Patch · #051</span>
+      </div>
+
+      <div class="polaroid polaroid--c">
+        <img class="polaroid__img" src="img/IMG_1563.jpg" alt="Two Dick Tracy 'The Blank' figures, faceless characters in black trench coats and fedoras." loading="eager" />
+        <span class="polaroid__caption">Blank · #062</span>
+      </div>
+
+      <span class="hero-sticker hero-sticker--bottom">// shipped this week</span>
+    </div>
+
+  </div>
+</header>
+
+<!-- ─── PROMPT FORM ─────────────────────────────────── -->
+<section id="start" style="background: var(--paper);">
+  <div class="container" style="max-width: 720px;">
+    <div class="section-head" data-reveal>
+      <span class="section-head__kicker">↓ start here</span>
+      <h2>Tell us<br>what to <em style="font-style: normal; color: var(--tangerine);">make.</em></h2>
+      <p class="section-head__desc">
+        One line, one paragraph, or a half-formed napkin sketch in words. Our AI will tighten the prompt before it goes to the model — you'll see the proof before anything prints.
+      </p>
+    </div>
+
+    <form
+      class="prompt-card"
+      id="prompt-form"
+      name="print-prompt"
+      method="POST"
+      data-netlify="true"
+      netlify-honeypot="bot-field"
+      data-reveal
+    >
+      <input type="hidden" name="form-name" value="print-prompt" />
+      <p style="display:none;"><label>Don't fill this out: <input name="bot-field" /></label></p>
+
+      <div class="prompt-card__head">
+        <span class="prompt-card__title">// New Print Order</span>
+        <span class="prompt-card__meta">v1.0 · proof first</span>
+      </div>
+
+      <div class="field">
+        <label for="name">Your name <span class="req">*</span></label>
+        <input type="text" id="name" name="name" required placeholder="Alec" autocomplete="name" />
+      </div>
+
+      <div class="field">
+        <label for="email">Email <span class="req">*</span></label>
+        <input type="email" id="email" name="email" required placeholder="you@example.com" autocomplete="email" />
+        <span class="field__hint">// proof and approval link go here</span>
+      </div>
+
+      <div class="field">
+        <label for="prompt">Describe the object <span class="req">*</span></label>
+        <textarea id="prompt" name="prompt" required placeholder="A miniature 1980s arcade cabinet, pixel-style, about the size of a coffee mug..."></textarea>
+        <span class="field__hint">// be specific about size, style, and what it's for</span>
+      </div>
+
+      <div class="examples" aria-label="Example prompts">
+        <span class="example-chip__lbl">try one →</span>
+        <button type="button" class="example-chip" data-example="A pumpkin-headed creature about 5 inches tall, with skinny green legs, black goggle eyes, and tiny clawed hands. Cute and slightly creepy, hand-painted look.">pumpkin creature</button>
+        <button type="button" class="example-chip" data-example="A copper steampunk robot, round riveted body, big blue glass eyes, brass mustache, with little antenna ears. About 6 inches tall, weathered patina finish.">steampunk robot</button>
+        <button type="button" class="example-chip" data-example="A medieval knight in silver plate armor with a green stone-textured face mask, about 6 inches tall, dramatic pose.">silver knight</button>
+      </div>
+
+      <button type="submit" class="submit-btn" id="submit-btn">Send it for an AI proof →</button>
+
+      <p class="fine-print">
+        // no charge until you approve the print · proof emailed within minutes
+      </p>
+    </form>
+
+    <div class="prompt-card success-state" id="success-state" aria-live="polite" style="display:none;">
+      <h3>Got it. Proof on the <em>way.</em></h3>
+      <p>Your prompt is queued. We'll email you a 3D render in the next few minutes. Reply with <strong>"approve"</strong>, <strong>"edit"</strong>, or send a tweak.</p>
+      <p>If you don't see it, check spam — and add <strong>hello@larrydojo.com</strong> to your contacts.</p>
+      <p class="success-state__caveat">// you can close this tab. the link in the email is your way back in.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ─── PROOF GALLERY (real photos + featured video) ── -->
+<!--
+  Six-card grid mixing the featured Blank video with five real
+  customer prints. The video sits in slot 1 so it's the first thing
+  the eye lands on; the surrounding photos make it clear this is
+  a working studio, not a render farm.
+-->
+<section class="proof" id="proof">
+  <div class="container">
+    <div class="section-head" data-reveal>
+      <span class="section-head__kicker">↓ real prints, real customers</span>
+      <h2>Pulled from<br>the workbench.</h2>
+      <p class="section-head__desc">
+        Every figure on this page is a hand-finished print from a customer prompt. No stock photos, no renders pretending to be physical objects.
+      </p>
+    </div>
+
+    <div class="proof__grid">
+
+      <!-- Featured: The Blank video. Sized to the same polaroid frame. -->
+      <div class="proof-card" data-reveal>
+        <span class="proof-card__sticker proof-card__sticker--video">▶ Watch · the build</span>
+        <div class="proof-card__media">
+          <iframe
+            src="https://www.youtube.com/embed/2ZiP-TvTkMM?rel=0&modestbranding=1&playsinline=1"
+            title="Dick Tracy The Blank Action Figure 1990"
+            loading="lazy"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerpolicy="strict-origin-when-cross-origin"
+            allowfullscreen></iframe>
+        </div>
+        <span class="proof-card__caption">"The Blank" · Dick Tracy '90</span>
+      </div>
+
+      <div class="proof-card" data-reveal>
+        <span class="proof-card__sticker">Original</span>
+        <div class="proof-card__media">
+          <img src="img/IMG_1557.jpg" alt="Pumpkin-headed character with skinny green legs and big white eyes." loading="lazy" />
+        </div>
+        <span class="proof-card__caption">Patch · pumpkin creature</span>
+      </div>
+
+      <div class="proof-card" data-reveal>
+        <span class="proof-card__sticker">Original</span>
+        <div class="proof-card__media">
+          <img src="img/IMG_1561.jpg" alt="Copper steampunk robot with riveted body and blue glass eyes." loading="lazy" />
+        </div>
+        <span class="proof-card__caption">Steamrick · copper bot</span>
+      </div>
+
+      <div class="proof-card" data-reveal>
+        <span class="proof-card__sticker">Original</span>
+        <div class="proof-card__media">
+          <img src="img/IMG_1558.jpg" alt="Garden gnome with green helmet, white beard, blue vest, holding a coffee cup and umbrella." loading="lazy" />
+        </div>
+        <span class="proof-card__caption">Major · the gnome</span>
+      </div>
+
+      <div class="proof-card" data-reveal>
+        <span class="proof-card__sticker">Original</span>
+        <div class="proof-card__media">
+          <img src="img/IMG_1562.jpg" alt="Silver-armored figure with a green stone-textured face mask." loading="lazy" />
+        </div>
+        <span class="proof-card__caption">Verde · silver knight</span>
+      </div>
+
+      <div class="proof-card" data-reveal>
+        <span class="proof-card__sticker">Public domain</span>
+        <div class="proof-card__media">
+          <img src="img/IMG_1563.jpg" alt="Two Dick Tracy 'The Blank' figures, faceless in black coats and hats." loading="lazy" />
+        </div>
+        <span class="proof-card__caption">Blank · two scales</span>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ─── HOW IT WORKS ────────────────────────────────── -->
+<section class="how" id="how">
+  <div class="container">
+    <div class="section-head" data-reveal>
+      <span class="section-head__kicker">↓ the four-step loop</span>
+      <h2>From prompt<br>to print.</h2>
+      <p class="section-head__desc">
+        No quotes. No back-and-forth on email. No surprises. The full process, end to end.
+      </p>
+    </div>
+
+    <div class="how-grid">
+      <div class="how-card" data-reveal>
+        <div class="how-card__num">01</div>
+        <div class="how-card__time">// 30 seconds</div>
+        <h3>Describe it</h3>
+        <p>Tell us what you want in plain English. Our AI tightens the prompt — adds dimensions, fixes contradictions, flags anything we can't print.</p>
+      </div>
+      <div class="how-card" data-reveal>
+        <div class="how-card__num">02</div>
+        <div class="how-card__time">// ~2 minutes</div>
+        <h3>AI builds the model</h3>
+        <p>Meshy's 3D engine generates a textured model from the cleaned prompt. We render it from four angles and email you the proof.</p>
+      </div>
+      <div class="how-card" data-reveal>
+        <div class="how-card__num">03</div>
+        <div class="how-card__time">// your call</div>
+        <h3>Approve or edit</h3>
+        <p>Reply with "approve" to print, "edit" to tweak, or chat with us for revisions. Edits are part of the deal — no extra charge for the first round.</p>
+      </div>
+      <div class="how-card" data-reveal>
+        <div class="how-card__num">04</div>
+        <div class="how-card__time">// 5–7 days</div>
+        <h3>Print &amp; ship</h3>
+        <p>We print on a calibrated FDM machine, hand-clean it, and ship to your door. Tracking lands in your inbox.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── FEATURED PROCESS VIDEO ──────────────────────── -->
+<!--
+  Second video lives here, paired with the "what makes ours different"
+  pitch. Vertical YouTube format works as-is because the polaroid
+  frame is sized to 9:16. The video is the customer-facing showcase
+  for the broader catalog, so the copy zooms out: "this is what we do."
+-->
+<section class="featured" id="featured">
+  <div class="container">
+    <div class="featured__grid">
+      <div class="featured__copy" data-reveal>
+        <span class="section-head__kicker">↓ what we actually do</span>
+        <h3>Custom toys.<br>Made for <em>you.</em></h3>
+        <p>Every print starts as a prompt and ends as a hand-finished collectible. No two are the same. No mass production. <strong>One person, one prompt, one figure on the desk.</strong></p>
+        <p>The video is a 30-second look at the kind of work we ship. From rough description to painted figure, on a real customer's timeline.</p>
+        <p>The same studio that makes the AI episodic content on the main site runs the printer. <strong>Same eye, same governance.</strong></p>
+      </div>
+
+      <div class="featured__video" data-reveal>
+        <span class="featured__video-tag">↓ workshop reel</span>
+        <iframe
+          src="https://www.youtube.com/embed/xU6Bs_21Ovo?rel=0&modestbranding=1&playsinline=1"
+          title="Custom toys made for you"
+          loading="lazy"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          referrerpolicy="strict-origin-when-cross-origin"
+          allowfullscreen></iframe>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── WHY US ──────────────────────────────────────── -->
+<section class="why" id="why">
+  <div class="container">
+    <div class="section-head" data-reveal>
+      <span class="section-head__kicker">↓ why this exists</span>
+      <h2>Custom 3D prints<br>shouldn't take<br>a 3D artist.</h2>
+      <p class="section-head__desc">
+        Most custom 3D services need you to upload an STL or hire a modeler. We took that whole step out.
+      </p>
+    </div>
+
+    <div class="why-row">
+      <div class="why-card" data-reveal>
+        <div class="why-card__icon">⚡</div>
+        <h3>No 3D skills required</h3>
+        <p>If you can describe it, you can print it. <strong>The AI does the modeling work</strong> — you just confirm it looks right.</p>
+      </div>
+      <div class="why-card" data-reveal>
+        <div class="why-card__icon">✓</div>
+        <h3>Proof before you pay</h3>
+        <p>You see the 3D render — and approve it — <strong>before any plastic gets melted</strong>. No guessing, no wasted prints.</p>
+      </div>
+      <div class="why-card" data-reveal>
+        <div class="why-card__icon">↻</div>
+        <h3>Edit until it's right</h3>
+        <p>Don't like the proof? Reply with what to change. <strong>First revision is on the house</strong> — most prompts settle in two passes.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── FAQ ─────────────────────────────────────────── -->
+<section class="faq" id="faq">
+  <div class="container">
+    <div class="section-head" data-reveal>
+      <span class="section-head__kicker">↓ honest answers</span>
+      <h2>The questions<br>we keep getting.</h2>
+    </div>
+
+    <div class="faq__list">
+
+      <details class="faq-item" data-reveal>
+        <summary class="faq-item__q">
+          <span>What does it cost?</span>
+          <span class="faq-item__icon" aria-hidden="true">+</span>
+        </summary>
+        <div class="faq-item__a">
+          <p>Pricing depends on size, material, and complexity. <strong>Most desk-sized prints land between $35 and $90</strong>, including the AI render and one round of edits.</p>
+          <p>You'll see the price along with the proof, before you approve. No charge until you say go.</p>
+        </div>
+      </details>
+
+      <details class="faq-item" data-reveal>
+        <summary class="faq-item__q">
+          <span>How long until I get it?</span>
+          <span class="faq-item__icon" aria-hidden="true">+</span>
+        </summary>
+        <div class="faq-item__a">
+          <p>The AI proof hits your inbox within a few minutes. Once you approve, <strong>most prints ship in 5–7 business days</strong>. Bigger or more detailed pieces can run longer; we'll tell you up front.</p>
+        </div>
+      </details>
+
+      <details class="faq-item" data-reveal>
+        <summary class="faq-item__q">
+          <span>What if the proof looks wrong?</span>
+          <span class="faq-item__icon" aria-hidden="true">+</span>
+        </summary>
+        <div class="faq-item__a">
+          <p>Reply with what's off. The first edit is included. Subsequent edits are a small flat fee (we'll tell you in the email). <strong>Most prompts get to "yes" in one or two rounds.</strong></p>
+          <p>If after a few tries the AI just can't render what you're picturing, we'll refund anything you've paid and explain why. Some things are hard for current 3D AI — fine text, very thin parts, or highly mechanical assemblies.</p>
+        </div>
+      </details>
+
+      <details class="faq-item" data-reveal>
+        <summary class="faq-item__q">
+          <span>Can I sell what you print for me?</span>
+          <span class="faq-item__icon" aria-hidden="true">+</span>
+        </summary>
+        <div class="faq-item__a">
+          <p>For your own original prompts: yes. <strong>You own the print and the model file.</strong> We'll send the source files along with the physical object on request.</p>
+          <p>For prompts that reference copyrighted characters or branded IP — we'll flag those at the validation step and redirect you toward something original. The legal landscape on AI-generated work is real, and we don't want either of us in it.</p>
+        </div>
+      </details>
+
+    </div>
+  </div>
+</section>
+
+<!-- ─── FOOTER ──────────────────────────────────────── -->
+<footer>
+  <div>© 2026 <span>LARRYDOJO</span> · An AI studio.</div>
+  <div><a href="/">Back to the studio →</a></div>
+</footer>
+
+<script>
+(function () {
+  'use strict';
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const reveals = document.querySelectorAll('[data-reveal]');
+
+  if (reduceMotion) {
+    reveals.forEach(el => el.classList.add('is-in'));
+  } else {
+    const io = new IntersectionObserver((entries, observer) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-in');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15, rootMargin: '0px 0px -60px 0px' });
+    reveals.forEach(el => io.observe(el));
+  }
+
+  // Example chips drop their text into the prompt textarea so people
+  // can edit from a starting point instead of staring at an empty field.
+  const promptField = document.getElementById('prompt');
+  document.querySelectorAll('.example-chip[data-example]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      if (!promptField) return;
+      promptField.value = btn.dataset.example;
+      promptField.focus();
+      promptField.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    });
+  });
+
+  // Form submission. Netlify handles the actual POST; we intercept to
+  // swap in a clean success state without a page reload.
+  const form = document.getElementById('prompt-form');
+  const successState = document.getElementById('success-state');
+  const submitBtn = document.getElementById('submit-btn');
+
+  if (form && successState && submitBtn) {
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Sending...';
+
+      const formData = new FormData(form);
+
+      try {
+        const response = await fetch('/', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: new URLSearchParams(formData).toString(),
+        });
+
+        if (response.ok) {
+          form.style.display = 'none';
+          successState.style.display = 'block';
+          successState.classList.add('is-visible');
+          successState.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        } else {
+          throw new Error('Submission failed');
+        }
+      } catch (err) {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Send it for an AI proof →';
+        form.submit();
+      }
+    });
+  }
+})();
+</script>
+
+</body>
+</html>
