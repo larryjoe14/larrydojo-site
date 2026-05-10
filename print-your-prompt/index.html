@@ -1845,6 +1845,45 @@
   transform: none !important;
 }
 
+/* ─── PREVIEW RESULT IMAGE ─────────────────────────
+   Container for the generated concept image. Caps the height so tall
+   portrait renders don't blow out the pane, with object-fit: contain
+   so nothing gets cropped. */
+.preview-result {
+  background: linear-gradient(135deg, #1a0d2e 0%, #2a1a4a 60%, #3d1f5e 100%) !important;
+  border: 2px solid #f4eee4 !important;
+  width: 100% !important;
+  overflow: hidden !important;
+  position: relative !important;
+  min-height: 320px !important;
+  max-height: 560px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+.preview-result img {
+  display: block !important;
+  width: 100% !important;
+  height: auto !important;
+  max-height: 100% !important;
+  object-fit: contain !important;
+}
+.preview-result__sticker {
+  position: absolute !important;
+  top: 12px !important;
+  left: 12px !important;
+  background: #ffe000 !important;
+  color: #0a0a0a !important;
+  border: 2px solid #0a0a0a !important;
+  padding: 4px 10px 5px !important;
+  font-family: 'Archivo Black', sans-serif !important;
+  font-size: 10px !important;
+  letter-spacing: 0.06em !important;
+  text-transform: uppercase !important;
+  transform: rotate(-4deg) !important;
+  z-index: 2 !important;
+}
+
 /* Two-column grid — bulletproof version */
 .start-grid {
   display: grid !important;
