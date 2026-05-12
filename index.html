@@ -636,7 +636,12 @@
   }
   @media (max-width: 720px) { .spark { display: none; } }
 
-  /* ─── HERO CASE STUDY VIDEO CALLOUT ───────────────── */
+  /* ─── HERO CASE STUDY CALLOUT ─────────────────────────
+     This callout now points to Print Your Prompt (live POC) instead of
+     the Dick Tracy case study. Same structural classes so the existing
+     hero grid placement and reveal animation keep working; the .__media
+     class replaces the .__video iframe wrapper with a 3:4 product photo
+     container that's better suited to a still image than a vertical reel. */
   .case-study-callout {
     margin-top: 36px;
     background: var(--ink);
@@ -645,31 +650,65 @@
     box-shadow: 8px 8px 0 var(--acid);
     padding: 18px;
     display: grid;
-    grid-template-columns: 180px 1fr;
-    gap: 20px;
+    grid-template-columns: 200px 1fr;
+    gap: 22px;
     align-items: center;
     transform: rotate(-0.6deg);
     max-width: 620px;
   }
-  .case-study-callout__video {
+  .case-study-callout__media {
     position: relative;
-    aspect-ratio: 9 / 16;
-    width: 180px;
+    aspect-ratio: 3 / 4;
+    width: 200px;
     background: #000;
     border: 2px solid var(--paper);
     overflow: hidden;
   }
-  .case-study-callout__video iframe {
+  .case-study-callout__media img {
     position: absolute;
     inset: 0;
     width: 100%;
     height: 100%;
-    border: 0;
+    object-fit: cover;
     display: block;
   }
+  /* The acid-yellow corner sticker reads as "live now" — the small
+     pulsing dot reinforces that this isn't just a case study, it's
+     running in production right now. */
+  .case-study-callout__live {
+    position: absolute;
+    top: 10px; left: 10px;
+    background: rgba(10,10,10,0.85);
+    color: var(--mint);
+    border: 1.5px solid var(--mint);
+    padding: 4px 9px 5px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    z-index: 5;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .case-study-callout__live::before {
+    content: '';
+    width: 7px; height: 7px;
+    background: var(--mint);
+    border-radius: 50%;
+    animation: callout-pulse 1.8s ease-in-out infinite;
+  }
+  @keyframes callout-pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(0.85); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .case-study-callout__live::before { animation: none; }
+  }
+
   .case-study-callout__copy h3 {
     font-family: 'Archivo Black', sans-serif;
-    font-size: 16px;
+    font-size: 18px;
     text-transform: uppercase;
     line-height: 1.05;
     margin-bottom: 6px;
@@ -710,11 +749,11 @@
   @media (max-width: 980px) {
     .case-study-callout {
       max-width: 100%;
-      grid-template-columns: 160px 1fr;
+      grid-template-columns: 180px 1fr;
       transform: rotate(-0.4deg);
       margin-top: 24px;
     }
-    .case-study-callout__video { width: 160px; }
+    .case-study-callout__media { width: 180px; }
   }
   @media (max-width: 600px) {
     .case-study-callout {
@@ -722,9 +761,9 @@
       gap: 16px;
       padding: 16px;
     }
-    .case-study-callout__video {
+    .case-study-callout__media {
       width: 100%;
-      max-width: 220px;
+      max-width: 260px;
       margin: 0 auto;
     }
     .case-study-callout__copy {
@@ -1113,6 +1152,97 @@
     white-space: nowrap;
   }
   .download-card__btn:hover { transform: translate(-2px, -2px); box-shadow: 6px 6px 0 var(--acid); }
+
+  /* Case study callout — a variant of .download-card that lives directly
+     above the YouTube PDF download. Same chassis (ink background, paper
+     border, big drop shadow, A/1fr/B grid) so the two read as a pair of
+     resource cards in the studio's library. Three deliberate departures:
+       1. Tangerine drop-shadow (download-card uses acid). Stacked together
+          the two cards anchor on different accents so they don't read as
+          a duplicate.
+       2. Slight +0.4deg rotation. The download-card tilts -0.4deg below;
+          the two now lean toward each other rather than parallel.
+       3. The icon slot is a real thumbnail image (the Hawknose hero
+          render) instead of the PDF document chip — a case study is a
+          finished artifact, not a download. */
+  .case-study-card {
+    margin-top: 60px;
+    background: var(--ink);
+    color: var(--paper);
+    border: 3px solid var(--ink);
+    box-shadow: 10px 10px 0 var(--tangerine);
+    padding: 32px;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 28px;
+    align-items: center;
+    transform: rotate(0.4deg);
+    text-decoration: none;
+  }
+  @media (max-width: 720px) {
+    .case-study-card {
+      grid-template-columns: 1fr;
+      text-align: center;
+      gap: 18px;
+      padding: 24px;
+      box-shadow: 6px 6px 0 var(--tangerine);
+    }
+  }
+  .case-study-card__thumb {
+    width: 88px;
+    height: 110px;
+    border: 2.5px solid var(--paper);
+    overflow: hidden;
+    flex-shrink: 0;
+    position: relative;
+    background: var(--plum);
+  }
+  @media (max-width: 720px) { .case-study-card__thumb { margin: 0 auto; } }
+  .case-study-card__thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .case-study-card__copy h4 {
+    font-family: 'Caveat', cursive;
+    font-size: 24px;
+    color: var(--tangerine);
+    margin-bottom: 4px;
+    line-height: 1;
+  }
+  .case-study-card__copy h3 {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: clamp(20px, 3vw, 28px);
+    text-transform: uppercase;
+    line-height: 1.05;
+    margin-bottom: 8px;
+    color: var(--paper);
+  }
+  .case-study-card__copy h3 em {
+    font-style: normal;
+    color: var(--acid);
+  }
+  .case-study-card__copy p {
+    font-size: 15px;
+    color: var(--orchid);
+    margin: 0;
+  }
+  .case-study-card__btn {
+    background: var(--acid);
+    color: var(--ink);
+    border: 2.5px solid var(--paper);
+    padding: 16px 24px;
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    text-decoration: none;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+    box-shadow: 4px 4px 0 var(--tangerine);
+    white-space: nowrap;
+  }
+  .case-study-card__btn:hover { transform: translate(-2px, -2px); box-shadow: 6px 6px 0 var(--tangerine); }
 
   /* ─── WORK / AI CONTENT ───────────────────────────── */
   .work { background: var(--plum); color: var(--paper); }
@@ -2268,23 +2398,24 @@
 
     </div>
 
-    <div class="case-study-callout" data-reveal data-hero-step="11">
-      <div class="case-study-callout__video">
-        <iframe
-          src="https://www.youtube.com/embed/ZkABMo72b2A?autoplay=1&mute=1&loop=1&playlist=ZkABMo72b2A&rel=0&modestbranding=1&playsinline=1"
-          title="Dick Tracy Origins · 60-second sequence"
-          loading="lazy"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-          referrerpolicy="strict-origin-when-cross-origin"
-          allowfullscreen></iframe>
+    <!-- HERO CALLOUT: Print Your Prompt (live POC)
+         Replaces the previous Dick Tracy case study callout. Goal: push
+         visitors at the live product the studio actually wants traffic
+         on. The image slot uses a hand-finished print photo instead of
+         the old vertical iframe; the .__live pulse badge differentiates
+         this from a "case study" (past-tense) — this is shipping now. -->
+    <a href="print-your-prompt/" class="case-study-callout" data-reveal data-hero-step="11" style="text-decoration: none; color: inherit;" aria-label="Try Print Your Prompt — the studio's live POC">
+      <div class="case-study-callout__media">
+        <span class="case-study-callout__live">// live now</span>
+        <img src="print-your-prompt/img/IMG_1561.jpg" alt="Custom 3D-printed copper steampunk robot from a customer prompt — hand-finished." loading="lazy" />
       </div>
       <div class="case-study-callout__copy">
-        <div class="case-study-callout__tag">↓ new case study</div>
-        <h3>Dick Tracy <em>Origins.</em></h3>
-        <p>How we built character-consistent AI video from a public-domain source. Forty seconds of finished video, four hero frames, $0.54 per second.</p>
-        <a href="case-studies/dick-tracy-origins/" class="case-study-callout__link">Read the Case Study →</a>
+        <div class="case-study-callout__tag">↓ new from the studio</div>
+        <h3>Print Your <em>Prompt.</em></h3>
+        <p>Describe a thing. AI drafts the concept, a real person reviews it, and we ship the finished 3D print to your door.</p>
+        <span class="case-study-callout__link">Try it →</span>
       </div>
-    </div>
+    </a>
 
   </div>
 </header>
@@ -2323,6 +2454,24 @@
         <a href="https://youtube.com/playlist?list=PLkV0lZ_J-87GidYCmp3eEb45jNIBI2BV9" target="_blank" rel="noopener" class="about__series-cta">Watch the full series ↗</a>
       </aside>
     </div>
+
+    <!-- Dick Tracy Origins case study callout. Sibling of the download
+         card below (same .download-card chassis, rotated the opposite
+         direction, tangerine shadow instead of acid) so the two read
+         as a pair of resource cards rather than duplicates. The case
+         study lives at /case-studies/dick-tracy-origins/ as a static
+         page; that's the link target, not the gated PDF. -->
+    <a href="case-studies/dick-tracy-origins/" class="case-study-card" data-reveal>
+      <div class="case-study-card__thumb">
+        <img src="case-studies/dick-tracy-origins/img/hawknose-hero.jpg" alt="Detective Hawknose in his canary-yellow overcoat — the anchor character of the Dick Tracy Origins POC." loading="lazy" />
+      </div>
+      <div class="case-study-card__copy">
+        <h4>↓ case study</h4>
+        <h3>Dick Tracy <em>Origins.</em></h3>
+        <p>40 seconds of character-consistent AI video for $21.50 in stack-time. Read the full pipeline: the framework, the IP strategy, the cost breakdown.</p>
+      </div>
+      <span class="case-study-card__btn">Read the Case Study →</span>
+    </a>
 
     <a href="youtube-animation-trends-2026.pdf" download class="download-card" data-reveal>
       <div class="download-card__icon" aria-hidden="true">
