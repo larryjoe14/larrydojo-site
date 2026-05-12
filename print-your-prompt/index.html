@@ -1144,11 +1144,6 @@
           <p class="fine-print">
             // ~10 seconds · no charge · by submitting you agree we&apos;ll email you about your request
           </p>
-
-          <div class="rate-notice" id="rate-notice">
-            <strong>// session limit reached</strong><br>
-            You&apos;ve used your 10 free previews this session. Submit your prompt below — we&apos;ll send you the next render by email.
-          </div>
         </form>
       </div>
 
@@ -3059,8 +3054,8 @@ function runApp() {
       submitBtn.textContent = 'Generate concept →';
       return false;
     }
-    if (getRenderCount() >= RENDER_LIMIT && rateNotice) {
-      rateNotice.classList.add('is-visible');
+    if (getRenderCount() >= RENDER_LIMIT) {
+      if (rateNotice) rateNotice.classList.add('is-visible');
       submitBtn.textContent = 'Send for offline render →';
       return true;
     }
