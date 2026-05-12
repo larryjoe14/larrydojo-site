@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Print Your Prompt — LarryDoJo</title>
-<meta name="description" content="Describe a thing. We turn it into a custom 3D-printed object. AI-validated, machine-rendered, human-approved before print." />
+<meta name="description" content="Describe a thing. We turn it into a custom 3D-printed object. AI drafts the concept, a real person reviews it, you approve before we print." />
 
 <link rel="canonical" href="https://larrydojo.com/print-your-prompt/" />
 
@@ -12,7 +12,7 @@
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://larrydojo.com/print-your-prompt/" />
 <meta property="og:title" content="Print Your Prompt — LarryDoJo" />
-<meta property="og:description" content="Describe a thing. We 3D print it. From your words, to a model on your desk — in days, not weeks." />
+<meta property="og:description" content="Describe a thing. We 3D print it. AI drafts it, a real person reviews it, you approve before we print." />
 <meta property="og:image" content="https://larrydojo.com/print-your-prompt/img/IMG_1561.jpg" />
 <meta property="og:site_name" content="LarryDoJo" />
 
@@ -245,14 +245,10 @@
 
   .polaroid:hover { transform: rotate(0deg) scale(1.04) !important; box-shadow: 12px 12px 0 var(--ink); z-index: 10; }
 
-  /* Image well: padding-bottom hack for 3:4 ratio. Bulletproof — works in
-     every browser back to ancient versions, doesn't depend on aspect-ratio
-     property, doesn't collapse if the image takes a moment to load. The
-     image itself is absolutely positioned to fill the well. */
   .polaroid__well {
     position: relative;
     width: 100%;
-    padding-bottom: 133.33%;  /* 4/3 = 1.333 → 3:4 ratio */
+    padding-bottom: 133.33%;
     background: #2a1f3d;
     border: 1px solid rgba(0,0,0,0.15);
     overflow: hidden;
@@ -276,7 +272,6 @@
     line-height: 1;
   }
 
-  /* The three-card stagger. Each rotated and offset to feel pinned to a board. */
   .polaroid--a { top: 0; left: 10%; transform: rotate(-5deg); z-index: 3; }
   .polaroid--b { top: 60px; right: 0; transform: rotate(4deg); z-index: 2; }
   .polaroid--c { bottom: 0; left: 22%; transform: rotate(-2deg); z-index: 4; }
@@ -381,6 +376,34 @@
     letter-spacing: 0.03em;
   }
 
+  /* Small callout above the prompt textarea — reassures users that the
+     human-review step is what makes this safe, not just the AI. Drops in
+     at the top of the prompt field so it's the last thing read before
+     typing. */
+  .humans-cue {
+    background: var(--acid);
+    border: 2px solid var(--ink);
+    padding: 10px 14px;
+    margin-bottom: 14px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    line-height: 1.45;
+    color: var(--ink);
+    letter-spacing: 0.02em;
+    transform: rotate(-0.4deg);
+    box-shadow: 3px 3px 0 var(--ink);
+  }
+  .humans-cue strong {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    background: var(--ink);
+    color: var(--acid);
+    padding: 1px 6px;
+    margin-right: 6px;
+  }
+
   .upload-zone {
     position: relative;
     border: 2px dashed var(--ink);
@@ -453,6 +476,37 @@
     justify-content: center;
   }
   .upload-zone__remove:hover { background: var(--ink); color: var(--punch); }
+
+  /* Reference image label gets the same prominence as a primary field
+     label, with a friendlier hint that frames it as a partner to the
+     prompt text rather than a buried add-on. */
+  .ref-image-label {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 6px;
+  }
+  .ref-image-label__title {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--ink);
+  }
+  .ref-image-label__nudge {
+    font-family: 'Caveat', cursive;
+    font-size: 18px;
+    color: var(--tangerine);
+    line-height: 1;
+    transform: rotate(-1deg);
+    text-align: right;
+    flex-shrink: 0;
+  }
+  @media (max-width: 480px) {
+    .ref-image-label { flex-direction: column; align-items: flex-start; gap: 4px; }
+    .ref-image-label__nudge { font-size: 16px; }
+  }
 
     .examples {
     display: flex;
@@ -558,10 +612,6 @@
   }
 
   /* ─── PROOF GALLERY ───────────────────────────────── */
-  /* Real customer prints, laid out as a maximalist sticker board.
-     Each photo is a polaroid with a hand-written caption; the
-     featured Blank video sits in line as the first item, sized to
-     match the surrounding photos so it reads as part of the grid. */
   .proof { background: var(--plum); color: var(--paper); }
   .proof .section-head h2 { color: var(--paper); }
   .proof .section-head__kicker { color: var(--acid); }
@@ -595,7 +645,7 @@
 
   .proof-card__media {
     width: 100%;
-    padding-bottom: 133.33%;  /* 3:4 ratio via padding-bottom hack — bulletproof. */
+    padding-bottom: 133.33%;
     overflow: hidden;
     border: 1px solid rgba(0,0,0,0.12);
     background: #2a1f3d;
@@ -693,9 +743,6 @@
   .how-card p { font-size: 14px; line-height: 1.5; }
 
   /* ─── FEATURED PROCESS — second video alongside copy ─ */
-  /* Two-column module: short pitch on the left, vertical YouTube
-     video on the right framed like a polaroid, with an acid-yellow
-     drop-shadow that matches the rest of the site's video frames. */
   .featured { background: var(--paper); }
 
   .featured__grid {
@@ -873,6 +920,20 @@
   footer a { color: var(--acid); text-decoration: none; }
   footer a:hover { text-decoration: underline; }
 
+  /* Off-screen utility for accessibility-friendly hidden inputs (honeypot).
+     display:none is also fine for bots, but absolute-positioned off-screen
+     with aria-hidden + tabindex=-1 is more bulletproof against bots that
+     ignore CSS display rules and against screen readers reading the label. */
+  .visually-hidden {
+    position: absolute !important;
+    width: 1px; height: 1px;
+    padding: 0; margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
   /* ─── Reveal motion ───────────────────────────────── */
   [data-reveal] {
     opacity: 0;
@@ -890,11 +951,25 @@
 </head>
 <body>
 
-<!-- Static form for Netlify build-time detection. -->
+<!-- Static form for Netlify build-time detection.
+     Two hidden forms now: the original print-prompt form for new submissions,
+     and a richer print-prompt-handoff form fired when a user explicitly asks
+     a human to take their concept over the finish line. Netlify reads these
+     at build time and registers them; nothing here is shown to the user. -->
 <form name="print-prompt" netlify netlify-honeypot="bot-field" hidden>
   <input type="text" name="name" />
   <input type="email" name="email" />
   <textarea name="prompt"></textarea>
+</form>
+
+<form name="print-prompt-handoff" netlify netlify-honeypot="bot-field" hidden>
+  <input type="text" name="name" />
+  <input type="email" name="email" />
+  <textarea name="original_prompt"></textarea>
+  <textarea name="cleaned_prompt"></textarea>
+  <textarea name="refinement_note"></textarea>
+  <input type="text" name="reference_image_used" />
+  <input type="text" name="handoff_at" />
 </form>
 
 <!-- ─── NAV ─────────────────────────────────────────── -->
@@ -908,7 +983,7 @@
     <a href="/#services">Services</a>
     <a href="/#faq">FAQ</a>
   </div>
-  <a href="#start" class="nav__cta">Print Yours →</a>
+  <a href="#start" class="nav__cta">Try it →</a>
 </nav>
 
 <!-- ─── HERO ────────────────────────────────────────── -->
@@ -919,7 +994,7 @@
       <span class="eyebrow" data-reveal>↓ a new thing from larrydojo</span>
       <h1 data-reveal>Describe<br>a thing.<br>We <em>print</em> it.</h1>
       <p class="hero__lead" data-reveal>
-        Type what's in your head. Our AI cleans it up, builds the 3D model, and emails you a proof. <strong>Approve it, edit it, or scrap it</strong> — then we ship it to your door.
+        Type what's in your head. <strong>AI drafts it. A real person reviews it. You approve before we print.</strong> Then we ship it to your door.
       </p>
 
       <div class="how-strip" data-reveal>
@@ -933,7 +1008,7 @@
         </div>
         <div class="how-step">
           <div class="how-step__num">3</div>
-          <div class="how-step__label">Approve &amp; print</div>
+          <div class="how-step__label">Human reviews &amp; ships</div>
         </div>
       </div>
     </div>
@@ -965,16 +1040,17 @@
 
 <!-- ─── PROMPT FORM SECTION (now with live preview) ──
      Two-column layout: form on the left, live render preview on the
-     right. The preview pane goes through three states — idle, rendering,
-     done — driven by JS that orchestrates the validate → start-render
-     → poll-status pipeline. -->
+     right. The preview pane goes through six states — idle, rendering,
+     done (initial), refining, refined, success — driven by JS that
+     orchestrates the validate → generate-image pipeline and the
+     refine → handoff flow on top of it. -->
 <section id="start" class="start-section">
   <div class="container" style="max-width: 1280px;">
     <div class="section-head" data-reveal style="max-width: 720px;">
       <span class="section-head__kicker">↓ start here</span>
       <h2>Tell us<br>what to <em style="font-style: normal; color: var(--tangerine);">make.</em></h2>
       <p class="section-head__desc">
-        One line, one paragraph, or a half-formed napkin sketch in words. Watch the AI render it live on the right — then we follow up by email with the order details.
+        One line, one paragraph, or a half-formed napkin sketch in words. Watch the AI render it live on the right — then a real person at the studio takes it from there.
       </p>
     </div>
 
@@ -991,11 +1067,20 @@
           data-reveal
         >
           <input type="hidden" name="form-name" value="print-prompt" />
-          <p style="display:none;"><label>Don't fill this out: <input name="bot-field" /></label></p>
+          <!-- Off-screen honeypot. visually-hidden positions this absolute
+               off-screen rather than display:none, which some bots ignore.
+               aria-hidden + tabindex=-1 ensure neither screen readers nor
+               keyboard users land on it; autocomplete=off keeps password
+               managers from autofilling it. -->
+          <div class="visually-hidden" aria-hidden="true">
+            <label>Don't fill this out:
+              <input name="bot-field" tabindex="-1" autocomplete="off" />
+            </label>
+          </div>
 
           <div class="prompt-card__head">
             <span class="prompt-card__title">// New Print Order</span>
-            <span class="prompt-card__meta">v1.0 · live preview</span>
+            <span class="prompt-card__meta">v1.1 · live preview</span>
           </div>
 
           <div class="field">
@@ -1009,14 +1094,29 @@
             <span class="field__hint">// follow-up + order details land here</span>
           </div>
 
+          <!-- "First edit on the house" cue. Sits right above the prompt
+               textarea so it's the last thing read before typing. Frames
+               the entire flow as iteration with a human, not a one-shot
+               AI submission. -->
+          <div class="humans-cue" role="note">
+            <strong>↓ humans iterate with you</strong>
+            Your first edit is on the house. AI drafts the concept; a real person reviews it within 24 hours.
+          </div>
+
           <div class="field">
             <label for="prompt">Describe the object <span class="req">*</span></label>
             <textarea id="prompt" name="prompt" required placeholder="A miniature 1980s arcade cabinet, pixel-style, about the size of a coffee mug..."></textarea>
             <span class="field__hint">// keep it simple — AI does the work</span>
           </div>
 
+          <!-- Reference image — now framed as a peer to the prompt field
+               with a friendlier hand-written nudge instead of a buried
+               (optional) tag. Keeps the existing upload-zone behavior. -->
           <div class="field">
-            <label for="reference-image">Reference image <span style="color: var(--orchid-deep); font-weight: 400; text-transform: lowercase; letter-spacing: 0;">(optional)</span></label>
+            <div class="ref-image-label">
+              <span class="ref-image-label__title">Reference image</span>
+              <span class="ref-image-label__nudge">↗ got a picture? drop it in</span>
+            </div>
             <div class="upload-zone" id="upload-zone">
               <input type="file" id="reference-image" accept="image/jpeg,image/png,image/webp" hidden />
               <div class="upload-zone__placeholder" id="upload-placeholder">
@@ -1129,11 +1229,7 @@
 }
 
 
-/* ─── WAIT-TIME OVERLAY ───────────────────────────
-   Bottom-anchored sheet that pops up while rendering.
-   Shows the Gary Vee video to occupy the user during the wait.
-   Auto-shows after 5s of rendering, auto-hides on success/failure.
-   User can dismiss with X, ESC, or backdrop click. */
+/* ─── WAIT-TIME OVERLAY ─────────────────────────── */
 #wait-overlay {
   position: fixed !important;
   inset: 0 !important;
@@ -1146,9 +1242,7 @@
   justify-content: center !important;
   animation: wait-overlay-fade 0.25s ease-out !important;
 }
-#wait-overlay.is-visible {
-  display: flex !important;
-}
+#wait-overlay.is-visible { display: flex !important; }
 @keyframes wait-overlay-fade {
   from { opacity: 0; }
   to { opacity: 1; }
@@ -1195,10 +1289,7 @@
   flex-shrink: 0 !important;
   gap: 14px !important;
 }
-.wait-overlay__title-block {
-  flex: 1 !important;
-  min-width: 0 !important;
-}
+.wait-overlay__title-block { flex: 1 !important; min-width: 0 !important; }
 .wait-overlay__kicker {
   font-family: 'Caveat', cursive !important;
   font-size: 22px !important;
@@ -1282,8 +1373,6 @@
   text-decoration: underline !important;
 }
 
-/* Reopen pill: shown in the rendering panel after the user dismisses
-   the overlay, so they can bring it back. */
 #reopen-overlay {
   display: none;
   background: var(--acid, #ffe000) !important;
@@ -1297,18 +1386,13 @@
   margin-top: 8px !important;
   align-self: flex-start !important;
 }
-#reopen-overlay.is-visible {
-  display: inline-block !important;
-}
+#reopen-overlay.is-visible { display: inline-block !important; }
 #reopen-overlay:hover {
   background: #ff5b1f !important;
   color: #f4eee4 !important;
 }
 
-/* ─── TYPING GAME ──────────────────────────────────
-   Green-on-black CRT aesthetic. Self-contained inside the wait overlay. */
-
-/* Override the overlay sheet to use the dark CRT styling when game is active */
+/* ─── TYPING GAME ────────────────────────────────── */
 #wait-overlay__sheet {
   background: #050807 !important;
   border-color: #1a1a1a !important;
@@ -1322,9 +1406,7 @@
   color: #00ff41 !important;
   text-shadow: 0 0 8px rgba(0, 255, 65, 0.4) !important;
 }
-#wait-overlay__head .wait-overlay__title {
-  color: #f4eee4 !important;
-}
+#wait-overlay__head .wait-overlay__title { color: #f4eee4 !important; }
 #wait-overlay__head .wait-overlay__title em {
   background: #00ff41 !important;
   color: #050807 !important;
@@ -1342,16 +1424,13 @@
   background: #00ff41 !important;
   color: #050807 !important;
 }
-#wait-overlay__body {
-  background: #050807 !important;
-}
+#wait-overlay__body { background: #050807 !important; }
 .wait-overlay__attr {
   color: #00ff41 !important;
   opacity: 0.6 !important;
   font-family: 'JetBrains Mono', monospace !important;
 }
 
-/* Game container */
 #wait-game {
   display: flex !important;
   flex-direction: column !important;
@@ -1363,7 +1442,6 @@
   position: relative !important;
 }
 
-/* HUD bar */
 #wait-game__hud {
   display: grid !important;
   grid-template-columns: repeat(4, 1fr) !important;
@@ -1398,16 +1476,12 @@
   text-shadow: 0 0 6px rgba(0, 255, 65, 0.4) !important;
   font-variant-numeric: tabular-nums !important;
 }
-.wait-game__mute {
-  cursor: pointer !important;
-  transition: all 0.1s !important;
-}
+.wait-game__mute { cursor: pointer !important; transition: all 0.1s !important; }
 .wait-game__mute:hover {
   border-color: #00ff41 !important;
   background: rgba(0, 255, 65, 0.05) !important;
 }
 
-/* Playfield */
 #wait-game__field {
   position: relative !important;
   flex: 1 !important;
@@ -1415,7 +1489,6 @@
   background: #050807 !important;
   border: 1px solid rgba(0, 255, 65, 0.2) !important;
   overflow: hidden !important;
-  /* Subtle scanline texture */
   background-image: repeating-linear-gradient(
     0deg,
     transparent 0px,
@@ -1424,11 +1497,8 @@
     rgba(0, 255, 65, 0.02) 3px
   ) !important;
 }
-@media (max-width: 720px) {
-  #wait-game__field { min-height: 380px !important; }
-}
+@media (max-width: 720px) { #wait-game__field { min-height: 380px !important; } }
 
-/* Falling words */
 .wait-game__word {
   position: absolute !important;
   font-family: inherit !important;
@@ -1445,7 +1515,6 @@
   text-transform: uppercase !important;
   will-change: transform !important;
 }
-/* Prefix already-typed letters */
 .wait-game__word .wait-game__word-typed {
   color: #f4eee4 !important;
   text-shadow: 0 0 8px rgba(244, 238, 228, 0.6) !important;
@@ -1467,22 +1536,9 @@
   pointer-events: none !important;
 }
 @keyframes word-hit {
-  0% {
-    color: #00ff41;
-    transform: scale(1);
-    text-shadow: 0 0 6px rgba(0, 255, 65, 0.4);
-  }
-  30% {
-    color: #00ff41;
-    transform: scale(1.4);
-    text-shadow: 0 0 30px rgba(0, 255, 65, 1), 0 0 60px rgba(0, 255, 65, 0.6);
-  }
-  100% {
-    color: #00ff41;
-    transform: scale(1.6);
-    opacity: 0;
-    text-shadow: 0 0 0 transparent;
-  }
+  0% { color: #00ff41; transform: scale(1); text-shadow: 0 0 6px rgba(0, 255, 65, 0.4); }
+  30% { color: #00ff41; transform: scale(1.4); text-shadow: 0 0 30px rgba(0, 255, 65, 1), 0 0 60px rgba(0, 255, 65, 0.6); }
+  100% { color: #00ff41; transform: scale(1.6); opacity: 0; text-shadow: 0 0 0 transparent; }
 }
 @keyframes word-miss {
   0% { color: #ff3a3a; text-shadow: 0 0 6px rgba(255, 58, 58, 0.4); transform: scale(1); }
@@ -1492,7 +1548,6 @@
   100% { color: #ff3a3a; transform: translateY(20px); opacity: 0; }
 }
 
-/* Field flash overlay for hit/miss feedback */
 #wait-game__field::after {
   content: '';
   position: absolute;
@@ -1511,7 +1566,6 @@
   transition: background 0.05s ease-out;
 }
 
-/* Hint shown before game starts */
 #wait-game__hint {
   position: absolute !important;
   inset: 0 !important;
@@ -1548,7 +1602,6 @@
   .wait-game__hint-mobile { display: block !important; }
 }
 
-/* Render-complete banner */
 #wait-game__render-done {
   position: absolute !important;
   top: 12px !important;
@@ -1571,7 +1624,6 @@
   50% { box-shadow: 0 0 0 10px rgba(0, 255, 65, 0); }
 }
 
-/* Game over screen */
 #wait-game__over {
   position: absolute !important;
   inset: 0 !important;
@@ -1625,7 +1677,6 @@
   color: #050807 !important;
 }
 
-/* Typing buffer (desktop only) */
 #wait-game__buffer {
   display: flex !important;
   align-items: center !important;
@@ -1666,11 +1717,6 @@
   #wait-game__buffer { display: none !important; }
 }
 
-/* Mobile keyboard input. On desktop it's hidden because typing happens
-   via the document keydown listener anyway. On mobile (touch devices),
-   we show the trigger button which focuses the input and opens the
-   soft keyboard. The input itself stays visually hidden — we only need
-   it to receive focus and capture keystrokes. */
 #wait-game__keyboard-input {
   position: absolute !important;
   left: -9999px !important;
@@ -1709,9 +1755,6 @@
   color: #050807 !important;
   text-shadow: none !important;
 }
-
-/* Show the trigger only on touch devices. Using both pointer:coarse
-   (touch-primary) and the existing 720px breakpoint to be safe. */
 @media (max-width: 720px), (pointer: coarse) {
   #wait-game__keyboard-trigger { display: inline-block !important; }
 }
@@ -1724,131 +1767,7 @@
   .wait-game__buffer-text::after { animation: none !important; }
 }
 
-/* ─── PAINT STEP UI ────────────────────────────────
-   Shown after a successful preview render. */
-.paint-prompt {
-  background: #f4eee4 !important;
-  color: #0a0a0a !important;
-  padding: 18px 18px 16px !important;
-  border: 2px solid #f4eee4 !important;
-}
-.paint-prompt__head {
-  font-family: 'Caveat', cursive !important;
-  font-size: 22px !important;
-  color: #ff5b1f !important;
-  line-height: 1 !important;
-  margin-bottom: 4px !important;
-}
-.paint-prompt h4 {
-  font-family: 'Archivo Black', sans-serif !important;
-  font-size: 17px !important;
-  text-transform: uppercase !important;
-  line-height: 1.05 !important;
-  margin: 0 0 4px !important;
-  color: #0a0a0a !important;
-}
-.paint-prompt h4 em { font-style: normal !important; color: #ff5b1f !important; }
-.paint-prompt__sub {
-  font-size: 12px !important;
-  line-height: 1.5 !important;
-  color: #0a0a0a !important;
-  opacity: 0.7 !important;
-  margin: 0 0 12px !important;
-  font-family: 'JetBrains Mono', monospace !important;
-}
-.paint-prompt textarea {
-  width: 100% !important;
-  box-sizing: border-box !important;
-  padding: 10px 12px !important;
-  border: 2px solid #0a0a0a !important;
-  background: #fffaef !important;
-  font-family: inherit !important;
-  font-size: 14px !important;
-  line-height: 1.4 !important;
-  color: #0a0a0a !important;
-  resize: vertical !important;
-  min-height: 60px !important;
-  margin-bottom: 10px !important;
-}
-.paint-prompt textarea:focus {
-  outline: none !important;
-  border-color: #ff5b1f !important;
-  box-shadow: 0 0 0 2px #ffe000 !important;
-}
-.paint-chips {
-  display: flex !important;
-  flex-wrap: wrap !important;
-  gap: 6px !important;
-  align-items: center !important;
-  margin-bottom: 12px !important;
-}
-.paint-chips__lbl {
-  font-family: 'JetBrains Mono', monospace !important;
-  font-size: 10px !important;
-  letter-spacing: 0.06em !important;
-  color: #7c5cb8 !important;
-  text-transform: lowercase !important;
-}
-.paint-chip {
-  background: transparent !important;
-  border: 1.5px dashed #0a0a0a !important;
-  color: #0a0a0a !important;
-  padding: 4px 10px !important;
-  font-family: 'JetBrains Mono', monospace !important;
-  font-size: 11px !important;
-  letter-spacing: 0.02em !important;
-  cursor: pointer !important;
-  transition: all 0.15s ease !important;
-}
-.paint-chip:hover {
-  background: #ffe000 !important;
-  border-style: solid !important;
-  transform: translate(-1px, -1px) !important;
-}
-.paint-buttons {
-  display: flex !important;
-  gap: 8px !important;
-  flex-wrap: wrap !important;
-}
-.paint-btn {
-  flex: 1 !important;
-  min-width: 130px !important;
-  padding: 11px 14px !important;
-  border: 2px solid #0a0a0a !important;
-  font-family: 'Archivo Black', sans-serif !important;
-  font-size: 12px !important;
-  letter-spacing: 0.04em !important;
-  text-transform: uppercase !important;
-  cursor: pointer !important;
-  transition: all 0.15s ease !important;
-}
-.paint-btn--apply {
-  background: #0a0a0a !important;
-  color: #ffe000 !important;
-}
-.paint-btn--apply:hover {
-  background: #ff5b1f !important;
-  color: #f4eee4 !important;
-  transform: translate(-1px, -1px) !important;
-  box-shadow: 3px 3px 0 #0a0a0a !important;
-}
-.paint-btn--skip {
-  background: transparent !important;
-  color: #0a0a0a !important;
-}
-.paint-btn--skip:hover {
-  background: #f4eee4 !important;
-}
-.paint-btn:disabled {
-  opacity: 0.5 !important;
-  cursor: not-allowed !important;
-  transform: none !important;
-}
-
-/* ─── PREVIEW RESULT IMAGE ─────────────────────────
-   Container for the generated concept image. Caps the height so tall
-   portrait renders don't blow out the pane, with object-fit: contain
-   so nothing gets cropped. */
+/* ─── PREVIEW RESULT IMAGE ───────────────────────── */
 .preview-result {
   background: linear-gradient(135deg, #1a0d2e 0%, #2a1a4a 60%, #3d1f5e 100%) !important;
   border: 2px solid #f4eee4 !important;
@@ -1884,7 +1803,204 @@
   z-index: 2 !important;
 }
 
-/* Two-column grid — bulletproof version */
+/* ─── REFINE FLOW UI ──────────────────────────────
+   New CTAs that live in the preview-pane done state. The flow:
+     1. Render lands → show .preview-actions (initial)
+        primary: Refine this →
+        secondary text link: try a different prompt
+     2. User clicks Refine → show .refine-input (nudge textarea)
+     3. User applies nudge → re-run pipeline → on success swap to
+        .preview-actions--refined
+        primary: Let a human take it from here →
+        secondary text link: try another prompt
+     4. Human handoff clicked → fire #preview-success message,
+        Netlify forms POST to print-prompt-handoff in background.
+   Buttons live inside the dark preview pane, so all the colors are
+   tuned for the ink background. */
+.preview-actions {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 10px !important;
+  align-items: stretch !important;
+  margin-top: 4px !important;
+}
+.preview-actions__lede {
+  font-family: 'JetBrains Mono', monospace !important;
+  font-size: 11px !important;
+  color: #c9b8e8 !important;
+  letter-spacing: 0.04em !important;
+  margin: 0 0 4px !important;
+}
+.preview-actions__lede strong {
+  color: #ffe000 !important;
+  background: transparent !important;
+  font-weight: 700 !important;
+}
+.preview-btn {
+  display: block !important;
+  width: 100% !important;
+  padding: 14px 18px !important;
+  border: 2.5px solid #f4eee4 !important;
+  font-family: 'Archivo Black', sans-serif !important;
+  font-size: 14px !important;
+  letter-spacing: 0.05em !important;
+  text-transform: uppercase !important;
+  cursor: pointer !important;
+  text-align: center !important;
+  text-decoration: none !important;
+  transition: transform 0.15s ease, box-shadow 0.15s ease !important;
+}
+.preview-btn--primary {
+  background: #ffe000 !important;
+  color: #0a0a0a !important;
+  box-shadow: 4px 4px 0 #ff5b1f !important;
+}
+.preview-btn--primary:hover {
+  transform: translate(-2px, -2px) !important;
+  box-shadow: 6px 6px 0 #ff5b1f !important;
+}
+.preview-btn--primary:disabled {
+  opacity: 0.55 !important;
+  cursor: not-allowed !important;
+  transform: none !important;
+}
+.preview-btn--secondary {
+  background: transparent !important;
+  color: #f4eee4 !important;
+  border-color: rgba(244, 238, 228, 0.4) !important;
+}
+.preview-btn--secondary:hover {
+  background: rgba(244, 238, 228, 0.08) !important;
+  border-color: #f4eee4 !important;
+}
+.preview-btn-link {
+  background: transparent !important;
+  border: 0 !important;
+  padding: 4px 6px !important;
+  color: #c9b8e8 !important;
+  font-family: 'JetBrains Mono', monospace !important;
+  font-size: 12px !important;
+  letter-spacing: 0.03em !important;
+  text-transform: lowercase !important;
+  cursor: pointer !important;
+  align-self: center !important;
+  text-decoration: underline !important;
+  text-decoration-color: rgba(201, 184, 232, 0.4) !important;
+  text-underline-offset: 3px !important;
+}
+.preview-btn-link:hover {
+  color: #ffe000 !important;
+  text-decoration-color: #ffe000 !important;
+}
+
+/* Refine input panel — flips the surface to paper so it reads as an
+   editing affordance, not part of the preview frame. */
+.refine-input {
+  background: #f4eee4 !important;
+  color: #0a0a0a !important;
+  border: 2px solid #f4eee4 !important;
+  padding: 16px 16px 14px !important;
+}
+.refine-input__head {
+  font-family: 'Caveat', cursive !important;
+  font-size: 20px !important;
+  color: #ff5b1f !important;
+  line-height: 1 !important;
+  margin-bottom: 4px !important;
+}
+.refine-input__title {
+  font-family: 'Archivo Black', sans-serif !important;
+  font-size: 14px !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.04em !important;
+  color: #0a0a0a !important;
+  margin: 0 0 10px !important;
+  line-height: 1.2 !important;
+}
+.refine-input textarea {
+  width: 100% !important;
+  box-sizing: border-box !important;
+  padding: 10px 12px !important;
+  border: 2px solid #0a0a0a !important;
+  background: #fffaef !important;
+  font-family: 'Space Grotesk', sans-serif !important;
+  font-size: 14px !important;
+  line-height: 1.4 !important;
+  color: #0a0a0a !important;
+  resize: vertical !important;
+  min-height: 64px !important;
+  margin-bottom: 10px !important;
+}
+.refine-input textarea:focus {
+  outline: none !important;
+  border-color: #ff5b1f !important;
+  box-shadow: 0 0 0 2px #ffe000 !important;
+}
+.refine-input__actions {
+  display: flex !important;
+  gap: 8px !important;
+  flex-wrap: wrap !important;
+}
+.refine-input .preview-btn {
+  flex: 1 !important;
+  min-width: 130px !important;
+  width: auto !important;
+  border-color: #0a0a0a !important;
+}
+.refine-input .preview-btn--primary {
+  background: #0a0a0a !important;
+  color: #ffe000 !important;
+  box-shadow: 3px 3px 0 #ff5b1f !important;
+}
+.refine-input .preview-btn--primary:hover {
+  background: #ff5b1f !important;
+  color: #f4eee4 !important;
+  box-shadow: 4px 4px 0 #0a0a0a !important;
+}
+.refine-input .preview-btn--cancel {
+  background: transparent !important;
+  color: #0a0a0a !important;
+  border: 2px solid #0a0a0a !important;
+  box-shadow: none !important;
+}
+.refine-input .preview-btn--cancel:hover {
+  background: #0a0a0a !important;
+  color: #f4eee4 !important;
+}
+
+/* Hidden by default — JS toggles these via the .is-visible class. */
+#refine-input,
+#preview-actions-refined,
+#preview-success { display: none !important; }
+#refine-input.is-visible,
+#preview-actions-refined.is-visible,
+#preview-success.is-visible { display: flex !important; flex-direction: column !important; }
+
+/* Success message after human handoff is confirmed. */
+#preview-success {
+  background: #f4eee4 !important;
+  color: #0a0a0a !important;
+  padding: 16px 18px 14px !important;
+  border: 2px solid #f4eee4 !important;
+}
+#preview-success h4 {
+  font-family: 'Archivo Black', sans-serif !important;
+  font-size: 18px !important;
+  text-transform: uppercase !important;
+  line-height: 1.05 !important;
+  margin: 0 0 6px !important;
+  color: #0a0a0a !important;
+}
+#preview-success h4 em { font-style: normal !important; color: #ff5b1f !important; }
+#preview-success p {
+  font-size: 13px !important;
+  line-height: 1.5 !important;
+  color: #0a0a0a !important;
+  margin: 0 !important;
+}
+#preview-success p strong { background: #ffe000 !important; padding: 0 4px !important; }
+
+/* Two-column grid */
 .start-grid {
   display: grid !important;
   grid-template-columns: 1fr 1fr !important;
@@ -1918,7 +2034,7 @@
             </svg>
             <span class="preview-pane__idle-tag">↓ ready when you are</span>
             <h3 class="preview-pane__idle-headline">Submit a prompt.<br>See the <em>concept.</em></h3>
-            <p class="preview-pane__idle-sub">The AI will polish your prompt and generate a hyperrealistic concept image right here. Takes about 10 seconds.</p>
+            <p class="preview-pane__idle-sub">The AI will polish your prompt and generate a hyperrealistic concept image right here. Takes about 10 seconds. A human reviews it next.</p>
           </div>
 
           <div class="preview-pane__rendering">
@@ -1930,16 +2046,48 @@
             <button type="button" id="reopen-overlay" aria-label="Reopen video overlay">🎮 keep playing</button>
           </div>
 
+          <!-- Done state. The image always renders. Below it sits one of
+               three blocks depending on where the user is in the refine
+               flow:
+                 #preview-actions-initial — initial CTAs (refine / new prompt)
+                 #refine-input — the nudge textarea
+                 #preview-actions-refined — human-handoff CTA after one refine
+                 #preview-success — final confirmation after handoff -->
           <div class="preview-pane__done">
             <div class="preview-result">
-              <span class="preview-result__sticker">↓ AI Concept</span>
-              <img id="preview-img" src="" alt="3D preview render of your prompt" />
+              <span class="preview-result__sticker" id="preview-result-sticker">↓ AI Concept</span>
+              <img id="preview-img" src="" alt="AI concept render of your prompt" />
             </div>
 
-            <!-- Success message shown immediately after the concept image lands. -->
-            <div class="preview-success" id="preview-success">
-              <h4>Concept <em>delivered.</em></h4>
-              <p>Check your inbox — we&apos;ve emailed you a copy. A human reviews your request and follows up <strong>within 24 hours</strong> with pricing and next steps.</p>
+            <!-- Initial CTAs shown right after a fresh render. -->
+            <div class="preview-actions" id="preview-actions-initial">
+              <p class="preview-actions__lede">// looks close? <strong>polish it once for free.</strong></p>
+              <button type="button" class="preview-btn preview-btn--primary" id="refine-btn">Refine this →</button>
+              <button type="button" class="preview-btn-link" id="try-different-btn">try a different prompt</button>
+            </div>
+
+            <!-- Refine input panel (hidden until Refine is clicked). -->
+            <div class="refine-input" id="refine-input">
+              <div class="refine-input__head">↓ one free tweak</div>
+              <h4 class="refine-input__title">Nudge the colors, vibe, or details.</h4>
+              <textarea id="refine-nudge" placeholder="make the eyes blue · add a top hat · more dramatic shadows" rows="3" maxlength="240"></textarea>
+              <div class="refine-input__actions">
+                <button type="button" class="preview-btn preview-btn--primary" id="refine-submit">Apply nudge →</button>
+                <button type="button" class="preview-btn preview-btn--cancel" id="refine-cancel">Cancel</button>
+              </div>
+            </div>
+
+            <!-- Post-refine CTAs (hidden until refine completes). -->
+            <div class="preview-actions" id="preview-actions-refined">
+              <p class="preview-actions__lede">// almost there — <strong>humans iterate from here.</strong></p>
+              <button type="button" class="preview-btn preview-btn--primary" id="human-handoff-btn">Let a human take it from here →</button>
+              <button type="button" class="preview-btn-link" id="try-another-btn">try another prompt</button>
+            </div>
+
+            <!-- Final success message after human handoff is confirmed. -->
+            <div id="preview-success">
+              <h4>Got it. <em>Humans take over.</em></h4>
+              <p>A real person at the studio is now reviewing your concept and notes. Expect an email <strong>within 24 hours</strong> with pricing and next steps.</p>
             </div>
           </div>
 
@@ -1956,13 +2104,7 @@
   </div>
 </section>
 
-<!-- ─── PROOF GALLERY (real photos + featured video) ── -->
-<!--
-  Six-card grid mixing the featured Blank video with five real
-  customer prints. The video sits in slot 1 so it's the first thing
-  the eye lands on; the surrounding photos make it clear this is
-  a working studio, not a render farm.
--->
+<!-- ─── PROOF GALLERY ────────────────────────────── -->
 <section class="proof" id="proof">
   <div class="container">
     <div class="section-head" data-reveal>
@@ -1975,7 +2117,6 @@
 
     <div class="proof__grid">
 
-      <!-- Featured: The Blank video. Sized to the same polaroid frame. -->
       <div class="proof-card" data-reveal>
         <span class="proof-card__sticker proof-card__sticker--video">▶ Watch · the build</span>
         <div class="proof-card__media">
@@ -2034,7 +2175,7 @@
   </div>
 </section>
 
-<!-- ─── HOW IT WORKS ────────────────────────────────── -->
+<!-- ─── HOW IT WORKS ────────────────────────────── -->
 <section class="how" id="how">
   <div class="container">
     <div class="section-head" data-reveal>
@@ -2054,15 +2195,15 @@
       </div>
       <div class="how-card" data-reveal>
         <div class="how-card__num">02</div>
-        <div class="how-card__time">// ~2 minutes</div>
-        <h3>AI builds the model</h3>
-        <p>Meshy's 3D engine generates a textured model from the cleaned prompt. We render it from four angles and email you the proof.</p>
+        <div class="how-card__time">// ~10 seconds</div>
+        <h3>AI drafts the concept</h3>
+        <p>The AI generates a concept image from the cleaned prompt. You see it right here on the page and get a copy in your inbox.</p>
       </div>
       <div class="how-card" data-reveal>
         <div class="how-card__num">03</div>
-        <div class="how-card__time">// your call</div>
-        <h3>Approve or edit</h3>
-        <p>Reply with "approve" to print, "edit" to tweak, or chat with us for revisions. Edits are part of the deal — no extra charge for the first round.</p>
+        <div class="how-card__time">// within 24 hours</div>
+        <h3>A human reviews</h3>
+        <p>A real person at the studio reviews your concept, sanity-checks what's printable, and emails back with pricing, edits, or questions. The first edit is on us.</p>
       </div>
       <div class="how-card" data-reveal>
         <div class="how-card__num">04</div>
@@ -2074,13 +2215,7 @@
   </div>
 </section>
 
-<!-- ─── FEATURED PROCESS VIDEO ──────────────────────── -->
-<!--
-  Second video lives here, paired with the "what makes ours different"
-  pitch. Vertical YouTube format works as-is because the polaroid
-  frame is sized to 9:16. The video is the customer-facing showcase
-  for the broader catalog, so the copy zooms out: "this is what we do."
--->
+<!-- ─── FEATURED PROCESS VIDEO ─────────────────── -->
 <section class="featured" id="featured">
   <div class="container">
     <div class="featured__grid">
@@ -2106,7 +2241,7 @@
   </div>
 </section>
 
-<!-- ─── WHY US ──────────────────────────────────────── -->
+<!-- ─── WHY US ──────────────────────────────────── -->
 <section class="why" id="why">
   <div class="container">
     <div class="section-head" data-reveal>
@@ -2121,23 +2256,23 @@
       <div class="why-card" data-reveal>
         <div class="why-card__icon">⚡</div>
         <h3>No 3D skills required</h3>
-        <p>If you can describe it, you can print it. <strong>The AI does the modeling work</strong> — you just confirm it looks right.</p>
+        <p>If you can describe it, you can print it. <strong>The AI does the modeling work</strong> — a real person sanity-checks it before anything ships.</p>
       </div>
       <div class="why-card" data-reveal>
         <div class="why-card__icon">✓</div>
         <h3>Proof before you pay</h3>
-        <p>You see the 3D render — and approve it — <strong>before any plastic gets melted</strong>. No guessing, no wasted prints.</p>
+        <p>You see the AI concept here — and a human reviews it next — <strong>before any plastic gets melted</strong>. No guessing, no wasted prints.</p>
       </div>
       <div class="why-card" data-reveal>
         <div class="why-card__icon">↻</div>
         <h3>Edit until it's right</h3>
-        <p>Don't like the proof? Reply with what to change. <strong>First revision is on the house</strong> — most prompts settle in two passes.</p>
+        <p>Don't like the proof? Use your free AI refine, or hand it off to our humans. <strong>The first edit is on the house</strong> — most prompts settle in two passes.</p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ─── FAQ ─────────────────────────────────────────── -->
+<!-- ─── FAQ ─────────────────────────────────────── -->
 <section class="faq" id="faq">
   <div class="container">
     <div class="section-head" data-reveal>
@@ -2164,7 +2299,7 @@
           <span class="faq-item__icon" aria-hidden="true">+</span>
         </summary>
         <div class="faq-item__a">
-          <p>The AI proof hits your inbox within a few minutes. Once you approve, <strong>most prints ship in 5–7 business days</strong>. Bigger or more detailed pieces can run longer; we'll tell you up front.</p>
+          <p>The AI concept lands on screen in about 10 seconds and in your inbox right after. A real person follows up <strong>within 24 hours</strong> with pricing and next steps. Once you approve, <strong>most prints ship in 5–7 business days</strong>. Bigger or more detailed pieces can run longer; we'll tell you up front.</p>
         </div>
       </details>
 
@@ -2174,7 +2309,7 @@
           <span class="faq-item__icon" aria-hidden="true">+</span>
         </summary>
         <div class="faq-item__a">
-          <p>Reply with what's off. The first edit is included. Subsequent edits are a small flat fee (we'll tell you in the email). <strong>Most prompts get to "yes" in one or two rounds.</strong></p>
+          <p>You get one free AI refine on the spot — just type what to tweak. If that still isn't quite right, hand it off to a human and we'll get it dialed in over email. <strong>First human edit is included</strong>; subsequent edits are a small flat fee. <strong>Most prompts get to "yes" in one or two rounds.</strong></p>
           <p>If after a few tries the AI just can't render what you're picturing, we'll refund anything you've paid and explain why. Some things are hard for current 3D AI — fine text, very thin parts, or highly mechanical assemblies.</p>
         </div>
       </details>
@@ -2194,7 +2329,7 @@
   </div>
 </section>
 
-<!-- ─── FOOTER ──────────────────────────────────────── -->
+<!-- ─── FOOTER ──────────────────────────────────── -->
 <footer>
   <div>© 2026 <span>LARRYDOJO</span> · An AI studio.</div>
   <div><a href="/">Back to the studio →</a></div>
@@ -2208,10 +2343,6 @@ function runApp() {
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   // ─── Wait-time overlay + typing game ─────────────────────────
-  // Pops up after 5s of rendering with a falling-words typing game.
-  // Auto-hides on render success/failure. User can dismiss with X, ESC,
-  // backdrop click. Once dismissed, a "keep playing" pill in the
-  // rendering panel brings it back.
   const overlay = document.getElementById('wait-overlay');
   const overlayClose = document.getElementById('wait-overlay__close');
   const reopenPill = document.getElementById('reopen-overlay');
@@ -2234,7 +2365,7 @@ function runApp() {
     waitGame.stop();
     if (byUser) {
       overlayUserDismissed = true;
-      if (previewPane && previewPane.dataset.state === 'rendering' && reopenPill) {
+      if (previewPaneEl && previewPaneEl.dataset.state === 'rendering' && reopenPill) {
         reopenPill.classList.add('is-visible');
       }
     }
@@ -2251,7 +2382,7 @@ function runApp() {
       clearTimeout(overlayShowTimer);
       overlayShowTimer = null;
     }
-    waitGame.signalRenderDone(); // let player see "render done" if mid-game
+    waitGame.signalRenderDone();
     hideWaitOverlay(false);
     if (reopenPill) reopenPill.classList.remove('is-visible');
   }
@@ -2276,8 +2407,6 @@ function runApp() {
     });
   }
 
-  // Watch the preview pane state. When 'rendering', schedule overlay.
-  // Any other state, cancel/hide.
   const previewPaneEl = document.getElementById('preview-pane');
   if (previewPaneEl && 'MutationObserver' in window) {
     const stateObserver = new MutationObserver(() => {
@@ -2292,19 +2421,10 @@ function runApp() {
   }
 
   // ──────────────────────────────────────────────────────────────
-  // TYPING GAME MODULE
+  // TYPING GAME MODULE (unchanged from previous version)
   // ──────────────────────────────────────────────────────────────
-  // Self-contained falling-words game. Exposes start/stop/signalRenderDone.
-  // Generic English wordlist. Desktop uses keystrokes; mobile uses taps.
-  // Sound is muted by default with a HUD toggle.
-
   const waitGame = (function () {
-    // Curated common-English wordlist. 3-7 letters. No profanity, no
-    // homophones that confuse non-native typists. Ordered roughly by
-    // typing difficulty (alternating-hand words come first).
     const WORDS = [
-      // Matrix-coded short stuff. Brain pattern-matches the vibe from
-      // single words even though they're falling in random order.
       'wake', 'up', 'neo', 'the', 'one', 'rabbit', 'follow', 'pill',
       'red', 'blue', 'choose', 'real', 'glitch', 'free', 'code',
       'matrix', 'agent', 'smith', 'oracle', 'dojo', 'morpheus', 'zion',
@@ -2312,25 +2432,21 @@ function runApp() {
       'mind', 'control', 'bullet', 'time', 'ghost', 'shell', 'host',
       'human', 'machine', 'dream', 'awake', 'truth', 'lie', 'door',
       'open', 'enter', 'exit', 'reboot', 'crash', 'compile', 'build',
-      // LarryDoJo / print-your-prompt vocab — make the game feel
-      // native to this site, not generic.
       'larry', 'studio', 'render', 'mesh', 'print', 'prompt', 'paint',
       'model', 'scene', 'frame', 'pixel', 'shape', 'craft', 'design',
       'forge', 'mold', 'sketch', 'draft', 'layer', 'pose', 'prop',
-      // Filler short words to keep it playable for non-gamers
       'and', 'are', 'all', 'now', 'then', 'this', 'that', 'with',
       'see', 'feel', 'know', 'find', 'lose', 'win', 'play', 'make',
       'take', 'give', 'show', 'hide', 'run', 'walk', 'fall', 'rise',
       'fast', 'slow', 'cold', 'warm', 'dark', 'light', 'silent', 'loud',
       'spark', 'flash', 'pulse', 'shift', 'break', 'fix', 'turn', 'spin',
-      // A few longer ones for ramp-up difficulty
       'reality', 'illusion', 'trinity', 'sentinel', 'protocol',
       'override', 'firewall', 'kernel', 'pattern', 'signal',
       'echo', 'static', 'cipher', 'binary', 'string', 'thread',
     ];
 
-    let canvas, score = 0, streak = 0, bestStreak = 0, lives = 3;
-    let activeWords = []; // [{ el, text, x, y, speed, typed }]
+    let score = 0, streak = 0, bestStreak = 0, lives = 3;
+    let activeWords = [];
     let typingBuffer = '';
     let rafId = null;
     let lastFrameTime = 0;
@@ -2361,25 +2477,21 @@ function runApp() {
       gameOverMsgEl = document.getElementById('wait-game__over-msg');
       renderDoneBanner = document.getElementById('wait-game__render-done');
 
-      // Mute toggle
       const muteBtn = document.getElementById('wait-game__mute');
       if (muteBtn) muteBtn.addEventListener('click', toggleMute);
 
-      // Restart button
       if (restartBtn) restartBtn.addEventListener('click', () => {
         resetGame();
         gameRunning = true;
         loop();
       });
 
-      // Wire up mobile keyboard input
       setupMobileKeyboard();
     }
 
     function pickWord() {
-      // Difficulty ramps with score: early game stays easy, later mixes in harder words
       const elapsed = (performance.now() - gameStartTime) / 1000;
-      const difficulty = Math.min(1, elapsed / 60); // 0..1 over first 60s
+      const difficulty = Math.min(1, elapsed / 60);
       const cap = Math.floor(WORDS.length * (0.3 + difficulty * 0.7));
       const idx = Math.floor(Math.random() * cap);
       return WORDS[idx];
@@ -2391,9 +2503,7 @@ function runApp() {
       el.className = 'wait-game__word';
       el.textContent = word.toUpperCase();
 
-      // Choose horizontal position with a small margin so word doesn't clip
       const fieldRect = fieldEl.getBoundingClientRect();
-      // Approximate word width (we'll measure precisely after insert)
       el.style.left = '0px';
       el.style.top = '-30px';
       fieldEl.appendChild(el);
@@ -2403,26 +2513,18 @@ function runApp() {
       const x = minX + Math.random() * (maxX - minX);
       el.style.left = x + 'px';
 
-      // Speed scales with difficulty
       const elapsed = (performance.now() - gameStartTime) / 1000;
-      const baseSpeed = 30 + Math.min(40, elapsed * 0.7); // px/sec
+      const baseSpeed = 30 + Math.min(40, elapsed * 0.7);
       const speed = baseSpeed + Math.random() * 20;
 
-      // Tap-to-hit (mobile)
       el.addEventListener('click', (e) => {
         e.stopPropagation();
-        // Treat tap like instantly-typing the word
         const w = activeWords.find(w => w.el === el);
         if (w) hitWord(w);
       });
 
       activeWords.push({
-        el: el,
-        text: word.toLowerCase(),
-        x: x,
-        y: -30,
-        speed: speed,
-        typed: 0, // count of letters already matched
+        el: el, text: word.toLowerCase(), x: x, y: -30, speed: speed, typed: 0,
       });
     }
 
@@ -2453,7 +2555,6 @@ function runApp() {
       if (idx >= 0) activeWords.splice(idx, 1);
       typingBuffer = '';
       updateBuffer();
-      // Remove element after animation
       setTimeout(() => {
         if (w.el.parentNode) w.el.parentNode.removeChild(w.el);
       }, 400);
@@ -2469,7 +2570,6 @@ function runApp() {
       w.el.classList.add('is-missed');
       const idx = activeWords.indexOf(w);
       if (idx >= 0) activeWords.splice(idx, 1);
-      // Reset typing buffer if it matched the missed word
       if (w.text.startsWith(typingBuffer)) {
         typingBuffer = '';
         updateBuffer();
@@ -2505,12 +2605,10 @@ function runApp() {
     function endGame() {
       gameRunning = false;
       if (rafId) cancelAnimationFrame(rafId);
-      // Clear remaining words
       activeWords.forEach(w => {
         if (w.el.parentNode) w.el.parentNode.removeChild(w.el);
       });
       activeWords = [];
-      // Show game over screen
       if (finalScoreEl) finalScoreEl.textContent = score;
       if (finalStreakEl) finalStreakEl.textContent = bestStreak;
       if (gameOverMsgEl) {
@@ -2544,23 +2642,18 @@ function runApp() {
     function loop(now) {
       if (!gameRunning) return;
       now = now || performance.now();
-      const dt = Math.min(0.05, (now - lastFrameTime) / 1000); // cap at 50ms to prevent jumps after tab unfocus
+      const dt = Math.min(0.05, (now - lastFrameTime) / 1000);
       lastFrameTime = now;
 
-      // Spawn logic
       spawnTimer += dt * 1000;
       if (spawnTimer >= nextSpawnDelay) {
         spawnTimer = 0;
         spawnWord();
-        // Spawn rate accelerates with elapsed time
         const elapsed = (now - gameStartTime) / 1000;
         nextSpawnDelay = Math.max(700, 1600 - elapsed * 8);
-
-        // Hide hint after first spawn
         if (hintEl) hintEl.classList.remove('is-visible');
       }
 
-      // Update word positions
       const fieldHeight = fieldEl.clientHeight;
       for (let i = activeWords.length - 1; i >= 0; i--) {
         const w = activeWords[i];
@@ -2574,16 +2667,13 @@ function runApp() {
       rafId = requestAnimationFrame(loop);
     }
 
-    // Keyboard input handler (desktop)
     function handleKey(e) {
       if (!gameRunning) return;
-      // Ignore modifier-driven keystrokes
       if (e.ctrlKey || e.metaKey || e.altKey) return;
 
       if (e.key === 'Backspace') {
         if (typingBuffer.length > 0) {
           typingBuffer = typingBuffer.slice(0, -1);
-          // Update any active words that were partially matching
           activeWords.forEach(w => {
             if (w.typed > typingBuffer.length) {
               w.typed = 0;
@@ -2591,7 +2681,6 @@ function runApp() {
               updateWordRender(w);
             }
           });
-          // Re-find best match
           let bestMatch = null;
           activeWords.forEach(w => {
             if (typingBuffer.length === 0) {
@@ -2614,7 +2703,6 @@ function runApp() {
         return;
       }
 
-      // Only single character keys
       if (e.key.length !== 1) return;
       if (!/^[a-zA-Z]$/.test(e.key)) return;
 
@@ -2622,7 +2710,6 @@ function runApp() {
       const ch = e.key.toLowerCase();
       const candidate = typingBuffer + ch;
 
-      // Find the lowest (most urgent) word that starts with the candidate
       let target = null;
       activeWords.forEach(w => {
         if (w.text.startsWith(candidate)) {
@@ -2631,7 +2718,6 @@ function runApp() {
       });
 
       if (!target) {
-        // Bad keystroke: reset buffer, deactivate any word
         typingBuffer = '';
         activeWords.forEach(w => {
           w.typed = 0;
@@ -2643,7 +2729,6 @@ function runApp() {
       }
 
       typingBuffer = candidate;
-      // Deactivate other words
       activeWords.forEach(w => {
         if (w !== target) {
           w.typed = 0;
@@ -2656,46 +2741,30 @@ function runApp() {
       updateWordRender(target);
       updateBuffer();
 
-      // Check for completion
       if (target.typed >= target.text.length) {
         hitWord(target);
       }
     }
 
-    // ─── Mobile keyboard input handler ───────────────
-    // The hidden input captures keystrokes from the soft keyboard. We
-    // listen to its 'input' event (fires on each character) and forward
-    // each new character through the same hit-detection used by
-    // handleKey. We also handle backspace by detecting length decreases.
     let lastInputValue = '';
-
     function handleMobileInput(e) {
       if (!gameRunning) return;
       const inputEl = e.target;
       const newValue = inputEl.value;
-
-      // If new value is shorter, treat as backspace
       if (newValue.length < lastInputValue.length) {
-        // Synthesize a Backspace
         handleKey({ key: 'Backspace', preventDefault: () => {} });
       } else if (newValue.length > lastInputValue.length) {
-        // New character(s) typed — process each one
         const newChars = newValue.slice(lastInputValue.length);
         for (let i = 0; i < newChars.length; i++) {
           const ch = newChars[i];
           if (/^[a-zA-Z]$/.test(ch)) {
             handleKey({
-              key: ch,
-              ctrlKey: false, metaKey: false, altKey: false,
+              key: ch, ctrlKey: false, metaKey: false, altKey: false,
               preventDefault: () => {}
             });
           }
         }
       }
-
-      // Reset the input so it doesn't grow unbounded.
-      // Do this carefully — clearing on every input would stop iOS from
-      // detecting the next character. We clear when length gets long.
       if (newValue.length > 20) {
         inputEl.value = '';
         lastInputValue = '';
@@ -2708,17 +2777,10 @@ function runApp() {
       const inputEl = document.getElementById('wait-game__keyboard-input');
       const triggerBtn = document.getElementById('wait-game__keyboard-trigger');
       if (!inputEl || !triggerBtn) return;
-
-      // Trigger button focuses the input → soft keyboard opens
-      triggerBtn.addEventListener('click', () => {
-        inputEl.focus();
-      });
-
-      // Reflect focus state on the trigger button so the user sees it's "active"
+      triggerBtn.addEventListener('click', () => { inputEl.focus(); });
       inputEl.addEventListener('focus', () => {
         triggerBtn.classList.add('is-active');
         triggerBtn.textContent = '⌨ keyboard open · type away';
-        // Reset stored value when freshly focused
         inputEl.value = '';
         lastInputValue = '';
       });
@@ -2726,17 +2788,14 @@ function runApp() {
         triggerBtn.classList.remove('is-active');
         triggerBtn.textContent = '⌨ tap to type';
       });
-
-      // Capture characters
       inputEl.addEventListener('input', handleMobileInput);
     }
 
-        function toggleMute() {
+    function toggleMute() {
       muted = !muted;
       if (muteIconEl) muteIconEl.textContent = muted ? 'OFF' : 'ON';
     }
 
-    // Synthesized beeps via Web Audio API. No audio files to load.
     function playBeep(type) {
       if (muted) return;
       try {
@@ -2767,7 +2826,7 @@ function runApp() {
           osc.start();
           osc.stop(audioCtx.currentTime + 0.2);
         }
-      } catch (e) { /* swallow audio errors */ }
+      } catch (e) { /* swallow */ }
     }
 
     function start() {
@@ -2784,10 +2843,8 @@ function runApp() {
       gameRunning = false;
       if (rafId) { cancelAnimationFrame(rafId); rafId = null; }
       document.removeEventListener('keydown', handleKey);
-      // Close the mobile keyboard if it's open
       const inputEl = document.getElementById('wait-game__keyboard-input');
       if (inputEl) inputEl.blur();
-      // Clear remaining words
       activeWords.forEach(w => { if (w.el.parentNode) w.el.parentNode.removeChild(w.el); });
       activeWords = [];
       typingBuffer = '';
@@ -2796,7 +2853,6 @@ function runApp() {
     }
 
     function signalRenderDone() {
-      // Called when render finishes. Show the "render done, finish your word" banner.
       if (!gameRunning && !overlay.classList.contains('is-visible')) return;
       if (renderDoneBanner) renderDoneBanner.classList.add('is-visible');
       renderDoneSignaled = true;
@@ -2806,6 +2862,7 @@ function runApp() {
   })();
 
 
+  // ─── Reveal observer ─────────────────────────────────────
   const reveals = document.querySelectorAll('[data-reveal]');
   if (reduceMotion) {
     reveals.forEach(el => el.classList.add('is-in'));
@@ -2831,9 +2888,7 @@ function runApp() {
     });
   });
 
-  // ─── Image-first pipeline (Nano Banana) ────────────────────
-  // validate prompt -> generate image -> show in pane -> email user
-  // Image upload (optional) goes in alongside the prompt.
+  // ─── Pipeline: validate -> generate-image -> email -> refine -> handoff ──
 
   const form = document.getElementById('prompt-form');
   const submitBtn = document.getElementById('submit-btn');
@@ -2843,9 +2898,22 @@ function runApp() {
   const progressPct = document.getElementById('preview-pct');
   const logEl = document.getElementById('preview-log');
   const previewImg = document.getElementById('preview-img');
+  const previewResultSticker = document.getElementById('preview-result-sticker');
   const errorMsg = document.getElementById('preview-error-msg');
   const retryBtn = document.getElementById('preview-retry');
   const rateNotice = document.getElementById('rate-notice');
+
+  // Refine flow UI nodes
+  const actionsInitial = document.getElementById('preview-actions-initial');
+  const refineInput = document.getElementById('refine-input');
+  const refineNudge = document.getElementById('refine-nudge');
+  const refineBtn = document.getElementById('refine-btn');
+  const refineSubmit = document.getElementById('refine-submit');
+  const refineCancel = document.getElementById('refine-cancel');
+  const tryDifferentBtn = document.getElementById('try-different-btn');
+  const actionsRefined = document.getElementById('preview-actions-refined');
+  const humanHandoffBtn = document.getElementById('human-handoff-btn');
+  const tryAnotherBtn = document.getElementById('try-another-btn');
   const previewSuccess = document.getElementById('preview-success');
 
   // Upload field
@@ -2856,12 +2924,37 @@ function runApp() {
   const uploadPreviewImg = document.getElementById('upload-preview-img');
   const uploadRemove = document.getElementById('upload-remove');
 
-  // State for the uploaded reference image (compressed, base64).
-  let referenceImageData = null;  // { mime_type, data, dataUrl }
+  let referenceImageData = null;
 
-  // ─── Image upload handling ───────────────────────────────
-  // Compress to max 1024px on the longest edge, JPEG quality 0.85.
-  // That brings most photos to ~150-400KB, well under the 5MB cap.
+  // ─── Pipeline state (kept across refine/handoff) ───────────
+  // Populated when a generate-image call succeeds. The handoff form
+  // submission reads from here, so the studio inbox gets the original
+  // prompt + cleaned prompt + any refinement notes + both images
+  // (current preview image is whatever's in previewImg.src).
+  const pipelineState = {
+    originalPrompt: '',
+    cleanedPrompt: '',
+    refinementNote: '',
+    hasRefined: false,
+    imageB64: '',
+    imageMime: '',
+    userName: '',
+    userEmail: '',
+    hasReferenceImage: false,
+  };
+
+  function resetRefineUI() {
+    if (actionsInitial) actionsInitial.classList.remove('is-hidden');
+    if (refineInput) refineInput.classList.remove('is-visible');
+    if (actionsRefined) actionsRefined.classList.remove('is-visible');
+    if (previewSuccess) previewSuccess.classList.remove('is-visible');
+    if (refineNudge) refineNudge.value = '';
+    if (previewResultSticker) previewResultSticker.textContent = '↓ AI Concept';
+    pipelineState.hasRefined = false;
+    pipelineState.refinementNote = '';
+  }
+
+  // ─── Image upload handling (unchanged) ───────────────────
   function compressImage(file) {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
@@ -2882,11 +2975,7 @@ function runApp() {
           ctx.drawImage(img, 0, 0, width, height);
           const dataUrl = canvas.toDataURL('image/jpeg', 0.85);
           const base64 = dataUrl.split(',')[1];
-          resolve({
-            mime_type: 'image/jpeg',
-            data: base64,
-            dataUrl: dataUrl,
-          });
+          resolve({ mime_type: 'image/jpeg', data: base64, dataUrl: dataUrl });
         };
         img.onerror = reject;
         img.src = reader.result;
@@ -2898,10 +2987,7 @@ function runApp() {
 
   function handleFile(file) {
     if (!file) return;
-    if (file.size > 5 * 1024 * 1024) {
-      alert('Image must be under 5MB.');
-      return;
-    }
+    if (file.size > 5 * 1024 * 1024) { alert('Image must be under 5MB.'); return; }
     if (!/^image\/(jpe?g|png|webp)$/i.test(file.type)) {
       alert('Please use a JPEG, PNG, or WebP image.');
       return;
@@ -2926,7 +3012,6 @@ function runApp() {
 
   if (uploadZone && fileInput) {
     uploadZone.addEventListener('click', (e) => {
-      // Don't trigger if they clicked the remove button
       if (e.target.closest('#upload-remove')) return;
       fileInput.click();
     });
@@ -2953,15 +3038,13 @@ function runApp() {
     uploadRemove.addEventListener('click', clearUpload);
   }
 
-  // ─── Rate limit ─────────────────────────────────
+  // ─── Rate limit (unchanged) ─────────────────────────
   const RENDER_LIMIT = 10;
   function getRenderCount() {
     try { return parseInt(sessionStorage.getItem('renderCount') || '0', 10); }
     catch (e) { return 0; }
   }
   function incrementRenderCount() {
-    // Don't count renders against the admin email (so testing doesn't
-    // burn through the session counter).
     const emailField = document.getElementById('email');
     const currentEmail = emailField ? emailField.value.trim().toLowerCase() : '';
     if (currentEmail === 'ayoung14@gmail.com') return;
@@ -2972,7 +3055,6 @@ function runApp() {
     const emailField = document.getElementById('email');
     const currentEmail = emailField ? emailField.value.trim().toLowerCase() : '';
     if (currentEmail === 'ayoung14@gmail.com') {
-      // Admin: hide the notice if it was previously shown
       if (rateNotice) rateNotice.classList.remove('is-visible');
       submitBtn.textContent = 'Generate concept →';
       return false;
@@ -2986,7 +3068,6 @@ function runApp() {
   }
   checkRateLimit();
 
-  // Re-check on email field changes so the admin override applies live
   const emailFieldForRate = document.getElementById('email');
   if (emailFieldForRate) {
     emailFieldForRate.addEventListener('input', checkRateLimit);
@@ -3037,16 +3118,234 @@ function runApp() {
       setState('idle');
       submitBtn.disabled = false;
       submitBtn.textContent = 'Generate concept →';
+      resetRefineUI();
     });
   }
 
-  // ─── Submit pipeline ──────────────────────────────
+  // ─── Refine flow wiring ─────────────────────────────
+  // Click [Refine this →] → show the nudge textarea, hide initial actions.
+  if (refineBtn) {
+    refineBtn.addEventListener('click', () => {
+      if (actionsInitial) actionsInitial.style.display = 'none';
+      if (refineInput) refineInput.classList.add('is-visible');
+      if (refineNudge) refineNudge.focus();
+    });
+  }
+
+  // Cancel returns to the initial actions without spending the refine.
+  if (refineCancel) {
+    refineCancel.addEventListener('click', () => {
+      if (refineInput) refineInput.classList.remove('is-visible');
+      if (actionsInitial) actionsInitial.style.display = '';
+      if (refineNudge) refineNudge.value = '';
+    });
+  }
+
+  // Apply the nudge: build an augmented prompt, re-run validate + generate.
+  if (refineSubmit) {
+    refineSubmit.addEventListener('click', async () => {
+      const nudge = (refineNudge && refineNudge.value || '').trim();
+      if (!nudge) {
+        if (refineNudge) refineNudge.focus();
+        return;
+      }
+
+      // Rate-limit check applies to refines too (each is a generate-image call)
+      const isAdmin = pipelineState.userEmail.toLowerCase() === 'ayoung14@gmail.com';
+      if (!isAdmin && getRenderCount() >= RENDER_LIMIT) {
+        logLine('// session limit reached — handing off to a human', 'err');
+        // Skip the refine, go straight to handoff state
+        pipelineState.refinementNote = nudge;
+        pipelineState.hasRefined = true;
+        if (refineInput) refineInput.classList.remove('is-visible');
+        if (actionsInitial) actionsInitial.style.display = 'none';
+        if (actionsRefined) actionsRefined.classList.add('is-visible');
+        return;
+      }
+
+      refineSubmit.disabled = true;
+      refineCancel.disabled = true;
+      refineSubmit.textContent = 'Applying...';
+
+      pipelineState.refinementNote = nudge;
+      const augmentedPrompt = pipelineState.cleanedPrompt + '. Additional notes: ' + nudge;
+
+      // Go back to rendering state in the pane
+      setState('rendering');
+      setProgress(0);
+      if (logEl) logEl.innerHTML = '';
+      logLine('// re-rendering with your nudge...');
+      setProgress(20);
+
+      try {
+        // Re-validate the augmented prompt
+        const validateRes = await fetch('/.netlify/functions/validate-prompt', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ prompt: augmentedPrompt }),
+        });
+        const validateData = await validateRes.json();
+
+        if (!validateData.ok) {
+          logLine('// ' + (validateData.reason || 'nudge rejected'), 'err');
+          showError(validateData.reason || 'That nudge cannot be rendered. Try different wording.');
+          refineSubmit.disabled = false;
+          refineCancel.disabled = false;
+          refineSubmit.textContent = 'Apply nudge →';
+          return;
+        }
+
+        const newCleaned = validateData.cleaned_prompt;
+        logLine('// nudge polished', 'ok');
+        setProgress(40);
+
+        // Re-generate
+        const genBody = { prompt: newCleaned };
+        if (referenceImageData) {
+          genBody.reference_image = {
+            mime_type: referenceImageData.mime_type,
+            data: referenceImageData.data,
+          };
+        }
+        logLine('// regenerating concept...');
+        setProgress(60);
+
+        let fakeProgress = 60;
+        const progressInterval = setInterval(() => {
+          fakeProgress = Math.min(92, fakeProgress + 2);
+          setProgress(fakeProgress);
+        }, 800);
+
+        const genRes = await fetch('/.netlify/functions/generate-image', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(genBody),
+        });
+        clearInterval(progressInterval);
+
+        const genData = await genRes.json();
+        if (!genRes.ok || !genData.ok) {
+          logLine('// refine failed: ' + (genData.error || 'unknown'), 'err');
+          showError(genData.details || genData.error || 'Could not apply your nudge. Try different wording.');
+          refineSubmit.disabled = false;
+          refineCancel.disabled = false;
+          refineSubmit.textContent = 'Apply nudge →';
+          return;
+        }
+
+        logLine('// refined image ready', 'ok');
+        setProgress(100);
+        incrementRenderCount();
+
+        // Update pipeline state with the refined image + new cleaned prompt
+        pipelineState.cleanedPrompt = newCleaned;
+        pipelineState.imageB64 = genData.image_b64;
+        pipelineState.imageMime = genData.mime_type;
+        pipelineState.hasRefined = true;
+
+        const dataUrl = 'data:' + (genData.mime_type || 'image/png') + ';base64,' + genData.image_b64;
+        if (previewImg) previewImg.src = dataUrl;
+        if (previewResultSticker) previewResultSticker.textContent = '↓ Refined';
+
+        // Send the refined image email so the studio inbox has the updated version
+        if (pipelineState.userEmail) {
+          fetch('/.netlify/functions/send-render-email', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              name: pipelineState.userName,
+              email: pipelineState.userEmail,
+              original_prompt: pipelineState.originalPrompt,
+              cleaned_prompt: newCleaned,
+              refinement_note: nudge,
+              image_b64: genData.image_b64,
+              mime_type: genData.mime_type,
+            }),
+          }).catch(err => console.warn('Refine email failed:', err));
+        }
+
+        // Swap UI: hide refine input + initial actions, show refined actions
+        setState('done');
+        if (refineInput) refineInput.classList.remove('is-visible');
+        if (actionsInitial) actionsInitial.style.display = 'none';
+        if (actionsRefined) actionsRefined.classList.add('is-visible');
+
+        refineSubmit.disabled = false;
+        refineCancel.disabled = false;
+        refineSubmit.textContent = 'Apply nudge →';
+        checkRateLimit();
+
+      } catch (err) {
+        console.error('Refine pipeline error:', err);
+        showError('Something glitched mid-refine. Your concept and notes are still on file.');
+        refineSubmit.disabled = false;
+        refineCancel.disabled = false;
+        refineSubmit.textContent = 'Apply nudge →';
+      }
+    });
+  }
+
+  // "try a different prompt" / "try another prompt" — reset to idle.
+  function resetToIdle() {
+    setState('idle');
+    resetRefineUI();
+    submitBtn.disabled = false;
+    submitBtn.textContent = 'Generate concept →';
+    checkRateLimit();
+    if (window.matchMedia('(max-width: 900px)').matches && form) {
+      form.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    } else if (promptField) {
+      promptField.focus();
+    }
+  }
+  if (tryDifferentBtn) tryDifferentBtn.addEventListener('click', resetToIdle);
+  if (tryAnotherBtn) tryAnotherBtn.addEventListener('click', resetToIdle);
+
+  // Human handoff: POSTs a second Netlify form submission with the full
+  // context (original prompt, cleaned prompt, refinement note if any,
+  // user info, whether they uploaded a reference image). Then swap the
+  // refined-actions block for the success message.
+  if (humanHandoffBtn) {
+    humanHandoffBtn.addEventListener('click', async () => {
+      humanHandoffBtn.disabled = true;
+      humanHandoffBtn.textContent = 'Sending...';
+
+      const params = new URLSearchParams();
+      params.append('form-name', 'print-prompt-handoff');
+      params.append('name', pipelineState.userName || '');
+      params.append('email', pipelineState.userEmail || '');
+      params.append('original_prompt', pipelineState.originalPrompt || '');
+      params.append('cleaned_prompt', pipelineState.cleanedPrompt || '');
+      params.append('refinement_note', pipelineState.refinementNote || '(none)');
+      params.append('reference_image_used', pipelineState.hasReferenceImage ? 'yes' : 'no');
+      params.append('handoff_at', new Date().toISOString());
+
+      try {
+        await fetch('/', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: params.toString(),
+        });
+      } catch (err) {
+        console.warn('Handoff submission failed:', err);
+      }
+
+      // Always show success — the original print-prompt submission already
+      // fired earlier so the studio has the lead regardless.
+      if (actionsRefined) actionsRefined.classList.remove('is-visible');
+      if (previewSuccess) previewSuccess.classList.add('is-visible');
+    });
+  }
+
+  // ─── Submit pipeline (initial generation) ──────────
   if (form && submitBtn && previewPane) {
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
 
+      // Reset refine UI in case we're submitting after a previous run
+      resetRefineUI();
+
       // Always fire Netlify Forms submission first so the lead lands
-      // regardless of what happens with the image generation.
       const formData = new FormData(form);
       fetch('/', {
         method: 'POST',
@@ -3059,13 +3358,23 @@ function runApp() {
       const userEmail = (formData.get('email') || '').toString().trim();
       if (!prompt) return;
 
-      // Rate limit (skipped for the studio's own admin email)
+      // Stash basics for downstream refine + handoff
+      pipelineState.originalPrompt = prompt;
+      pipelineState.userName = userName;
+      pipelineState.userEmail = userEmail;
+      pipelineState.hasReferenceImage = !!referenceImageData;
+
+      // Rate limit
       const isAdmin = userEmail.toLowerCase() === 'ayoung14@gmail.com';
       if (!isAdmin && getRenderCount() >= RENDER_LIMIT) {
         submitBtn.disabled = true;
         submitBtn.textContent = 'Sent — check email';
         setState('done');
         if (previewImg) previewImg.removeAttribute('src');
+        // Skip the AI render — push the user straight to the handoff flow.
+        // The initial submission already fired so the studio has everything.
+        if (actionsInitial) actionsInitial.style.display = 'none';
+        if (actionsRefined) actionsRefined.classList.add('is-visible');
         return;
       }
 
@@ -3075,13 +3384,11 @@ function runApp() {
       setProgress(0);
       if (logEl) logEl.innerHTML = '';
 
-      // Mobile: scroll preview into view
       if (window.matchMedia('(max-width: 900px)').matches && previewPane) {
         previewPane.scrollIntoView({ behavior: 'smooth', block: 'center' });
       }
 
       try {
-        // Step 1: validate
         logLine('// polishing your prompt...');
         setProgress(15);
         const validateRes = await fetch('/.netlify/functions/validate-prompt', {
@@ -3100,10 +3407,10 @@ function runApp() {
         }
 
         const cleanedPrompt = validateData.cleaned_prompt;
+        pipelineState.cleanedPrompt = cleanedPrompt;
         logLine('// prompt polished', 'ok');
         setProgress(30);
 
-        // Step 2: generate image
         logLine(referenceImageData
           ? '// generating with your reference...'
           : '// generating concept image...');
@@ -3117,7 +3424,6 @@ function runApp() {
           };
         }
 
-        // Smooth progress bar movement during the call (visual only)
         let fakeProgress = 45;
         const progressInterval = setInterval(() => {
           fakeProgress = Math.min(90, fakeProgress + 2);
@@ -3145,7 +3451,10 @@ function runApp() {
         setProgress(100);
         incrementRenderCount();
 
-        // Display the image (data URL from the base64 response)
+        // Stash for downstream refine/handoff
+        pipelineState.imageB64 = genData.image_b64;
+        pipelineState.imageMime = genData.mime_type;
+
         const dataUrl = 'data:' + (genData.mime_type || 'image/png') + ';base64,' + genData.image_b64;
         if (previewImg) {
           previewImg.src = dataUrl;
@@ -3154,11 +3463,12 @@ function runApp() {
         } else {
           setState('done');
         }
+        // Make sure the initial actions show (in case resetRefineUI was called)
+        if (actionsInitial) actionsInitial.style.display = '';
         submitBtn.disabled = false;
         submitBtn.textContent = 'Generate concept →';
         checkRateLimit();
 
-        // Fire send-render-email so the user gets the email + queued angles.
         if (userEmail) {
           fetch('/.netlify/functions/send-render-email', {
             method: 'POST',
@@ -3200,9 +3510,7 @@ if (document.readyState === 'loading') {
 </script>
 
 
-  <!-- ─── WAIT-TIME OVERLAY ───────────────────────────
-       Pops up during long renders to occupy the user.
-       Hidden by default, shown via JS when rendering takes >5s. -->
+  <!-- ─── WAIT-TIME OVERLAY ─────────────────────────── -->
   <div id="wait-overlay" role="dialog" aria-modal="true" aria-labelledby="wait-overlay-title" aria-hidden="true">
     <div id="wait-overlay__sheet">
       <div id="wait-overlay__head">
@@ -3215,7 +3523,6 @@ if (document.readyState === 'loading') {
       </div>
       <div id="wait-overlay__body">
         <div id="wait-game" aria-label="Typing game — type the falling words before they hit the bottom">
-          <!-- HUD: score, lives, mute toggle -->
           <div id="wait-game__hud">
             <div class="wait-game__hud-cell">
               <span class="wait-game__hud-label">SCORE</span>
@@ -3235,11 +3542,6 @@ if (document.readyState === 'loading') {
             </button>
           </div>
 
-          <!-- Hidden input that lets mobile users invoke the keyboard.
-               iOS/Android only open the soft keyboard when an input has focus
-               via user gesture, so we make it visibly tappable rather than
-               trying to programmatically focus on game start (which Safari
-               blocks). Users on desktop never need to interact with this. -->
           <input type="text" id="wait-game__keyboard-input"
                  autocomplete="off" autocorrect="off" autocapitalize="off"
                  spellcheck="false" inputmode="latin" aria-label="Type letters here on mobile to control the game" />
@@ -3247,23 +3549,17 @@ if (document.readyState === 'loading') {
             ⌨ tap to type
           </button>
 
-          <!-- Playfield: where words fall -->
           <div id="wait-game__field" aria-live="polite">
-            <!-- Words injected via JS -->
-
-            <!-- Center hint shown before first interaction -->
             <div id="wait-game__hint" class="is-visible">
               <div class="wait-game__hint-headline">TYPE THE WORDS</div>
               <div class="wait-game__hint-sub">// catch them before they hit the bottom · misses cost a life</div>
               <div class="wait-game__hint-mobile">// tap the words on mobile</div>
             </div>
 
-            <!-- Render-complete banner (hidden by default) -->
             <div id="wait-game__render-done">
               ✓ render complete · finish your word
             </div>
 
-            <!-- Game over screen (hidden by default) -->
             <div id="wait-game__over">
               <div class="wait-game__over-headline">GAME OVER</div>
               <div class="wait-game__over-stats">
@@ -3275,7 +3571,6 @@ if (document.readyState === 'loading') {
             </div>
           </div>
 
-          <!-- Active typing buffer (desktop only) -->
           <div id="wait-game__buffer" aria-hidden="true">
             <span class="wait-game__buffer-label">// you typed:</span>
             <span class="wait-game__buffer-text" id="wait-game__buffer-text"></span>
