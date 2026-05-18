@@ -1,0 +1,205 @@
+<svg viewBox="0 0 920 620" xmlns="http://www.w3.org/2000/svg" role="img" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif">
+  <title>Structural rendering: 120mm 3D-printed deck box with removable lid and lift-out interior tray</title>
+  <desc>Three structural views: 1) closed 120mm cubic box, 2) exploded view with lid lifted off and the lift-out tray separated from the outer shell, 3) top-down floor plan of the tray's interior compartments. Includes a lid closure detail showing lip vs magnet options.</desc>
+
+  <defs>
+    <pattern id="cardStack" patternUnits="userSpaceOnUse" width="6" height="6" patternTransform="rotate(45)">
+      <line x1="0" y1="0" x2="0" y2="6" stroke="var(--color-text-secondary, #888)" stroke-width="1" opacity="0.45"/>
+    </pattern>
+    <pattern id="wellTexture" patternUnits="userSpaceOnUse" width="9" height="9">
+      <circle cx="4.5" cy="4.5" r="1" fill="var(--color-text-tertiary, #aaa)" opacity="0.4"/>
+    </pattern>
+    <marker id="arrowDn" viewBox="0 0 10 10" refX="5" refY="9" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M 0 0 L 5 9 L 10 0 Z" fill="var(--color-text-tertiary, #888)"/>
+    </marker>
+  </defs>
+
+  <!-- Header -->
+  <text x="460" y="30" text-anchor="middle" font-size="15" font-weight="600" fill="var(--color-text-primary, #1a1a1a)">Box structure · client review</text>
+  <text x="460" y="50" text-anchor="middle" font-size="11" fill="var(--color-text-secondary, #666)">~120 × 120 × 120 mm · 3D-printed PETG · ~3 mm walls · removable lid · lift-out interior tray</text>
+
+  <!-- ====================================== -->
+  <!-- PANEL 1 — CLOSED BOX -->
+  <!-- ====================================== -->
+  <g>
+    <text x="160" y="80" text-anchor="middle" font-size="12" font-weight="600" fill="var(--color-text-primary, #1a1a1a)">1 · Closed</text>
+
+    <!-- Cube 120x120x120 at 1.0 px/mm, cabinet projection dx=52 dy=-30 -->
+    <!-- Front-top-left at (74,130) -->
+    <!-- Top face -->
+    <path d="M 74 130 L 194 130 L 246 100 L 126 100 Z" fill="var(--color-bg-subtle, #f4f4f4)" stroke="var(--color-text-primary, #1a1a1a)" stroke-width="1.5" stroke-linejoin="round"/>
+    <!-- Right face -->
+    <path d="M 194 130 L 194 250 L 246 220 L 246 100 Z" fill="var(--color-bg-subtle, #ececec)" stroke="var(--color-text-primary, #1a1a1a)" stroke-width="1.5" stroke-linejoin="round"/>
+    <!-- Front face -->
+    <path d="M 74 130 L 194 130 L 194 250 L 74 250 Z" fill="var(--color-bg, #ffffff)" stroke="var(--color-text-primary, #1a1a1a)" stroke-width="1.5" stroke-linejoin="round"/>
+
+    <!-- Lid seam: 15mm = 15px below top -->
+    <line x1="74" y1="145" x2="194" y2="145" stroke="var(--color-text-primary, #555)" stroke-width="0.9" stroke-dasharray="3 2"/>
+    <line x1="194" y1="145" x2="246" y2="115" stroke="var(--color-text-primary, #555)" stroke-width="0.9" stroke-dasharray="3 2"/>
+
+    <!-- Labels (leader lines) -->
+    <line x1="55" y1="137" x2="72" y2="137" stroke="var(--color-text-tertiary, #999)" stroke-width="0.5"/>
+    <text x="52" y="140" text-anchor="end" font-size="10" fill="var(--color-text-secondary, #555)">lid</text>
+
+    <line x1="55" y1="200" x2="72" y2="200" stroke="var(--color-text-tertiary, #999)" stroke-width="0.5"/>
+    <text x="52" y="203" text-anchor="end" font-size="10" fill="var(--color-text-secondary, #555)">body</text>
+
+    <!-- Dimension on right -->
+    <line x1="260" y1="100" x2="260" y2="250" stroke="var(--color-text-tertiary, #999)" stroke-width="0.5"/>
+    <line x1="257" y1="100" x2="263" y2="100" stroke="var(--color-text-tertiary, #999)" stroke-width="0.5"/>
+    <line x1="257" y1="250" x2="263" y2="250" stroke="var(--color-text-tertiary, #999)" stroke-width="0.5"/>
+    <text x="272" y="178" font-size="10" fill="var(--color-text-secondary, #666)">≈120 mm</text>
+
+    <text x="160" y="298" text-anchor="middle" font-size="10" fill="var(--color-text-secondary, #555)">Sealed cube. Sculpted detail lives here.</text>
+  </g>
+
+  <!-- ====================================== -->
+  <!-- PANEL 2 — EXPLODED VIEW -->
+  <!-- ====================================== -->
+  <g>
+    <text x="460" y="80" text-anchor="middle" font-size="12" font-weight="600" fill="var(--color-text-primary, #1a1a1a)">2 · Lid lifted, tray exposed</text>
+
+    <!-- LID (120x120x15 px) at front-top y=120 -->
+    <!-- Top face -->
+    <path d="M 374 120 L 494 120 L 546 90 L 426 90 Z" fill="var(--color-bg-subtle, #f4f4f4)" stroke="var(--color-text-primary, #1a1a1a)" stroke-width="1.4" stroke-linejoin="round"/>
+    <!-- Right face -->
+    <path d="M 494 120 L 494 135 L 546 105 L 546 90 Z" fill="var(--color-bg-subtle, #ececec)" stroke="var(--color-text-primary, #1a1a1a)" stroke-width="1.4" stroke-linejoin="round"/>
+    <!-- Front face -->
+    <path d="M 374 120 L 494 120 L 494 135 L 374 135 Z" fill="var(--color-bg, #ffffff)" stroke="var(--color-text-primary, #1a1a1a)" stroke-width="1.4" stroke-linejoin="round"/>
+    <!-- Lid label -->
+    <line x1="356" y1="113" x2="372" y2="113" stroke="var(--color-text-tertiary, #999)" stroke-width="0.5"/>
+    <text x="353" y="116" text-anchor="end" font-size="10" fill="var(--color-text-secondary, #555)">lid</text>
+
+    <!-- Arrow lid → tray -->
+    <line x1="460" y1="143" x2="460" y2="170" stroke="var(--color-text-tertiary, #888)" stroke-width="1" stroke-dasharray="3 2" marker-end="url(#arrowDn)"/>
+
+    <!-- TRAY (112x112x95 px) at front-top y=203 -->
+    <!-- Tray depth offset: dx=48.5 dy=-28 -->
+    <!-- Top face (front-top-left 380,203, front-top-right 492,203, back-top-right 540,175, back-top-left 428,175) -->
+    <path d="M 380 203 L 492 203 L 540 175 L 428 175 Z" fill="var(--color-bg-subtle, #efefef)" stroke="var(--color-text-primary, #1a1a1a)" stroke-width="1.4" stroke-linejoin="round"/>
+    <!-- Compartment dividers shown lightly on tray top -->
+    <!-- horizontal divider at front-top y+38 = 241 -->
+    <line x1="380" y1="241" x2="492" y2="241" stroke="var(--color-text-secondary, #888)" stroke-width="0.7" opacity="0.6"/>
+    <line x1="492" y1="241" x2="540" y2="213" stroke="var(--color-text-secondary, #888)" stroke-width="0.7" opacity="0.6"/>
+    <!-- vertical divider in lower half (deck/wells boundary) -->
+    <line x1="438" y1="241" x2="438" y2="298" stroke="var(--color-text-secondary, #888)" stroke-width="0.7" opacity="0.6"/>
+    <line x1="438" y1="241" x2="486" y2="213" stroke="var(--color-text-secondary, #888)" stroke-width="0.7" opacity="0.6"/>
+
+    <!-- Right face -->
+    <path d="M 492 203 L 492 298 L 540 270 L 540 175 Z" fill="var(--color-bg-subtle, #e6e6e6)" stroke="var(--color-text-primary, #1a1a1a)" stroke-width="1.4" stroke-linejoin="round"/>
+    <!-- Front face -->
+    <path d="M 380 203 L 492 203 L 492 298 L 380 298 Z" fill="var(--color-bg, #ffffff)" stroke="var(--color-text-primary, #1a1a1a)" stroke-width="1.4" stroke-linejoin="round"/>
+
+    <!-- Tray label -->
+    <line x1="356" y1="248" x2="378" y2="248" stroke="var(--color-text-tertiary, #999)" stroke-width="0.5"/>
+    <text x="353" y="244" text-anchor="end" font-size="10" fill="var(--color-text-secondary, #555)">lift-out</text>
+    <text x="353" y="256" text-anchor="end" font-size="10" fill="var(--color-text-secondary, #555)">tray</text>
+
+    <!-- Arrow tray → body -->
+    <line x1="460" y1="308" x2="460" y2="335" stroke="var(--color-text-tertiary, #888)" stroke-width="1" stroke-dasharray="3 2" marker-end="url(#arrowDn)"/>
+
+    <!-- BODY (120x120x105 px) at front-top y=368, with OPEN TOP -->
+    <!-- Right face -->
+    <path d="M 494 368 L 494 473 L 546 443 L 546 338 Z" fill="var(--color-bg-subtle, #ececec)" stroke="var(--color-text-primary, #1a1a1a)" stroke-width="1.5" stroke-linejoin="round"/>
+    <!-- Front face -->
+    <path d="M 374 368 L 494 368 L 494 473 L 374 473 Z" fill="var(--color-bg, #ffffff)" stroke="var(--color-text-primary, #1a1a1a)" stroke-width="1.5" stroke-linejoin="round"/>
+    <!-- Open top rim: outer rhombus -->
+    <path d="M 374 368 L 494 368 L 546 338 L 426 338 Z" fill="var(--color-text-tertiary, #d8d8d8)" stroke="var(--color-text-primary, #1a1a1a)" stroke-width="1.5" stroke-linejoin="round" opacity="0.5"/>
+    <!-- Inner rim (inset ~4px) -->
+    <path d="M 379 365 L 489 365 L 540 339.5 L 430 339.5 Z" fill="var(--color-bg-subtle, #f7f7f7)" stroke="var(--color-text-primary, #555)" stroke-width="0.7" stroke-linejoin="round"/>
+    <!-- Hint of interior depth: very subtle inner shading -->
+    <text x="460" y="356" text-anchor="middle" font-size="8" fill="var(--color-text-tertiary, #888)" opacity="0.8">(open · tray drops in here)</text>
+
+    <!-- Body label -->
+    <line x1="356" y1="418" x2="372" y2="418" stroke="var(--color-text-tertiary, #999)" stroke-width="0.5"/>
+    <text x="353" y="414" text-anchor="end" font-size="10" fill="var(--color-text-secondary, #555)">outer</text>
+    <text x="353" y="426" text-anchor="end" font-size="10" fill="var(--color-text-secondary, #555)">shell</text>
+
+    <text x="460" y="498" text-anchor="middle" font-size="10" fill="var(--color-text-secondary, #555)">Three printed parts. Tray drops into shell, lid sits on top.</text>
+  </g>
+
+  <!-- ====================================== -->
+  <!-- PANEL 3 — TOP-DOWN TRAY INTERIOR -->
+  <!-- ====================================== -->
+  <g>
+    <text x="760" y="80" text-anchor="middle" font-size="12" font-weight="600" fill="var(--color-text-primary, #1a1a1a)">3 · Tray interior (top-down)</text>
+
+    <!-- Tray outer 168x168 px at (676, 100) — 112mm at 1.5 px/mm -->
+    <rect x="676" y="100" width="168" height="168" fill="none" stroke="var(--color-text-primary, #1a1a1a)" stroke-width="2"/>
+
+    <!-- Deck slot — top strip, 168x85 -->
+    <rect x="676" y="100" width="168" height="85" fill="url(#cardStack)" stroke="var(--color-text-primary, #555)" stroke-width="1"/>
+    <text x="760" y="136" text-anchor="middle" font-size="11" font-weight="600" fill="var(--color-text-primary, #1a1a1a)">DECK</text>
+    <text x="760" y="151" text-anchor="middle" font-size="9" fill="var(--color-text-secondary, #555)">100 sleeved · 67 × ~55 mm slot</text>
+    <text x="760" y="164" text-anchor="middle" font-size="8" fill="var(--color-text-tertiary, #888)">stands vertically</text>
+    <text x="760" y="176" text-anchor="middle" font-size="8" fill="var(--color-text-tertiary, #888)">(65 mm to future-proof double sleeves)</text>
+
+    <!-- Divider line (visual only) -->
+    <line x1="676" y1="185" x2="844" y2="185" stroke="var(--color-text-primary, #1a1a1a)" stroke-width="1.2"/>
+
+    <!-- Dice well bottom-left 90x83 -->
+    <rect x="676" y="185" width="90" height="83" fill="url(#wellTexture)" stroke="var(--color-text-primary, #555)" stroke-width="1"/>
+    <text x="721" y="220" text-anchor="middle" font-size="11" font-weight="600" fill="var(--color-text-primary, #1a1a1a)">DICE</text>
+    <text x="721" y="234" text-anchor="middle" font-size="9" fill="var(--color-text-secondary, #555)">60 × 55 mm</text>
+    <text x="721" y="246" text-anchor="middle" font-size="8" fill="var(--color-text-tertiary, #888)">~20 mm deep</text>
+
+    <!-- Tokens/extras bottom-right 78x83 -->
+    <rect x="766" y="185" width="78" height="83" fill="url(#wellTexture)" stroke="var(--color-text-primary, #555)" stroke-width="1"/>
+    <text x="805" y="220" text-anchor="middle" font-size="10" font-weight="600" fill="var(--color-text-primary, #1a1a1a)">EXTRAS</text>
+    <text x="805" y="234" text-anchor="middle" font-size="9" fill="var(--color-text-secondary, #555)">52 × 55 mm</text>
+    <text x="805" y="246" text-anchor="middle" font-size="8" fill="var(--color-text-tertiary, #888)">tokens, coins</text>
+
+    <!-- Width dim -->
+    <line x1="676" y1="280" x2="844" y2="280" stroke="var(--color-text-tertiary, #999)" stroke-width="0.5"/>
+    <line x1="676" y1="277" x2="676" y2="283" stroke="var(--color-text-tertiary, #999)" stroke-width="0.5"/>
+    <line x1="844" y1="277" x2="844" y2="283" stroke="var(--color-text-tertiary, #999)" stroke-width="0.5"/>
+    <text x="760" y="294" text-anchor="middle" font-size="9" fill="var(--color-text-secondary, #666)">~112 mm tray · ~95 mm deep</text>
+
+    <text x="760" y="316" text-anchor="middle" font-size="10" fill="var(--color-text-secondary, #555)">Compartment layout is not locked.</text>
+    <text x="760" y="330" text-anchor="middle" font-size="10" fill="var(--color-text-secondary, #555)">Tray prints separately — easy to revise.</text>
+  </g>
+
+  <!-- ====================================== -->
+  <!-- LID CLOSURE DETAIL (below Panel 1) -->
+  <!-- ====================================== -->
+  <g>
+    <text x="160" y="340" text-anchor="middle" font-size="11" font-weight="600" fill="var(--color-text-primary, #1a1a1a)">Lid closure · pick one</text>
+
+    <!-- Option A: LIP — small side-section -->
+    <g transform="translate(40, 360)">
+      <text x="40" y="0" text-anchor="middle" font-size="10" font-weight="600" fill="var(--color-text-secondary, #555)">A · Lip</text>
+      <!-- Lid top slab -->
+      <rect x="0" y="10" width="80" height="8" fill="var(--color-bg-subtle, #ececec)" stroke="var(--color-text-primary, #1a1a1a)" stroke-width="1"/>
+      <!-- Lid lip stubs descending into body -->
+      <rect x="6" y="18" width="4" height="8" fill="var(--color-bg-subtle, #ececec)" stroke="var(--color-text-primary, #1a1a1a)" stroke-width="1"/>
+      <rect x="70" y="18" width="4" height="8" fill="var(--color-bg-subtle, #ececec)" stroke="var(--color-text-primary, #1a1a1a)" stroke-width="1"/>
+      <!-- Body section -->
+      <rect x="0" y="22" width="80" height="40" fill="none" stroke="var(--color-text-primary, #1a1a1a)" stroke-width="1"/>
+      <rect x="6" y="22" width="68" height="34" fill="none" stroke="var(--color-text-secondary, #888)" stroke-width="0.6"/>
+      <text x="40" y="78" text-anchor="middle" font-size="8.5" fill="var(--color-text-tertiary, #777)">drops in · self-aligns</text>
+    </g>
+
+    <!-- Option B: MAGNETS -->
+    <g transform="translate(180, 360)">
+      <text x="40" y="0" text-anchor="middle" font-size="10" font-weight="600" fill="var(--color-text-secondary, #555)">B · Magnets</text>
+      <!-- Lid -->
+      <rect x="0" y="10" width="80" height="8" fill="var(--color-bg-subtle, #ececec)" stroke="var(--color-text-primary, #1a1a1a)" stroke-width="1"/>
+      <!-- Lid magnets -->
+      <rect x="4" y="14" width="6" height="4" fill="var(--color-text-primary, #1a1a1a)"/>
+      <rect x="70" y="14" width="6" height="4" fill="var(--color-text-primary, #1a1a1a)"/>
+      <!-- Body section flush -->
+      <rect x="0" y="22" width="80" height="40" fill="none" stroke="var(--color-text-primary, #1a1a1a)" stroke-width="1"/>
+      <rect x="6" y="22" width="68" height="34" fill="none" stroke="var(--color-text-secondary, #888)" stroke-width="0.6"/>
+      <!-- Body magnets at top of wall -->
+      <rect x="4" y="22" width="6" height="4" fill="var(--color-text-primary, #1a1a1a)"/>
+      <rect x="70" y="22" width="6" height="4" fill="var(--color-text-primary, #1a1a1a)"/>
+      <text x="40" y="78" text-anchor="middle" font-size="8.5" fill="var(--color-text-tertiary, #777)">flush seam · "snap" feel</text>
+    </g>
+  </g>
+
+  <!-- Bottom notes -->
+  <line x1="40" y1="490" x2="880" y2="490" stroke="var(--color-border, #ddd)" stroke-width="0.7"/>
+  <text x="460" y="513" text-anchor="middle" font-size="10.5" fill="var(--color-text-secondary, #555)"><tspan font-weight="600">Three printed pieces:</tspan> outer shell · lid · lift-out tray</text>
+  <text x="460" y="532" text-anchor="middle" font-size="9.5" fill="var(--color-text-tertiary, #777)">Sculpted exterior (leaves, vines, skulls, crystals) lives entirely on the outer shell. Tray and lid stay structural.</text>
+  <text x="460" y="550" text-anchor="middle" font-size="9.5" fill="var(--color-text-tertiary, #777)">All dimensions approximate · for layout review only · not to scale across panels (Panels 1–2 at 1:1 mm/px, Panel 3 at 1.5:1)</text>
+</svg>

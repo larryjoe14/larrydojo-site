@@ -1,0 +1,643 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Deck Box · 120mm · Structural Review</title>
+  <meta name="description" content="Structural review of a 120mm 3D-printed deck box: closed view, exploded view, tray floor plan, and lid closure options.">
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600&family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --color-bg: #f5f1e8;
+      --color-bg-subtle: #ece6d5;
+      --color-paper: #fbf7ee;
+      --color-text-primary: #1c1a17;
+      --color-text-secondary: #4a4540;
+      --color-text-tertiary: #8a8278;
+      --color-border: #d6cdb8;
+      --color-accent: #b8332a;
+      --color-ink: #1c1a17;
+
+      --font-display: "Fraunces", "Georgia", serif;
+      --font-body: "Inter", -apple-system, "Segoe UI", sans-serif;
+      --font-hand: "Caveat", "Comic Sans MS", cursive;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: var(--color-bg);
+      color: var(--color-text-primary);
+      font-family: var(--font-body);
+      font-size: 16px;
+      line-height: 1.55;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* Paper grain */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      background-image:
+        radial-gradient(circle at 20% 30%, rgba(120, 100, 70, 0.04) 0, transparent 50%),
+        radial-gradient(circle at 80% 70%, rgba(120, 100, 70, 0.05) 0, transparent 50%);
+    }
+
+    .page {
+      position: relative;
+      z-index: 1;
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 48px 32px 96px;
+    }
+
+    /* Masthead */
+    .mast {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      border-bottom: 1.5px solid var(--color-ink);
+      padding-bottom: 14px;
+      margin-bottom: 8px;
+    }
+    .mast-left .brand {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 14px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      margin: 0;
+    }
+    .mast-left .tag {
+      font-family: var(--font-hand);
+      font-size: 20px;
+      color: var(--color-text-secondary);
+      margin-top: 2px;
+      transform: rotate(-1deg);
+      transform-origin: left center;
+    }
+    .mast-right {
+      font-family: var(--font-body);
+      font-size: 11px;
+      color: var(--color-text-tertiary);
+      text-align: right;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    /* Title block */
+    h1 {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: clamp(32px, 5vw, 48px);
+      line-height: 1.05;
+      letter-spacing: -0.015em;
+      margin: 28px 0 10px;
+    }
+    h1 .accent { color: var(--color-accent); font-style: italic; }
+
+    .deck {
+      font-family: var(--font-body);
+      font-size: 16px;
+      color: var(--color-text-secondary);
+      max-width: 640px;
+      margin: 0 0 36px;
+    }
+
+    /* Meta strip */
+    .meta {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0;
+      border-top: 1px solid var(--color-border);
+      border-bottom: 1px solid var(--color-border);
+      margin-bottom: 40px;
+    }
+    .meta-item { padding: 12px 16px 14px; border-right: 1px solid var(--color-border); }
+    .meta-item:last-child { border-right: none; }
+    .meta dt {
+      font-family: var(--font-body);
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--color-text-tertiary);
+      margin: 0 0 4px;
+    }
+    .meta dd {
+      font-family: var(--font-display);
+      font-size: 16px;
+      font-weight: 600;
+      margin: 0;
+      color: var(--color-text-primary);
+      white-space: nowrap;
+    }
+
+    /* Drawing frame */
+    .drawing {
+      background: var(--color-paper);
+      border: 1px solid var(--color-border);
+      border-radius: 4px;
+      padding: 24px;
+      box-shadow:
+        0 1px 0 rgba(0,0,0,0.04),
+        0 8px 30px -8px rgba(60, 50, 30, 0.18);
+      position: relative;
+    }
+    .drawing::before {
+      content: "";
+      position: absolute;
+      top: 8px; left: 8px; right: 8px; bottom: 8px;
+      border: 1px dashed var(--color-border);
+      border-radius: 2px;
+      pointer-events: none;
+    }
+    .drawing svg {
+      display: block;
+      width: 100%;
+      height: auto;
+      position: relative;
+      z-index: 1;
+    }
+
+    .drawing-caption {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-top: 14px;
+      padding: 0 4px;
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--color-text-tertiary);
+    }
+    .drawing-caption .fig {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-weight: 600;
+      text-transform: none;
+      letter-spacing: 0;
+      font-size: 13px;
+      color: var(--color-text-secondary);
+    }
+
+    /* Margin note */
+    .margin-note {
+      position: relative;
+      margin: 32px 0 0;
+      padding: 18px 20px 18px 56px;
+      background: rgba(184, 51, 42, 0.04);
+      border-left: 2px solid var(--color-accent);
+      border-radius: 0 4px 4px 0;
+      font-family: var(--font-hand);
+      font-size: 22px;
+      line-height: 1.35;
+      color: var(--color-text-primary);
+      transform: rotate(-0.3deg);
+    }
+    .margin-note::before {
+      content: "Note";
+      position: absolute;
+      left: 12px;
+      top: 18px;
+      font-family: var(--font-body);
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--color-accent);
+      transform: rotate(0.3deg);
+    }
+
+    /* Section */
+    .section {
+      margin: 56px 0 0;
+    }
+    .section h2 {
+      font-family: var(--font-display);
+      font-weight: 600;
+      font-size: 22px;
+      letter-spacing: -0.01em;
+      margin: 0 0 14px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--color-border);
+    }
+    .section h2 .num {
+      font-family: var(--font-hand);
+      font-weight: 500;
+      font-size: 28px;
+      color: var(--color-accent);
+      margin-right: 8px;
+      display: inline-block;
+      transform: translateY(2px) rotate(-3deg);
+    }
+    .section p { margin: 0 0 12px; max-width: 680px; }
+    .section ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      max-width: 680px;
+    }
+    .section li {
+      padding: 8px 0 8px 22px;
+      border-bottom: 1px dotted var(--color-border);
+      position: relative;
+    }
+    .section li::before {
+      content: "—";
+      position: absolute;
+      left: 0;
+      color: var(--color-accent);
+      font-weight: 600;
+    }
+    .section li:last-child { border-bottom: none; }
+
+    /* Decisions */
+    .decisions {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 14px;
+      margin-top: 14px;
+    }
+    .decision {
+      background: var(--color-paper);
+      border: 1px solid var(--color-border);
+      padding: 16px 18px;
+      border-radius: 3px;
+    }
+    .decision .label {
+      font-family: var(--font-body);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--color-text-tertiary);
+      margin-bottom: 6px;
+    }
+    .decision .q {
+      font-family: var(--font-display);
+      font-size: 17px;
+      font-weight: 600;
+      color: var(--color-text-primary);
+      line-height: 1.3;
+    }
+    .decision .hint {
+      font-family: var(--font-hand);
+      font-size: 17px;
+      color: var(--color-accent);
+      margin-top: 8px;
+      transform: rotate(-0.5deg);
+      display: inline-block;
+    }
+
+    /* Footer */
+    footer {
+      margin-top: 80px;
+      padding-top: 18px;
+      border-top: 1.5px solid var(--color-ink);
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      font-size: 11px;
+      color: var(--color-text-tertiary);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+    footer .sig {
+      font-family: var(--font-hand);
+      font-size: 18px;
+      color: var(--color-text-secondary);
+      text-transform: none;
+      letter-spacing: 0;
+      transform: rotate(-2deg);
+      display: inline-block;
+    }
+
+    @media (max-width: 600px) {
+      .page { padding: 28px 18px 64px; }
+      .mast { flex-direction: column; align-items: flex-start; gap: 6px; }
+      .mast-right { text-align: left; }
+      .drawing { padding: 12px; }
+      .drawing::before { top: 4px; left: 4px; right: 4px; bottom: 4px; }
+      .meta { grid-template-columns: repeat(2, 1fr); }
+      .meta-item { border-right: 1px solid var(--color-border); border-bottom: 1px solid var(--color-border); }
+      .meta-item:nth-child(2n) { border-right: none; }
+      .meta-item:nth-last-child(-n+2) { border-bottom: none; }
+      .margin-note { font-size: 19px; padding-left: 48px; }
+    }
+
+    @media print {
+      body { background: white; }
+      body::before { display: none; }
+      .drawing { box-shadow: none; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+
+    <header class="mast">
+      <div class="mast-left">
+        <p class="brand">LarryDojo · Studio</p>
+        <p class="tag">structural review — for your eyes</p>
+      </div>
+      <div class="mast-right">
+        Rev. A · Internal Draft
+      </div>
+    </header>
+
+    <h1>120mm deck box, <span class="accent">structure</span></h1>
+    <p class="deck">
+      Three views of the printed body before any sculpted detail is added. The exterior is a sealed cube. The lid lifts off. A tray lifts out. Sculpting (leaves, vines, skulls, crystals — whatever direction we go) lives entirely on the outer shell, so the tray and lid can stay structural and easy to revise.
+    </p>
+
+    <dl class="meta">
+      <div class="meta-item">
+        <dt>Footprint</dt>
+        <dd>120³ mm</dd>
+      </div>
+      <div class="meta-item">
+        <dt>Material</dt>
+        <dd>PETG</dd>
+      </div>
+      <div class="meta-item">
+        <dt>Wall</dt>
+        <dd>~3 mm</dd>
+      </div>
+      <div class="meta-item">
+        <dt>Pieces</dt>
+        <dd>Shell · Lid · Tray</dd>
+      </div>
+    </dl>
+
+    <figure class="drawing">
+      <!-- SVG: structural three-view -->
+      <svg viewBox="0 0 920 620" xmlns="http://www.w3.org/2000/svg" role="img" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif">
+  <title>Structural rendering: 120mm 3D-printed deck box with removable lid and lift-out interior tray</title>
+  <desc>Three structural views: 1) closed 120mm cubic box, 2) exploded view with lid lifted off and the lift-out tray separated from the outer shell, 3) top-down floor plan of the tray's interior compartments. Includes a lid closure detail showing lip vs magnet options.</desc>
+
+  <defs>
+    <pattern id="cardStack" patternUnits="userSpaceOnUse" width="6" height="6" patternTransform="rotate(45)">
+      <line x1="0" y1="0" x2="0" y2="6" stroke="var(--color-text-secondary, #888)" stroke-width="1" opacity="0.45"/>
+    </pattern>
+    <pattern id="wellTexture" patternUnits="userSpaceOnUse" width="9" height="9">
+      <circle cx="4.5" cy="4.5" r="1" fill="var(--color-text-tertiary, #aaa)" opacity="0.4"/>
+    </pattern>
+    <marker id="arrowDn" viewBox="0 0 10 10" refX="5" refY="9" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M 0 0 L 5 9 L 10 0 Z" fill="var(--color-text-tertiary, #888)"/>
+    </marker>
+  </defs>
+  <!-- Header -->
+  <text x="460" y="30" text-anchor="middle" font-size="15" font-weight="600" fill="var(--color-text-primary, #1a1a1a)">Box structure · client review</text>
+  <text x="460" y="50" text-anchor="middle" font-size="11" fill="var(--color-text-secondary, #666)">~120 × 120 × 120 mm · 3D-printed PETG · ~3 mm walls · removable lid · lift-out interior tray</text>
+
+  <!-- ====================================== -->
+  <!-- PANEL 1 — CLOSED BOX -->
+  <!-- ====================================== -->
+  <g>
+    <text x="160" y="80" text-anchor="middle" font-size="12" font-weight="600" fill="var(--color-text-primary, #1a1a1a)">1 · Closed</text>
+
+    <!-- Cube 120x120x120 at 1.0 px/mm, cabinet projection dx=52 dy=-30 -->
+    <!-- Front-top-left at (74,130) -->
+    <!-- Top face -->
+    <path d="M 74 130 L 194 130 L 246 100 L 126 100 Z" fill="var(--color-bg-subtle, #f4f4f4)" stroke="var(--color-text-primary, #1a1a1a)" stroke-width="1.5" stroke-linejoin="round"/>
+    <!-- Right face -->
+    <path d="M 194 130 L 194 250 L 246 220 L 246 100 Z" fill="var(--color-bg-subtle, #ececec)" stroke="var(--color-text-primary, #1a1a1a)" stroke-width="1.5" stroke-linejoin="round"/>
+    <!-- Front face -->
+    <path d="M 74 130 L 194 130 L 194 250 L 74 250 Z" fill="var(--color-bg, #ffffff)" stroke="var(--color-text-primary, #1a1a1a)" stroke-width="1.5" stroke-linejoin="round"/>
+
+    <!-- Lid seam: 15mm = 15px below top -->
+    <line x1="74" y1="145" x2="194" y2="145" stroke="var(--color-text-primary, #555)" stroke-width="0.9" stroke-dasharray="3 2"/>
+    <line x1="194" y1="145" x2="246" y2="115" stroke="var(--color-text-primary, #555)" stroke-width="0.9" stroke-dasharray="3 2"/>
+
+    <!-- Labels (leader lines) -->
+    <line x1="55" y1="137" x2="72" y2="137" stroke="var(--color-text-tertiary, #999)" stroke-width="0.5"/>
+    <text x="52" y="140" text-anchor="end" font-size="10" fill="var(--color-text-secondary, #555)">lid</text>
+
+    <line x1="55" y1="200" x2="72" y2="200" stroke="var(--color-text-tertiary, #999)" stroke-width="0.5"/>
+    <text x="52" y="203" text-anchor="end" font-size="10" fill="var(--color-text-secondary, #555)">body</text>
+
+    <!-- Dimension on right -->
+    <line x1="260" y1="100" x2="260" y2="250" stroke="var(--color-text-tertiary, #999)" stroke-width="0.5"/>
+    <line x1="257" y1="100" x2="263" y2="100" stroke="var(--color-text-tertiary, #999)" stroke-width="0.5"/>
+    <line x1="257" y1="250" x2="263" y2="250" stroke="var(--color-text-tertiary, #999)" stroke-width="0.5"/>
+    <text x="272" y="178" font-size="10" fill="var(--color-text-secondary, #666)">≈120 mm</text>
+
+    <text x="160" y="298" text-anchor="middle" font-size="10" fill="var(--color-text-secondary, #555)">Sealed cube. Sculpted detail lives here.</text>
+  </g>
+
+  <!-- ====================================== -->
+  <!-- PANEL 2 — EXPLODED VIEW -->
+  <!-- ====================================== -->
+  <g>
+    <text x="460" y="80" text-anchor="middle" font-size="12" font-weight="600" fill="var(--color-text-primary, #1a1a1a)">2 · Lid lifted, tray exposed</text>
+
+    <!-- LID (120x120x15 px) at front-top y=120 -->
+    <!-- Top face -->
+    <path d="M 374 120 L 494 120 L 546 90 L 426 90 Z" fill="var(--color-bg-subtle, #f4f4f4)" stroke="var(--color-text-primary, #1a1a1a)" stroke-width="1.4" stroke-linejoin="round"/>
+    <!-- Right face -->
+    <path d="M 494 120 L 494 135 L 546 105 L 546 90 Z" fill="var(--color-bg-subtle, #ececec)" stroke="var(--color-text-primary, #1a1a1a)" stroke-width="1.4" stroke-linejoin="round"/>
+    <!-- Front face -->
+    <path d="M 374 120 L 494 120 L 494 135 L 374 135 Z" fill="var(--color-bg, #ffffff)" stroke="var(--color-text-primary, #1a1a1a)" stroke-width="1.4" stroke-linejoin="round"/>
+    <!-- Lid label -->
+    <line x1="356" y1="113" x2="372" y2="113" stroke="var(--color-text-tertiary, #999)" stroke-width="0.5"/>
+    <text x="353" y="116" text-anchor="end" font-size="10" fill="var(--color-text-secondary, #555)">lid</text>
+
+    <!-- Arrow lid → tray -->
+    <line x1="460" y1="143" x2="460" y2="170" stroke="var(--color-text-tertiary, #888)" stroke-width="1" stroke-dasharray="3 2" marker-end="url(#arrowDn)"/>
+
+    <!-- TRAY (112x112x95 px) at front-top y=203 -->
+    <!-- Tray depth offset: dx=48.5 dy=-28 -->
+    <!-- Top face (front-top-left 380,203, front-top-right 492,203, back-top-right 540,175, back-top-left 428,175) -->
+    <path d="M 380 203 L 492 203 L 540 175 L 428 175 Z" fill="var(--color-bg-subtle, #efefef)" stroke="var(--color-text-primary, #1a1a1a)" stroke-width="1.4" stroke-linejoin="round"/>
+    <!-- Compartment dividers shown lightly on tray top -->
+    <!-- horizontal divider at front-top y+38 = 241 -->
+    <line x1="380" y1="241" x2="492" y2="241" stroke="var(--color-text-secondary, #888)" stroke-width="0.7" opacity="0.6"/>
+    <line x1="492" y1="241" x2="540" y2="213" stroke="var(--color-text-secondary, #888)" stroke-width="0.7" opacity="0.6"/>
+    <!-- vertical divider in lower half (deck/wells boundary) -->
+    <line x1="438" y1="241" x2="438" y2="298" stroke="var(--color-text-secondary, #888)" stroke-width="0.7" opacity="0.6"/>
+    <line x1="438" y1="241" x2="486" y2="213" stroke="var(--color-text-secondary, #888)" stroke-width="0.7" opacity="0.6"/>
+
+    <!-- Right face -->
+    <path d="M 492 203 L 492 298 L 540 270 L 540 175 Z" fill="var(--color-bg-subtle, #e6e6e6)" stroke="var(--color-text-primary, #1a1a1a)" stroke-width="1.4" stroke-linejoin="round"/>
+    <!-- Front face -->
+    <path d="M 380 203 L 492 203 L 492 298 L 380 298 Z" fill="var(--color-bg, #ffffff)" stroke="var(--color-text-primary, #1a1a1a)" stroke-width="1.4" stroke-linejoin="round"/>
+
+    <!-- Tray label -->
+    <line x1="356" y1="248" x2="378" y2="248" stroke="var(--color-text-tertiary, #999)" stroke-width="0.5"/>
+    <text x="353" y="244" text-anchor="end" font-size="10" fill="var(--color-text-secondary, #555)">lift-out</text>
+    <text x="353" y="256" text-anchor="end" font-size="10" fill="var(--color-text-secondary, #555)">tray</text>
+
+    <!-- Arrow tray → body -->
+    <line x1="460" y1="308" x2="460" y2="335" stroke="var(--color-text-tertiary, #888)" stroke-width="1" stroke-dasharray="3 2" marker-end="url(#arrowDn)"/>
+
+    <!-- BODY (120x120x105 px) at front-top y=368, with OPEN TOP -->
+    <!-- Right face -->
+    <path d="M 494 368 L 494 473 L 546 443 L 546 338 Z" fill="var(--color-bg-subtle, #ececec)" stroke="var(--color-text-primary, #1a1a1a)" stroke-width="1.5" stroke-linejoin="round"/>
+    <!-- Front face -->
+    <path d="M 374 368 L 494 368 L 494 473 L 374 473 Z" fill="var(--color-bg, #ffffff)" stroke="var(--color-text-primary, #1a1a1a)" stroke-width="1.5" stroke-linejoin="round"/>
+    <!-- Open top rim: outer rhombus -->
+    <path d="M 374 368 L 494 368 L 546 338 L 426 338 Z" fill="var(--color-text-tertiary, #d8d8d8)" stroke="var(--color-text-primary, #1a1a1a)" stroke-width="1.5" stroke-linejoin="round" opacity="0.5"/>
+    <!-- Inner rim (inset ~4px) -->
+    <path d="M 379 365 L 489 365 L 540 339.5 L 430 339.5 Z" fill="var(--color-bg-subtle, #f7f7f7)" stroke="var(--color-text-primary, #555)" stroke-width="0.7" stroke-linejoin="round"/>
+    <!-- Hint of interior depth: very subtle inner shading -->
+    <text x="460" y="356" text-anchor="middle" font-size="8" fill="var(--color-text-tertiary, #888)" opacity="0.8">(open · tray drops in here)</text>
+
+    <!-- Body label -->
+    <line x1="356" y1="418" x2="372" y2="418" stroke="var(--color-text-tertiary, #999)" stroke-width="0.5"/>
+    <text x="353" y="414" text-anchor="end" font-size="10" fill="var(--color-text-secondary, #555)">outer</text>
+    <text x="353" y="426" text-anchor="end" font-size="10" fill="var(--color-text-secondary, #555)">shell</text>
+
+    <text x="460" y="498" text-anchor="middle" font-size="10" fill="var(--color-text-secondary, #555)">Three printed parts. Tray drops into shell, lid sits on top.</text>
+  </g>
+
+  <!-- ====================================== -->
+  <!-- PANEL 3 — TOP-DOWN TRAY INTERIOR -->
+  <!-- ====================================== -->
+  <g>
+    <text x="760" y="80" text-anchor="middle" font-size="12" font-weight="600" fill="var(--color-text-primary, #1a1a1a)">3 · Tray interior (top-down)</text>
+
+    <!-- Tray outer 168x168 px at (676, 100) — 112mm at 1.5 px/mm -->
+    <rect x="676" y="100" width="168" height="168" fill="none" stroke="var(--color-text-primary, #1a1a1a)" stroke-width="2"/>
+
+    <!-- Deck slot — top strip, 168x85 -->
+    <rect x="676" y="100" width="168" height="85" fill="url(#cardStack)" stroke="var(--color-text-primary, #555)" stroke-width="1"/>
+    <text x="760" y="136" text-anchor="middle" font-size="11" font-weight="600" fill="var(--color-text-primary, #1a1a1a)">DECK</text>
+    <text x="760" y="151" text-anchor="middle" font-size="9" fill="var(--color-text-secondary, #555)">100 sleeved · 67 × ~55 mm slot</text>
+    <text x="760" y="164" text-anchor="middle" font-size="8" fill="var(--color-text-tertiary, #888)">stands vertically</text>
+    <text x="760" y="176" text-anchor="middle" font-size="8" fill="var(--color-text-tertiary, #888)">(65 mm to future-proof double sleeves)</text>
+
+    <!-- Divider line (visual only) -->
+    <line x1="676" y1="185" x2="844" y2="185" stroke="var(--color-text-primary, #1a1a1a)" stroke-width="1.2"/>
+
+    <!-- Dice well bottom-left 90x83 -->
+    <rect x="676" y="185" width="90" height="83" fill="url(#wellTexture)" stroke="var(--color-text-primary, #555)" stroke-width="1"/>
+    <text x="721" y="220" text-anchor="middle" font-size="11" font-weight="600" fill="var(--color-text-primary, #1a1a1a)">DICE</text>
+    <text x="721" y="234" text-anchor="middle" font-size="9" fill="var(--color-text-secondary, #555)">60 × 55 mm</text>
+    <text x="721" y="246" text-anchor="middle" font-size="8" fill="var(--color-text-tertiary, #888)">~20 mm deep</text>
+
+    <!-- Tokens/extras bottom-right 78x83 -->
+    <rect x="766" y="185" width="78" height="83" fill="url(#wellTexture)" stroke="var(--color-text-primary, #555)" stroke-width="1"/>
+    <text x="805" y="220" text-anchor="middle" font-size="10" font-weight="600" fill="var(--color-text-primary, #1a1a1a)">EXTRAS</text>
+    <text x="805" y="234" text-anchor="middle" font-size="9" fill="var(--color-text-secondary, #555)">52 × 55 mm</text>
+    <text x="805" y="246" text-anchor="middle" font-size="8" fill="var(--color-text-tertiary, #888)">tokens, coins</text>
+
+    <!-- Width dim -->
+    <line x1="676" y1="280" x2="844" y2="280" stroke="var(--color-text-tertiary, #999)" stroke-width="0.5"/>
+    <line x1="676" y1="277" x2="676" y2="283" stroke="var(--color-text-tertiary, #999)" stroke-width="0.5"/>
+    <line x1="844" y1="277" x2="844" y2="283" stroke="var(--color-text-tertiary, #999)" stroke-width="0.5"/>
+    <text x="760" y="294" text-anchor="middle" font-size="9" fill="var(--color-text-secondary, #666)">~112 mm tray · ~95 mm deep</text>
+
+    <text x="760" y="316" text-anchor="middle" font-size="10" fill="var(--color-text-secondary, #555)">Compartment layout is not locked.</text>
+    <text x="760" y="330" text-anchor="middle" font-size="10" fill="var(--color-text-secondary, #555)">Tray prints separately — easy to revise.</text>
+  </g>
+
+  <!-- ====================================== -->
+  <!-- LID CLOSURE DETAIL (below Panel 1) -->
+  <!-- ====================================== -->
+  <g>
+    <text x="160" y="340" text-anchor="middle" font-size="11" font-weight="600" fill="var(--color-text-primary, #1a1a1a)">Lid closure · pick one</text>
+
+    <!-- Option A: LIP — small side-section -->
+    <g transform="translate(40, 360)">
+      <text x="40" y="0" text-anchor="middle" font-size="10" font-weight="600" fill="var(--color-text-secondary, #555)">A · Lip</text>
+      <!-- Lid top slab -->
+      <rect x="0" y="10" width="80" height="8" fill="var(--color-bg-subtle, #ececec)" stroke="var(--color-text-primary, #1a1a1a)" stroke-width="1"/>
+      <!-- Lid lip stubs descending into body -->
+      <rect x="6" y="18" width="4" height="8" fill="var(--color-bg-subtle, #ececec)" stroke="var(--color-text-primary, #1a1a1a)" stroke-width="1"/>
+      <rect x="70" y="18" width="4" height="8" fill="var(--color-bg-subtle, #ececec)" stroke="var(--color-text-primary, #1a1a1a)" stroke-width="1"/>
+      <!-- Body section -->
+      <rect x="0" y="22" width="80" height="40" fill="none" stroke="var(--color-text-primary, #1a1a1a)" stroke-width="1"/>
+      <rect x="6" y="22" width="68" height="34" fill="none" stroke="var(--color-text-secondary, #888)" stroke-width="0.6"/>
+      <text x="40" y="78" text-anchor="middle" font-size="8.5" fill="var(--color-text-tertiary, #777)">drops in · self-aligns</text>
+    </g>
+
+    <!-- Option B: MAGNETS -->
+    <g transform="translate(180, 360)">
+      <text x="40" y="0" text-anchor="middle" font-size="10" font-weight="600" fill="var(--color-text-secondary, #555)">B · Magnets</text>
+      <!-- Lid -->
+      <rect x="0" y="10" width="80" height="8" fill="var(--color-bg-subtle, #ececec)" stroke="var(--color-text-primary, #1a1a1a)" stroke-width="1"/>
+      <!-- Lid magnets -->
+      <rect x="4" y="14" width="6" height="4" fill="var(--color-text-primary, #1a1a1a)"/>
+      <rect x="70" y="14" width="6" height="4" fill="var(--color-text-primary, #1a1a1a)"/>
+      <!-- Body section flush -->
+      <rect x="0" y="22" width="80" height="40" fill="none" stroke="var(--color-text-primary, #1a1a1a)" stroke-width="1"/>
+      <rect x="6" y="22" width="68" height="34" fill="none" stroke="var(--color-text-secondary, #888)" stroke-width="0.6"/>
+      <!-- Body magnets at top of wall -->
+      <rect x="4" y="22" width="6" height="4" fill="var(--color-text-primary, #1a1a1a)"/>
+      <rect x="70" y="22" width="6" height="4" fill="var(--color-text-primary, #1a1a1a)"/>
+      <text x="40" y="78" text-anchor="middle" font-size="8.5" fill="var(--color-text-tertiary, #777)">flush seam · "snap" feel</text>
+    </g>
+  </g>
+
+  <!-- Bottom notes -->
+  <line x1="40" y1="490" x2="880" y2="490" stroke="var(--color-border, #ddd)" stroke-width="0.7"/>
+  <text x="460" y="513" text-anchor="middle" font-size="10.5" fill="var(--color-text-secondary, #555)"><tspan font-weight="600">Three printed pieces:</tspan> outer shell · lid · lift-out tray</text>
+  <text x="460" y="532" text-anchor="middle" font-size="9.5" fill="var(--color-text-tertiary, #777)">Sculpted exterior (leaves, vines, skulls, crystals) lives entirely on the outer shell. Tray and lid stay structural.</text>
+  <text x="460" y="550" text-anchor="middle" font-size="9.5" fill="var(--color-text-tertiary, #777)">All dimensions approximate · for layout review only · not to scale across panels (Panels 1–2 at 1:1 mm/px, Panel 3 at 1.5:1)</text>
+</svg>
+      <figcaption class="drawing-caption">
+        <span class="fig">Fig. 1 — Closed · Exploded · Tray Plan · Closure Detail</span>
+        <span>Not to scale across panels</span>
+      </figcaption>
+    </figure>
+
+    <aside class="margin-note">
+      Panels 1 &amp; 2 are at 1:1 mm/px. Panel 3 (tray floor plan) is enlarged 1.5× so the compartment layout reads cleanly. The dashed line on Panel 1 marks the lid seam.
+    </aside>
+
+    <section class="section">
+      <h2><span class="num">1</span>What's locked</h2>
+      <ul>
+        <li>The cube footprint. 120 × 120 × 120 mm gives us room for a full standard deck plus dice, sleeved or unsleeved, with the tray.</li>
+        <li>Three printed pieces: outer shell, lid, lift-out tray. Each can be iterated independently.</li>
+        <li>The exterior is the canvas. Sculpted detail lives only on the outer shell.</li>
+      </ul>
+    </section>
+
+    <section class="section">
+      <h2><span class="num">2</span>What's open</h2>
+      <ul>
+        <li>Tray compartment layout. The current plan shows deck well + dice well + extras well — easy to revise since the tray prints separately.</li>
+        <li>Lid closure. Two options shown in the detail panel: lip-and-channel (drops in, self-aligns) or recessed magnets (flush seam, snap feel).</li>
+        <li>Exterior sculpting direction. Not in this drawing — that's the next conversation.</li>
+      </ul>
+    </section>
+
+    <section class="section">
+      <h2><span class="num">3</span>Decisions I need from you</h2>
+      <div class="decisions">
+        <div class="decision">
+          <div class="label">Closure</div>
+          <div class="q">Lip or magnets?</div>
+          <div class="hint">magnets feel premium · lip is cheaper</div>
+        </div>
+        <div class="decision">
+          <div class="label">Tray</div>
+          <div class="q">Three compartments — right split?</div>
+          <div class="hint">deck + dice + extras, or rework?</div>
+        </div>
+        <div class="decision">
+          <div class="label">Material</div>
+          <div class="q">PETG OK, or want a look at resin?</div>
+          <div class="hint">resin = finer detail, higher cost</div>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <span>LarryDojo LLC · larrydojo.com</span>
+      <span class="sig">— Alec</span>
+    </footer>
+
+  </main>
+</body>
+</html>
