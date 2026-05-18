@@ -1,0 +1,290 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>// pre-ship — LarryDoJo</title>
+  <meta name="description" content="A custom 3D-printed figure from LarryDoJo, photographed before it ships.">
+  <meta name="robots" content="noindex, nofollow">
+  <meta property="og:title" content="// pre-ship — LarryDoJo">
+  <meta property="og:description" content="A custom 3D-printed figure from LarryDoJo, photographed before it ships.">
+  <meta property="og:image" content="preview.jpg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,400;9..144,600;9..144,700;9..144,800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --paper: #f3eede;
+      --paper-deep: #ebe3cd;
+      --paper-card: #fbf7ec;
+      --ink: #14110b;
+      --ink-2: #3a342a;
+      --ink-3: #7a7060;
+      --rule: #d4c8a8;
+      --accent: #8a1c14;
+      --accent-2: #c9402a;
+      --hi: #d9c267;
+
+      --f-display: "Fraunces", "Georgia", serif;
+      --f-body: "Inter", -apple-system, "Segoe UI", sans-serif;
+      --f-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: var(--f-body);
+      font-size: 16px;
+      line-height: 1.55;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* Paper texture — noise via SVG data URI */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.5;
+      background-image:
+        url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.08  0 0 0 0 0.07  0 0 0 0 0.04  0 0 0 0.18 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+      mix-blend-mode: multiply;
+    }
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      background:
+        radial-gradient(ellipse at top, rgba(255,250,230,0.6) 0%, transparent 50%),
+        radial-gradient(ellipse at bottom right, rgba(138,28,20,0.04) 0%, transparent 60%);
+    }
+
+    .page {
+      position: relative;
+      z-index: 1;
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 36px 28px 80px;
+    }
+
+    /* === Top bar (mirrors larrydojo.com nav) === */
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 18px;
+      border-bottom: 1px solid var(--ink);
+      margin-bottom: 8px;
+    }
+    .brand {
+      font-family: var(--f-display);
+      font-weight: 800;
+      font-size: 18px;
+      letter-spacing: 0.02em;
+      color: var(--ink);
+      text-decoration: none;
+    }
+    .brand .dot { color: var(--accent); font-style: italic; padding: 0 1px; }
+    .topbar nav {
+      font-family: var(--f-mono);
+      font-size: 11px;
+      letter-spacing: 0.05em;
+      color: var(--ink-3);
+    }
+    .topbar nav span { margin-left: 18px; }
+    .topbar nav span::before { content: "// "; color: var(--ink-3); opacity: 0.6; }
+
+    /* === Section preamble (↓ a new thing from larrydojo) === */
+    .preamble {
+      font-family: var(--f-mono);
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      color: var(--ink-3);
+      text-transform: lowercase;
+      margin: 48px 0 16px;
+    }
+    .preamble::before { content: "↓  "; color: var(--accent); font-weight: 600; }
+
+    /* === Headline === */
+    h1 {
+      font-family: var(--f-display);
+      font-weight: 800;
+      font-size: clamp(44px, 7vw, 88px);
+      line-height: 0.95;
+      letter-spacing: -0.025em;
+      margin: 0 0 0;
+      color: var(--ink);
+      font-variation-settings: "opsz" 144, "SOFT" 50;
+    }
+    h1 .ital { font-style: italic; color: var(--accent); font-weight: 700; }
+    h1 .br { display: block; }
+
+    /* === Photo plate === */
+    .plate {
+      margin: 48px 0 0;
+      background: var(--paper-card);
+      border: 1px solid var(--ink);
+      padding: 14px 14px 0;
+      box-shadow:
+        12px 12px 0 var(--paper-deep),
+        12px 12px 0 1px var(--ink);
+      position: relative;
+      max-width: 760px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .plate img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+    .plate-strip {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 4px;
+      font-family: var(--f-mono);
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      color: var(--ink-3);
+      text-transform: uppercase;
+      border-top: 1px dashed var(--rule);
+      margin-top: 14px;
+    }
+    .plate-strip .stamp {
+      font-family: var(--f-mono);
+      font-weight: 500;
+      color: var(--accent);
+      border: 1.5px solid var(--accent);
+      padding: 3px 8px;
+      letter-spacing: 0.16em;
+      transform: rotate(-1.5deg);
+      display: inline-block;
+    }
+
+    /* === Spec strip (// shipped this week vibe) === */
+    .specs {
+      margin: 56px 0 0;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      border-top: 1px solid var(--ink);
+      border-bottom: 1px solid var(--ink);
+    }
+    .specs > div {
+      padding: 18px 18px 20px;
+      border-right: 1px solid var(--rule);
+    }
+    .specs > div:last-child { border-right: none; }
+    .specs dt {
+      font-family: var(--f-mono);
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      color: var(--ink-3);
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .specs dt::before { content: "// "; opacity: 0.5; }
+    .specs dd {
+      font-family: var(--f-display);
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      margin: 0;
+      line-height: 1.1;
+    }
+
+    /* === Footer === */
+    footer {
+      margin-top: 80px;
+      padding-top: 18px;
+      border-top: 1px solid var(--ink);
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      font-family: var(--f-mono);
+      font-size: 11px;
+      color: var(--ink-3);
+      letter-spacing: 0.06em;
+    }
+    footer a { color: var(--ink-2); text-decoration: none; border-bottom: 1px solid var(--rule); }
+    footer a:hover { color: var(--accent); border-bottom-color: var(--accent); }
+
+    @media (max-width: 600px) {
+      .page { padding: 24px 18px 56px; }
+      .topbar nav span { margin-left: 10px; font-size: 10px; }
+      h1 { font-size: clamp(38px, 11vw, 56px); }
+      .plate {
+        box-shadow: 6px 6px 0 var(--paper-deep), 6px 6px 0 1px var(--ink);
+      }
+      .specs { grid-template-columns: repeat(2, 1fr); }
+      .specs > div { border-right: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
+      .specs > div:nth-child(2n) { border-right: none; }
+      .specs > div:nth-last-child(-n+2) { border-bottom: none; }
+    }
+
+    @media print {
+      body::before, body::after { display: none; }
+      .plate { box-shadow: none; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+
+    <header class="topbar">
+      <a class="brand" href="https://larrydojo.com">LARRY<span class="dot">·</span>DOJO</a>
+      <nav>
+        <span>pre-ship</span><span>private</span>
+      </nav>
+    </header>
+
+    <p class="preamble">a new thing from larrydojo</p>
+
+    <h1>
+      <span class="br">Hot off</span>
+      <span class="br">the <span class="ital">printer.</span></span>
+    </h1>
+
+    <figure class="plate">
+      <img src="hero.jpg" alt="A custom 3D-printed and hand-painted figure from LarryDoJo." width="1800" height="2400">
+      <div class="plate-strip">
+        <span>// final · before packing</span>
+        <span class="stamp">Approved</span>
+      </div>
+    </figure>
+
+    <dl class="specs">
+      <div>
+        <dt>Build</dt>
+        <dd>3D print<br>+ hand paint</dd>
+      </div>
+      <div>
+        <dt>Material</dt>
+        <dd>PLA</dd>
+      </div>
+      <div>
+        <dt>Articulation</dt>
+        <dd>Head · arms<br>· hands</dd>
+      </div>
+      <div>
+        <dt>Includes</dt>
+        <dd>Figure<br>+ staff</dd>
+      </div>
+    </dl>
+
+    <footer>
+      <span>© 2026 LARRYDOJO · An AI studio.</span>
+      <span><a href="https://larrydojo.com">larrydojo.com</a></span>
+    </footer>
+
+  </main>
+</body>
+</html>
