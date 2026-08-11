@@ -636,12 +636,7 @@
   }
   @media (max-width: 720px) { .spark { display: none; } }
 
-  /* ─── HERO CASE STUDY CALLOUT ─────────────────────────
-     This callout now points to Print Your Prompt (live POC) instead of
-     the Dick Tracy case study. Same structural classes so the existing
-     hero grid placement and reveal animation keep working; the .__media
-     class replaces the .__video iframe wrapper with a 3:4 product photo
-     container that's better suited to a still image than a vertical reel. */
+  /* ─── HERO CASE STUDY VIDEO CALLOUT ───────────────── */
   .case-study-callout {
     margin-top: 36px;
     background: var(--ink);
@@ -650,65 +645,31 @@
     box-shadow: 8px 8px 0 var(--acid);
     padding: 18px;
     display: grid;
-    grid-template-columns: 200px 1fr;
-    gap: 22px;
+    grid-template-columns: 180px 1fr;
+    gap: 20px;
     align-items: center;
     transform: rotate(-0.6deg);
     max-width: 620px;
   }
-  .case-study-callout__media {
+  .case-study-callout__video {
     position: relative;
-    aspect-ratio: 3 / 4;
-    width: 200px;
+    aspect-ratio: 9 / 16;
+    width: 180px;
     background: #000;
     border: 2px solid var(--paper);
     overflow: hidden;
   }
-  .case-study-callout__media img {
+  .case-study-callout__video iframe {
     position: absolute;
     inset: 0;
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    border: 0;
     display: block;
   }
-  /* The acid-yellow corner sticker reads as "live now" — the small
-     pulsing dot reinforces that this isn't just a case study, it's
-     running in production right now. */
-  .case-study-callout__live {
-    position: absolute;
-    top: 10px; left: 10px;
-    background: rgba(10,10,10,0.85);
-    color: var(--mint);
-    border: 1.5px solid var(--mint);
-    padding: 4px 9px 5px;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    z-index: 5;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-  }
-  .case-study-callout__live::before {
-    content: '';
-    width: 7px; height: 7px;
-    background: var(--mint);
-    border-radius: 50%;
-    animation: callout-pulse 1.8s ease-in-out infinite;
-  }
-  @keyframes callout-pulse {
-    0%, 100% { opacity: 1; transform: scale(1); }
-    50% { opacity: 0.4; transform: scale(0.85); }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .case-study-callout__live::before { animation: none; }
-  }
-
   .case-study-callout__copy h3 {
     font-family: 'Archivo Black', sans-serif;
-    font-size: 18px;
+    font-size: 16px;
     text-transform: uppercase;
     line-height: 1.05;
     margin-bottom: 6px;
@@ -749,11 +710,11 @@
   @media (max-width: 980px) {
     .case-study-callout {
       max-width: 100%;
-      grid-template-columns: 180px 1fr;
+      grid-template-columns: 160px 1fr;
       transform: rotate(-0.4deg);
       margin-top: 24px;
     }
-    .case-study-callout__media { width: 180px; }
+    .case-study-callout__video { width: 160px; }
   }
   @media (max-width: 600px) {
     .case-study-callout {
@@ -761,9 +722,9 @@
       gap: 16px;
       padding: 16px;
     }
-    .case-study-callout__media {
+    .case-study-callout__video {
       width: 100%;
-      max-width: 260px;
+      max-width: 220px;
       margin: 0 auto;
     }
     .case-study-callout__copy {
@@ -946,127 +907,6 @@
     margin-bottom: 24px;
   }
   .about__text p strong { background: var(--acid); padding: 0 4px; }
-
-  /* ─── CAPTURE → CONVERT GRAPHIC ───────────────────── */
-  .capture-convert {
-    margin-top: 60px;
-    background: var(--ink);
-    color: var(--paper);
-    padding: 36px 32px;
-    border: 3px solid var(--ink);
-    box-shadow: 10px 10px 0 var(--tangerine);
-    position: relative;
-  }
-  @media (max-width: 720px) {
-    .capture-convert { padding: 28px 20px; box-shadow: 6px 6px 0 var(--tangerine); }
-  }
-  .capture-convert__head {
-    text-align: center;
-    margin-bottom: 28px;
-  }
-  .capture-convert__kicker {
-    font-family: 'Caveat', cursive;
-    font-size: 26px;
-    color: var(--acid);
-    margin-bottom: 4px;
-    line-height: 1;
-  }
-  .capture-convert__title {
-    font-family: 'Archivo Black', sans-serif;
-    font-size: clamp(22px, 3.5vw, 32px);
-    text-transform: uppercase;
-    line-height: 1.05;
-    color: var(--paper);
-  }
-  .capture-convert__title em {
-    font-style: normal;
-    color: var(--tangerine);
-  }
-  .capture-convert__sub {
-    font-size: 15px;
-    color: var(--orchid);
-    max-width: 640px;
-    margin: 12px auto 0;
-    line-height: 1.45;
-  }
-  .capture-convert__flow {
-    display: grid;
-    grid-template-columns: 1fr auto 1fr;
-    gap: 22px;
-    align-items: stretch;
-    margin-top: 28px;
-  }
-  @media (max-width: 720px) {
-    .capture-convert__flow {
-      grid-template-columns: 1fr;
-      gap: 16px;
-    }
-  }
-
-  .cc-stage {
-    background: var(--plum);
-    border: 2.5px solid var(--paper);
-    padding: 22px 20px 24px;
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
-  }
-  .cc-stage__label {
-    font-family: 'Archivo Black', sans-serif;
-    font-size: 11px;
-    letter-spacing: 0.1em;
-    color: var(--acid);
-    text-transform: uppercase;
-  }
-  .cc-stage__title {
-    font-family: 'Archivo Black', sans-serif;
-    font-size: clamp(28px, 4.2vw, 40px);
-    line-height: 0.9;
-    color: var(--paper);
-    text-transform: uppercase;
-    letter-spacing: -0.02em;
-  }
-  .cc-stage__title em {
-    font-style: normal;
-    color: var(--tangerine);
-  }
-  .cc-stage--capture .cc-stage__title em { color: var(--acid); }
-  .cc-stage__items {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-    margin-top: auto;
-  }
-  .cc-chip {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
-    padding: 5px 9px;
-    background: rgba(244,238,228,0.08);
-    border: 1.5px solid var(--orchid);
-    color: var(--paper);
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-    white-space: nowrap;
-  }
-  .cc-stage--convert .cc-chip { border-color: var(--acid); }
-
-  .cc-arrow {
-    align-self: center;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--acid);
-    font-family: 'Archivo Black', sans-serif;
-    font-size: 36px;
-    padding: 0 4px;
-  }
-  @media (max-width: 720px) {
-    .cc-arrow {
-      transform: rotate(90deg);
-      padding: 4px 0;
-    }
-  }
 
   /* PDF download card */
   .download-card {
@@ -1414,124 +1254,6 @@
   .show-card__link--primary { background: var(--tangerine); color: var(--paper); }
   .show-card__link--primary:hover { background: var(--ink); color: var(--acid); }
 
-  /* ─── DIGITAL AGENCY ──────────────────────────────── */
-  .agency { background: var(--paper); }
-  .agency__grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 50px;
-    align-items: center;
-  }
-  @media (max-width: 900px) { .agency__grid { grid-template-columns: 1fr; gap: 40px; } }
-
-  .agency__copy h3 {
-    font-family: 'Archivo Black', sans-serif;
-    font-size: clamp(28px, 4vw, 36px);
-    text-transform: uppercase;
-    line-height: 0.95;
-    margin-bottom: 20px;
-  }
-  .agency__copy h3 span { color: var(--tangerine); }
-  .agency__copy p { font-size: clamp(15px, 2vw, 17px); margin-bottom: 16px; }
-  .agency__copy strong { background: var(--acid); padding: 0 4px; }
-
-  .pillar-list {
-    list-style: none;
-    margin-top: 28px;
-    display: grid;
-    gap: 16px;
-  }
-  .pillar-list li {
-    display: grid;
-    grid-template-columns: 44px 1fr;
-    gap: 14px;
-    align-items: center;
-  }
-  .pillar-list__num {
-    font-family: 'Anton', sans-serif;
-    font-size: 36px;
-    line-height: 1;
-    color: var(--tangerine);
-    -webkit-text-stroke: 1.5px var(--ink);
-    text-align: center;
-  }
-  .pillar-list__text {
-    font-family: 'Archivo Black', sans-serif;
-    font-size: 15px;
-    text-transform: uppercase;
-    letter-spacing: 0.01em;
-    line-height: 1.2;
-  }
-  .pillar-list__text small {
-    display: block;
-    font-family: 'Space Grotesk', sans-serif;
-    font-weight: 400;
-    text-transform: none;
-    font-size: 14px;
-    color: var(--ink);
-    opacity: 0.75;
-    margin-top: 2px;
-    letter-spacing: 0;
-  }
-
-  .video-card {
-    background: var(--ink);
-    color: var(--paper);
-    padding: 22px;
-    border: 2.5px solid var(--ink);
-    box-shadow: 10px 10px 0 var(--tangerine);
-    transform: rotate(-0.6deg);
-  }
-  .video-card__tag {
-    font-family: 'Caveat', cursive;
-    font-size: 22px;
-    color: var(--acid);
-    margin-bottom: 4px;
-    line-height: 1;
-  }
-  .video-card__title {
-    font-family: 'Archivo Black', sans-serif;
-    font-size: 20px;
-    text-transform: uppercase;
-    color: var(--paper);
-    line-height: 1.05;
-    margin-bottom: 14px;
-  }
-  .video-card__title em { font-style: normal; color: var(--acid); }
-  .video-card__frame {
-    position: relative;
-    aspect-ratio: 16 / 9;
-    background: #000;
-    border: 2px solid var(--paper);
-    overflow: hidden;
-    margin-bottom: 14px;
-  }
-  .video-card__frame iframe {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    border: 0;
-    display: block;
-  }
-  .video-card__quote {
-    font-family: 'Caveat', cursive;
-    font-size: 22px;
-    line-height: 1.25;
-    color: var(--paper);
-    border-left: 3px solid var(--acid);
-    padding: 6px 0 6px 14px;
-    margin-bottom: 10px;
-  }
-  .video-card__attr {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
-    color: var(--orchid);
-    letter-spacing: 0.04em;
-  }
-  .video-card__attr a { color: var(--acid); text-decoration: none; }
-  .video-card__attr a:hover { text-decoration: underline; }
-
   /* ─── SPECIAL PROJECTS ────────────────────────────── */
   .special { background: var(--ink); color: var(--paper); overflow: hidden; }
   .special .section-head h2 { color: var(--paper); }
@@ -1589,205 +1311,6 @@
     text-transform: uppercase;
     letter-spacing: 0.06em;
     color: var(--acid);
-  }
-
-  /* ─── FROM THE LAB ──────────────────────────────────
-     Lab section sits between Services and FAQ. It's not a fourth
-     service tier — it's a live POC that proves the pitch above it.
-     The "live build" badge differentiates it from the Service cards
-     and links out to the working landing page. Visual treatment
-     borrows from the .case-study-callout in the hero (acid-yellow
-     drop shadow, ink background) so it reads as a recognized
-     callout component rather than a new module. */
-  .lab { background: var(--paper); }
-
-  .lab__callout {
-    background: var(--ink);
-    color: var(--paper);
-    border: 3px solid var(--ink);
-    box-shadow: 12px 12px 0 var(--acid);
-    padding: 0;
-    overflow: hidden;
-    display: grid;
-    grid-template-columns: 1.05fr 1fr;
-    align-items: stretch;
-    transform: rotate(-0.4deg);
-    margin-top: 20px;
-  }
-  @media (max-width: 900px) {
-    .lab__callout {
-      grid-template-columns: 1fr;
-      transform: rotate(-0.2deg);
-      box-shadow: 8px 8px 0 var(--acid);
-    }
-  }
-
-  .lab__media {
-    position: relative;
-    background: var(--plum);
-    border-right: 2.5px solid var(--paper);
-    overflow: hidden;
-    min-height: 420px;
-  }
-  @media (max-width: 900px) {
-    .lab__media {
-      border-right: none;
-      border-bottom: 2.5px solid var(--paper);
-      min-height: 320px;
-    }
-  }
-  .lab__media img {
-    display: block;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-
-  .lab__media-tag {
-    position: absolute;
-    top: 16px; left: 16px;
-    background: var(--acid);
-    color: var(--ink);
-    border: 2px solid var(--ink);
-    padding: 6px 12px 7px;
-    font-family: 'Archivo Black', sans-serif;
-    font-size: 11px;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    box-shadow: 3px 3px 0 var(--ink);
-    z-index: 5;
-    transform: rotate(-3deg);
-  }
-  .lab__media-pulse {
-    position: absolute;
-    bottom: 16px; right: 16px;
-    background: rgba(10,10,10,0.85);
-    color: var(--mint);
-    border: 1.5px solid var(--mint);
-    padding: 5px 10px 6px;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    z-index: 5;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-  .lab__media-pulse::before {
-    content: '';
-    width: 8px; height: 8px;
-    background: var(--mint);
-    border-radius: 50%;
-    animation: lab-pulse 1.8s ease-in-out infinite;
-  }
-  @keyframes lab-pulse {
-    0%, 100% { opacity: 1; transform: scale(1); }
-    50% { opacity: 0.4; transform: scale(0.85); }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .lab__media-pulse::before { animation: none; }
-  }
-
-  .lab__body {
-    padding: 40px 36px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-  }
-  @media (max-width: 720px) { .lab__body { padding: 30px 22px; } }
-
-  .lab__kicker {
-    font-family: 'Caveat', cursive;
-    font-size: 24px;
-    color: var(--acid);
-    line-height: 1;
-    margin-bottom: 8px;
-  }
-
-  .lab__title {
-    font-family: 'Archivo Black', sans-serif;
-    font-size: clamp(28px, 4.2vw, 42px);
-    line-height: 0.95;
-    text-transform: uppercase;
-    letter-spacing: -0.02em;
-    margin-bottom: 14px;
-    color: var(--paper);
-  }
-  .lab__title em {
-    font-style: normal;
-    color: var(--tangerine);
-    -webkit-text-stroke: 1.5px var(--paper);
-  }
-
-  .lab__meta {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
-    color: var(--orchid);
-    letter-spacing: 0.04em;
-    margin-bottom: 18px;
-    text-transform: uppercase;
-  }
-
-  .lab__copy { font-size: 15px; line-height: 1.55; color: var(--paper); margin-bottom: 12px; }
-  .lab__copy strong { background: var(--acid); color: var(--ink); padding: 0 4px; }
-
-  .lab__stack {
-    margin: 18px 0 22px;
-    padding: 12px 14px;
-    border: 1.5px dashed var(--orchid);
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-    align-items: center;
-  }
-  .lab__stack-label {
-    font-family: 'Archivo Black', sans-serif;
-    font-size: 10px;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--orchid);
-    margin-right: 4px;
-  }
-  .lab__stack-chip {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
-    padding: 4px 8px;
-    background: rgba(244,238,228,0.08);
-    border: 1.5px solid var(--paper);
-    color: var(--paper);
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-  }
-
-  .lab__links { display: flex; gap: 10px; flex-wrap: wrap; }
-  .lab__link {
-    font-family: 'Archivo Black', sans-serif;
-    font-size: 12px;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    padding: 12px 18px;
-    text-decoration: none;
-    border: 2.5px solid var(--paper);
-    transition: transform 0.15s ease, box-shadow 0.15s ease;
-    display: inline-block;
-  }
-  .lab__link--primary {
-    background: var(--acid);
-    color: var(--ink);
-    border-color: var(--paper);
-  }
-  .lab__link--primary:hover {
-    transform: translate(-2px, -2px);
-    box-shadow: 4px 4px 0 var(--tangerine);
-  }
-  .lab__link--ghost {
-    background: transparent;
-    color: var(--paper);
-  }
-  .lab__link--ghost:hover {
-    background: var(--paper);
-    color: var(--ink);
   }
 
   /* ─── FAQ SECTION ──────────────────────────────────────
@@ -2122,7 +1645,6 @@
   .pipeline-sticker--control[data-reveal="sticker"]  { --sticker-rest: scale(0.7) rotate(-6deg);  --sticker-final: rotate(4deg); }
   .pipeline-sticker--final[data-reveal="sticker"]    { --sticker-rest: scale(0.7) rotate(-4deg);  --sticker-final: rotate(3deg); }
   .section-head__kicker[data-reveal="sticker"]       { --sticker-rest: scale(0.85) rotate(6deg);  --sticker-final: rotate(-1deg); }
-  .capture-convert__kicker[data-reveal="sticker"]    { --sticker-rest: scale(0.85) rotate(-4deg); --sticker-final: rotate(0); }
 
   .stage-polaroid[data-reveal="polaroid"] {
     opacity: 0;
@@ -2170,94 +1692,11 @@
     transition-delay: var(--stagger-delay);
   }
 
-  .cc-stage[data-reveal="cc-stage"] {
-    opacity: 0;
-    transform: translateY(20px) scale(0.97);
-    transition:
-      opacity 0.55s var(--ease-settle),
-      transform 0.65s var(--ease-spring);
-  }
-  .cc-stage[data-reveal="cc-stage"].is-in {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-
-  .cc-arrow[data-reveal="cc-arrow"] {
-    opacity: 0;
-    transform: scaleX(0);
-    transform-origin: left center;
-    transition:
-      opacity 0.3s var(--ease-settle),
-      transform 0.55s var(--ease-settle);
-  }
-  .cc-arrow[data-reveal="cc-arrow"].is-in {
-    opacity: 1;
-    transform: scaleX(1);
-  }
-  @media (max-width: 720px) {
-    .cc-arrow[data-reveal="cc-arrow"] {
-      transform: rotate(90deg) scaleX(0);
-      transform-origin: left center;
-    }
-    .cc-arrow[data-reveal="cc-arrow"].is-in {
-      transform: rotate(90deg) scaleX(1);
-    }
-  }
-
-  .cc-chip[data-reveal="cc-chip"] {
-    opacity: 0;
-    transform: translateY(8px);
-    transition:
-      opacity 0.35s var(--ease-settle),
-      transform 0.45s var(--ease-spring);
-  }
-  .cc-chip[data-reveal="cc-chip"].is-in {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  .service__num {
-    transition: color 0.18s ease 0.08s, -webkit-text-stroke-color 0.18s ease 0.08s;
-  }
-  .service {
-    transition: background 0.22s ease, color 0.22s ease;
-  }
-  .service:not(:hover) .service__num {
-    transition-delay: 0s;
-  }
-
-  .pipeline-sticker {
-    will-change: transform;
-  }
-
-  .scribble[data-reveal="scribble"]::after {
-    clip-path: inset(0 100% 0 0);
-    transition: clip-path 0.7s var(--ease-settle) 0.3s;
-  }
-  .scribble[data-reveal="scribble"].is-in::after {
-    clip-path: inset(0 0 0 0);
-  }
-
-  [data-highlight-sweep] strong {
-    background: linear-gradient(to right, var(--acid) 50%, transparent 50%);
-    background-size: 200% 100%;
-    background-position: 100% 0;
-    background-repeat: no-repeat;
-    transition: background-position 0.6s var(--ease-settle) 0.4s;
-    padding: 0 4px;
-  }
-  [data-highlight-sweep].is-in strong {
-    background-position: 0 0;
-  }
-
   @media (prefers-reduced-motion: reduce) {
     [data-reveal],
     [data-reveal="sticker"],
     [data-reveal="polaroid"],
     [data-reveal="stat"],
-    [data-reveal="cc-stage"],
-    [data-reveal="cc-arrow"],
-    [data-reveal="cc-chip"],
     [data-reveal="scribble"],
     .stage-polaroid--idea[data-reveal="polaroid"],
     .stage-polaroid--final[data-reveal="polaroid"],
@@ -2276,11 +1715,7 @@
     .stat:nth-child(1)         { transform: rotate(-1deg) !important; }
     .stat:nth-child(2)         { transform: rotate(0.5deg) !important; }
     .stat:nth-child(3)         { transform: rotate(-0.7deg) !important; }
-    .video-card                { transform: rotate(-0.6deg) !important; }
     .faq-item[open] .faq-item__icon { transform: rotate(45deg) !important; }
-    @media (max-width: 720px) {
-      .cc-arrow                { transform: rotate(90deg) !important; }
-    }
     [data-highlight-sweep] strong {
       background: var(--acid) !important;
       background-position: 0 0 !important;
@@ -2311,9 +1746,7 @@
   <div class="nav__links">
     <a href="#about">About</a>
     <a href="#work">Work</a>
-    <a href="#agency">Studio</a>
     <a href="#services">Services</a>
-    <a href="#lab">Lab</a>
     <a href="#faq">FAQ</a>
   </div>
   <a href="#contact" class="nav__cta">Start a Project →</a>
@@ -2398,24 +1831,26 @@
 
     </div>
 
-    <!-- HERO CALLOUT: Print Your Prompt (live POC)
-         Replaces the previous Dick Tracy case study callout. Goal: push
-         visitors at the live product the studio actually wants traffic
-         on. The image slot uses a hand-finished print photo instead of
-         the old vertical iframe; the .__live pulse badge differentiates
-         this from a "case study" (past-tense) — this is shipping now. -->
-    <a href="print-your-prompt/" class="case-study-callout" data-reveal data-hero-step="11" style="text-decoration: none; color: inherit;" aria-label="Try Print Your Prompt — the studio's live POC">
-      <div class="case-study-callout__media">
-        <span class="case-study-callout__live">// live now</span>
-        <img src="print-your-prompt/img/IMG_1561.jpg" alt="Custom 3D-printed copper steampunk robot from a customer prompt — hand-finished." loading="lazy" />
+    <!-- HERO CALLOUT: Dick Tracy Origins case study.
+         Embedded 60-second sequence plays muted on loop; the copy
+         links through to the full case study page. -->
+    <div class="case-study-callout" data-reveal data-hero-step="11">
+      <div class="case-study-callout__video">
+        <iframe
+          src="https://www.youtube.com/embed/ZkABMo72b2A?autoplay=1&mute=1&loop=1&playlist=ZkABMo72b2A&rel=0&modestbranding=1&playsinline=1"
+          title="Dick Tracy Origins · 60-second sequence"
+          loading="lazy"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          referrerpolicy="strict-origin-when-cross-origin"
+          allowfullscreen></iframe>
       </div>
       <div class="case-study-callout__copy">
-        <div class="case-study-callout__tag">↓ new from the studio</div>
-        <h3>Print Your <em>Prompt.</em></h3>
-        <p>Describe a thing. AI drafts the concept, a real person reviews it, and we ship the finished 3D print to your door.</p>
-        <span class="case-study-callout__link">Try it →</span>
+        <div class="case-study-callout__tag">↓ new case study</div>
+        <h3>Dick Tracy <em>Origins.</em></h3>
+        <p>How we built character-consistent AI video from a public-domain source. Forty seconds of finished video, four hero frames, $0.54 per second.</p>
+        <a href="case-studies/dick-tracy-origins/" class="case-study-callout__link">Read the Case Study →</a>
       </div>
-    </a>
+    </div>
 
   </div>
 </header>
@@ -2552,109 +1987,6 @@
   </div>
 </section>
 
-<!-- ─── DIGITAL AGENCY ──────────────────────────────────
-     Replaced the old "Built fast / Updated weekly / Optimized always"
-     workflow pitch with the mid-funnel thesis. The right column hosts
-     the GaryVee 2026 AI Playbook keynote as the supporting case. -->
-<section class="agency" id="agency">
-  <div class="container">
-    <div class="section-head" data-stagger>
-      <span class="section-head__kicker" data-reveal="sticker">↓ the new digital agency</span>
-      <h2 data-reveal>The top of<br>the funnel<br>is <span class="scribble" data-reveal="scribble">dead.</span></h2>
-      <p class="section-head__desc" data-reveal>
-        Algorithms shifted from social graphs to interest graphs. The middle of the funnel — relevance — is where the war for attention is now won.
-      </p>
-    </div>
-
-    <div class="agency__grid" data-stagger>
-      <div class="agency__copy" data-reveal data-highlight-sweep>
-        <h3>Meet customers<br>where they <span>are.</span></h3>
-        <p>Top-of-funnel content gets dismissed as AI slop. Bottom-of-funnel pitches get swiped past. <strong>Mid-funnel content that answers real questions</strong> is what the algorithm rewards — and what AI search engines cite.</p>
-        <p>The old agency model can't ship at the pace this requires. We can.</p>
-
-        <ul class="pillar-list">
-          <li>
-            <span class="pillar-list__num">1</span>
-            <span class="pillar-list__text">1,000 variations, not 1 hero asset
-              <small>One idea, AI-tweaked for every niche your customer lives in.</small>
-            </span>
-          </li>
-          <li>
-            <span class="pillar-list__num">2</span>
-            <span class="pillar-list__text">Built for AI answer engines
-              <small>Structured so ChatGPT, Gemini, and Perplexity cite you, not summarize you away.</small>
-            </span>
-          </li>
-          <li>
-            <span class="pillar-list__num">3</span>
-            <span class="pillar-list__text">Days, not quarters
-              <small>Ship today's playbook for a fraction of the cost. Iterate weekly.</small>
-            </span>
-          </li>
-        </ul>
-      </div>
-
-      <div class="video-card" data-reveal>
-        <div class="video-card__tag">↓ the case for it</div>
-        <div class="video-card__title">GaryVee's 2026 <em>AI Playbook.</em></div>
-        <div class="video-card__frame">
-          <iframe
-            src="https://www.youtube.com/embed/bQmcuDtp9yw?rel=0&modestbranding=1"
-            title="GaryVee · The Ultimate AI Playbook for 2026"
-            loading="lazy"
-            allow="accelerometer; encrypted-media; gyroscope; picture-in-picture; web-share"
-            referrerpolicy="strict-origin-when-cross-origin"
-            allowfullscreen></iframe>
-        </div>
-        <p class="video-card__quote">"The algorithm is no longer a mystery to be solved. It's a mirror of human interest. If you aren't relevant, you don't exist."</p>
-        <p class="video-card__attr">— Gary Vaynerchuk · <a href="https://www.youtube.com/watch?v=bQmcuDtp9yw" target="_blank" rel="noopener">watch on YouTube ↗</a></p>
-      </div>
-    </div>
-
-    <!-- Capture → Convert: full-pipeline visual that follows the mid-funnel
-         thesis. Mid-funnel content captures attention; the back end (web,
-         apps, payments, CRM) converts it. Sits at the bottom of the agency
-         section so the thesis flows naturally into the full picture. -->
-    <div class="capture-convert" data-cc-sequence>
-      <div class="capture-convert__head" data-stagger>
-        <div class="capture-convert__kicker" data-reveal="sticker">↓ how it all connects</div>
-        <h3 class="capture-convert__title" data-reveal>We don't just <em>capture</em> attention.<br>We help you <em>convert</em> it.</h3>
-        <p class="capture-convert__sub" data-reveal>
-          Content captures the audience. Custom apps, online stores, secure payment, and CRM convert them. We build the back end that turns viewers into customers.
-        </p>
-      </div>
-
-      <div class="capture-convert__flow" role="list" aria-label="Capture to convert flow">
-        <div class="cc-stage cc-stage--capture" role="listitem" data-reveal="cc-stage" data-cc-step="1">
-          <span class="cc-stage__label">// step 01</span>
-          <span class="cc-stage__title"><em>Capture</em></span>
-          <div class="cc-stage__items">
-            <span class="cc-chip" data-reveal="cc-chip" data-cc-chip="1">TikTok</span>
-            <span class="cc-chip" data-reveal="cc-chip" data-cc-chip="1">YouTube</span>
-            <span class="cc-chip" data-reveal="cc-chip" data-cc-chip="1">Instagram</span>
-            <span class="cc-chip" data-reveal="cc-chip" data-cc-chip="1">Shorts</span>
-            <span class="cc-chip" data-reveal="cc-chip" data-cc-chip="1">Reels</span>
-          </div>
-        </div>
-
-        <div class="cc-arrow" aria-hidden="true" data-reveal="cc-arrow" data-cc-step="2">→</div>
-
-        <div class="cc-stage cc-stage--convert" role="listitem" data-reveal="cc-stage" data-cc-step="3">
-          <span class="cc-stage__label">// step 02</span>
-          <span class="cc-stage__title"><em>Convert</em></span>
-          <div class="cc-stage__items">
-            <span class="cc-chip" data-reveal="cc-chip" data-cc-chip="3">Web</span>
-            <span class="cc-chip" data-reveal="cc-chip" data-cc-chip="3">App</span>
-            <span class="cc-chip" data-reveal="cc-chip" data-cc-chip="3">eCommerce</span>
-            <span class="cc-chip" data-reveal="cc-chip" data-cc-chip="3">Payments</span>
-            <span class="cc-chip" data-reveal="cc-chip" data-cc-chip="3">CRM</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
 <!-- ─── SPECIAL PROJECTS ────────────────────────────── -->
 <section class="special" id="services">
   <div class="container">
@@ -2703,57 +2035,6 @@
         <span class="service__cta">Inquire →</span>
       </a>
     </div>
-  </div>
-</section>
-
-<!-- ─── FROM THE LAB ─────────────────────────────────
-     Live POC that demonstrates the kind of work pitched above. The
-     studio built it for itself to prove the build pattern (prompt →
-     AI validation → 3D model → human approval loop), then opened it
-     up as a working product. Sits between Services and FAQ so the
-     pattern is: services pitch → lab proof → answers. -->
-<section class="lab" id="lab">
-  <div class="container">
-    <div class="section-head" data-stagger>
-      <span class="section-head__kicker" data-reveal="sticker">↓ from the lab</span>
-      <h2 data-reveal>Live POCs.<br>Not just <span class="scribble" data-reveal="scribble">slides.</span></h2>
-      <p class="section-head__desc" data-reveal>
-        We build live POCs to prove the patterns we recommend. Below is one we shipped this quarter — a working product, not a screenshot.
-      </p>
-    </div>
-
-    <article class="lab__callout" data-reveal>
-      <div class="lab__media">
-        <span class="lab__media-tag">↓ live build</span>
-        <img src="print-your-prompt/img/IMG_1561.jpg" alt="Custom 3D-printed copper steampunk robot, hand-finished, from a customer prompt." loading="lazy" />
-        <span class="lab__media-pulse">// shipping orders</span>
-      </div>
-
-      <div class="lab__body">
-        <div class="lab__kicker">↓ poc · print-your-prompt</div>
-        <h3 class="lab__title">Describe a thing.<br>We <em>print</em> it.</h3>
-        <div class="lab__meta">// prompt → AI validation → 3D model → approval loop → fulfillment</div>
-
-        <p class="lab__copy">A landing page that takes a customer prompt, validates it with an LLM, generates a 3D model via the Meshy API, emails the customer a render proof, and runs the approval-and-edit loop through a chat interface. Then a real printer prints it.</p>
-        <p class="lab__copy">It's the entire <strong>capture-to-convert pattern</strong> in one product: content captures the audience, custom apps and payments convert them. Built end-to-end in days, not quarters.</p>
-
-        <div class="lab__stack">
-          <span class="lab__stack-label">// stack</span>
-          <span class="lab__stack-chip">Netlify</span>
-          <span class="lab__stack-chip">Forms</span>
-          <span class="lab__stack-chip">Resend</span>
-          <span class="lab__stack-chip">Claude API</span>
-          <span class="lab__stack-chip">Meshy</span>
-          <span class="lab__stack-chip">FDM Print</span>
-        </div>
-
-        <div class="lab__links">
-          <a href="print-your-prompt/" class="lab__link lab__link--primary">See the Live POC →</a>
-          <a href="#contact" class="lab__link lab__link--ghost">Want one for your team?</a>
-        </div>
-      </div>
-    </article>
-
   </div>
 </section>
 
@@ -2822,7 +2103,7 @@
           <p><strong>Because it bills you for time, and time isn't the input that makes content work anymore.</strong> The old agency model charges for human hours — strategy decks, creative reviews, six-week timelines, six-figure retainers. That math made sense when one hero asset had to carry an entire campaign and humans were the bottleneck. They aren't anymore.</p>
           <p>In 2026, social platforms reward <strong>dwell time and relevance</strong>, not reach. The lever isn't a hero asset — it's <em>thousands</em> of mid-funnel variations, each tweaked for a specific niche. Meta's Advantage+ and Google's Performance Max have automated the targeting decision; the only human lever left is creative relevance at scale. An agency that needs a kickoff meeting, a strategy phase, three rounds of revisions, and a "go-live" date can't ship at that pace. By the time the campaign launches, the algorithm has moved on three times.</p>
           <p><strong>An agency that bills based on human hours is no more.</strong> The new scale is relevance per dollar — how fast you can ship variations, how many niches you can reach, how many of them the algorithm pushes for free. That's what we charge against. The math is closer to media buying than to hourly consulting.</p>
-          <p>GaryVee makes the same case in his 2026 AI Playbook keynote (linked in the section above). Watch it. He's right.</p>
+          <p>GaryVee makes the same case in his 2026 AI Playbook keynote (linked in the sources below). Watch it. He's right.</p>
           <div class="faq-item__sources">
             <strong>Sources</strong>
             <a href="https://www.youtube.com/watch?v=bQmcuDtp9yw" target="_blank" rel="noopener">GaryVee · The Ultimate AI Playbook for 2026 →</a><br>
