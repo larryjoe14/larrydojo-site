@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Dreams of Cthulhu · An Animated Series | Larrydojo</title>
+<meta name="description" content="An animated adaptation of H.P. Lovecraft's The Call of Cthulhu (1928, public domain) — an inked, crosshatched comic that moves. Episode 1: The Arrival is out now.">
+<link rel="canonical" href="https://larrydojo.com/the-dreams-of-cthulhu/">
+
+<!-- Open Graph / Twitter -->
+<meta property="og:type" content="video.other">
+<meta property="og:url" content="https://larrydojo.com/the-dreams-of-cthulhu/">
+<meta property="og:title" content="The Dreams of Cthulhu · Episode 1: The Arrival">
+<meta property="og:description" content="Lovecraft's Great Old Ones descend from the stars — drawn as an inked, crosshatched comic that moves. One character, built once, the same in every panel.">
+<meta property="og:image" content="https://larrydojo.com/the-dreams-of-cthulhu/img/og-cthulhu.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="The Dreams of Cthulhu · Episode 1: The Arrival">
+<meta name="twitter:description" content="Lovecraft's Great Old Ones descend from the stars — drawn as an inked, crosshatched comic that moves.">
+<meta name="twitter:image" content="https://larrydojo.com/the-dreams-of-cthulhu/img/og-cthulhu.jpg">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=IM+Fell+English:ital@0;1&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<!-- Plausible Analytics (parent domain) -->
+<script defer data-domain="larrydojo.com" src="https://plausible.io/js/script.js"></script>
+
+<!-- JSON-LD: VideoObject.
+     TODO BEFORE LAUNCH (Alec confirms):
+     · uploadDate — exact date Episode 1 was published to YouTube
+     · duration   — exact runtime in ISO 8601 (PT#M#S)          -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoObject",
+  "name": "The Dreams of Cthulhu · Episode 1 · The Arrival",
+  "description": "An animated adaptation of H.P. Lovecraft's The Call of Cthulhu (1928, public domain). Episode 1: the Great Old Ones descend from the stars upon a young, water-covered Earth — drawn as an inked, crosshatched comic that moves.",
+  "thumbnailUrl": "https://larrydojo.com/the-dreams-of-cthulhu/img/descent-poster.jpg",
+  "uploadDate": "2026-08-20",
+  "embedUrl": "https://www.youtube-nocookie.com/embed/u2JA9buYCQo?rel=0",
+  "publisher": {
+    "@type": "Organization",
+    "name": "Larrydojo",
+    "url": "https://larrydojo.com"
+  }
+}
+</script>
+
+<style>
+/* ============================================================
+   Larrydojo · Series splash page — THE DREAMS OF CTHULHU
+   Identity: the book itself. Dense crosshatching, muted
+   sea-green palette, cyclopean stone, selective biolumin-
+   escence (the only saturated color on the page), aged
+   parchment caption boxes in old-style type. The design
+   system comes from the panels — the way RTTC's came from
+   the broadcast record and Gold Rush's from the clipping.
+   ============================================================ */
+
+:root {
+  --abyss: #0B120F;          /* page ground — deep green-black */
+  --abyss-2: #101A16;        /* card */
+  --abyss-3: #16221D;        /* raised card */
+  --stone: #7FA695;          /* cyclopean sea-green */
+  --stone-dim: #5C7A6D;
+  --bone: #E8DFC8;           /* ink on abyss — aged bone/parchment */
+  --bone-dim: #A9A28D;
+  --bone-muted: #6F6B5C;
+  --biolum: #57E6D2;         /* selective bioluminescence — cyan */
+  --biolum-violet: #A97FE8;  /* the second glow */
+  --parchment: #EFE3C0;      /* caption boxes */
+  --parchment-ink: #2B2416;
+  --rule: #24312B;
+  --rule-soft: #1A241F;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--abyss);
+  color: var(--bone);
+  font-family: 'IM Fell English', Georgia, 'Times New Roman', serif;
+  font-size: 18px;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.mono, .section-label, .meta {
+  font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+  font-size: 0.75em;
+  letter-spacing: 0.02em;
+}
+
+a { color: var(--bone); text-decoration: none; transition: color .15s, border-color .15s, background .15s; }
+a:hover { color: var(--biolum); }
+
+img { max-width: 100%; display: block; }
+
+.container { max-width: 1200px; margin: 0 auto; padding: 0 32px; }
+
+/* ============================================================
+   NAV
+   ============================================================ */
+
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: rgba(11, 18, 15, 0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--rule-soft);
+}
+.nav-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 18px 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+.brand {
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 600;
+  font-size: 16px;
+  letter-spacing: 0.04em;
+  color: var(--bone);
+}
+.brand:hover { color: var(--bone); }
+.brand .dot { color: var(--biolum); margin: 0 4px; }
+.nav-links { display: flex; gap: 24px; font-size: 15px; }
+.nav-links a { color: var(--bone-dim); }
+.nav-links a:hover { color: var(--bone); }
+.nav-cta {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--abyss);
+  background: var(--biolum);
+  padding: 9px 16px;
+  border-radius: 3px;
+}
+.nav-cta:hover { color: var(--abyss); background: var(--bone); }
+@media (max-width: 720px) { .nav-links { display: none; } }
+
+/* ============================================================
+   HERO
+   ============================================================ */
+
+.hero {
+  padding: 84px 0 72px;
+  border-bottom: 1px solid var(--rule);
+  background:
+    radial-gradient(ellipse 900px 480px at 72% -10%, rgba(87, 230, 210, 0.07), transparent 60%),
+    radial-gradient(ellipse 700px 420px at 12% 8%, rgba(169, 127, 232, 0.05), transparent 60%),
+    var(--abyss);
+}
+.hero-eyebrow {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--biolum);
+  margin-bottom: 22px;
+}
+.hero h1 {
+  font-family: 'Cinzel', Georgia, serif;
+  font-size: clamp(38px, 6.4vw, 76px);
+  font-weight: 800;
+  line-height: 1.02;
+  letter-spacing: 0.015em;
+  text-transform: uppercase;
+  margin-bottom: 24px;
+  text-shadow: 0 0 44px rgba(87, 230, 210, 0.18);
+}
+.hero h1 em { font-style: normal; color: var(--biolum); }
+.hero-sub {
+  font-size: 20px;
+  line-height: 1.6;
+  color: var(--bone-dim);
+  max-width: 700px;
+  margin-bottom: 48px;
+}
+.hero-sub em { color: var(--bone); }
+
+.hero-grid {
+  display: grid;
+  grid-template-columns: 1.25fr 1fr;
+  gap: 56px;
+  align-items: center;
+  margin-bottom: 48px;
+}
+@media (max-width: 860px) { .hero-grid { grid-template-columns: 1fr; gap: 36px; } }
+
+/* Episode 1 facade — real iframe loads on click */
+.hero-video { position: relative; }
+.hero-video__tag {
+  position: absolute;
+  top: -30px;
+  left: 0;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  color: var(--biolum);
+}
+.yt-facade {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  width: 100%;
+  background: #000;
+  cursor: pointer;
+  border: 1px solid var(--rule);
+  box-shadow: 0 24px 60px rgba(0,0,0,0.6), 0 0 48px rgba(87, 230, 210, 0.10);
+  overflow: hidden;
+  display: block;
+  padding: 0;
+}
+.yt-facade img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.yt-facade__btn {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 84px;
+  height: 58px;
+  background: rgba(11, 18, 15, 0.85);
+  border: 1px solid var(--biolum);
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background .15s;
+}
+.yt-facade__btn::after {
+  content: "";
+  display: block;
+  width: 0; height: 0;
+  border-style: solid;
+  border-width: 12px 0 12px 20px;
+  border-color: transparent transparent transparent var(--biolum);
+  margin-left: 4px;
+}
+.yt-facade:hover .yt-facade__btn { background: rgba(87, 230, 210, 0.22); }
+.video-meta {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11.5px;
+  color: var(--bone-muted);
+  margin-top: 14px;
+}
+.video-meta a { color: var(--bone-dim); }
+.video-meta a:hover { color: var(--biolum); }
+
+/* Parchment caption card — the comic's own device */
+.caption-card {
+  background: var(--parchment);
+  color: var(--parchment-ink);
+  border: 2px solid var(--parchment-ink);
+  box-shadow: 0 0 0 5px var(--parchment), 0 0 0 6px var(--parchment-ink), 0 18px 48px rgba(0,0,0,0.5);
+  padding: 26px 28px;
+  font-style: italic;
+  font-size: 20px;
+  line-height: 1.6;
+  transform: rotate(-0.6deg);
+  max-width: 480px;
+}
+.caption-card .attr {
+  display: block;
+  margin-top: 14px;
+  font-style: normal;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #6E5C33;
+}
+
+.hero-aside h2 {
+  font-family: 'Cinzel', Georgia, serif;
+  font-size: 27px;
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: 18px;
+}
+.hero-aside h2 em { font-style: normal; color: var(--biolum); }
+.hero-aside p { color: var(--bone-dim); margin-bottom: 16px; max-width: 560px; }
+
+.btn {
+  display: inline-block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 13px 22px;
+  border-radius: 3px;
+  border: 1px solid transparent;
+}
+.btn-primary { background: var(--biolum); color: var(--abyss); }
+.btn-primary:hover { background: var(--bone); color: var(--abyss); }
+.btn-secondary { border-color: var(--rule); color: var(--bone-dim); }
+.btn-secondary:hover { border-color: var(--biolum); color: var(--bone); }
+.hero-actions { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 26px; }
+
+.hero-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 36px;
+  padding-top: 28px;
+  border-top: 1px solid var(--rule-soft);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12.5px;
+  color: var(--bone-muted);
+}
+.hero-meta strong { color: var(--bone-dim); font-weight: 600; }
+
+/* ============================================================
+   SECTIONS
+   ============================================================ */
+
+section { padding: 88px 0; border-bottom: 1px solid var(--rule-soft); }
+.section-tight { padding: 64px 0; }
+
+.section-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--biolum);
+  margin-bottom: 18px;
+}
+.section-label::before { content: ""; width: 26px; height: 1px; background: var(--biolum); }
+
+.section-heading {
+  font-family: 'Cinzel', Georgia, serif;
+  font-size: clamp(26px, 3.8vw, 40px);
+  font-weight: 700;
+  line-height: 1.15;
+  margin-bottom: 22px;
+  max-width: 800px;
+}
+.section-heading em { font-style: normal; color: var(--biolum); }
+
+.section-lede {
+  font-size: 19px;
+  color: var(--bone-dim);
+  max-width: 740px;
+  margin-bottom: 40px;
+}
+.section-lede strong { color: var(--bone); }
+
+.prose-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+}
+.prose-grid p { color: var(--bone-dim); margin-bottom: 18px; }
+.prose-grid strong { color: var(--bone); }
+.prose-grid em { color: var(--bone); }
+@media (max-width: 780px) { .prose-grid { grid-template-columns: 1fr; gap: 0; } }
+
+/* ============================================================
+   THE CHARACTER — turnaround triptych
+   ============================================================ */
+
+.turnaround {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 22px;
+}
+@media (max-width: 780px) { .turnaround { grid-template-columns: 1fr; } }
+.turn-card {
+  background: var(--abyss-2);
+  border: 1px solid var(--rule);
+  padding: 14px;
+}
+.turn-card img { width: 100%; height: auto; }
+.turn-card figcaption {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--bone-muted);
+  padding: 10px 2px 2px;
+}
+.turn-card figcaption strong { color: var(--biolum); font-weight: 600; }
+
+/* ============================================================
+   THE STYLE — annotated panel + rules
+   ============================================================ */
+
+.style-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.1fr;
+  gap: 56px;
+  align-items: start;
+}
+@media (max-width: 900px) { .style-grid { grid-template-columns: 1fr; gap: 40px; } }
+.style-figure { background: var(--abyss-2); border: 1px solid var(--rule); padding: 14px; }
+.style-figure img { width: 100%; height: auto; }
+.style-figure figcaption {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--bone-muted);
+  padding: 10px 2px 2px;
+  line-height: 1.6;
+}
+
+.style-rules { display: grid; gap: 18px; }
+.style-rule {
+  background: var(--abyss-2);
+  border: 1px solid var(--rule);
+  border-left: 3px solid var(--biolum);
+  padding: 20px 24px;
+}
+.style-rule:nth-child(even) { border-left-color: var(--biolum-violet); }
+.style-rule h3 {
+  font-family: 'Cinzel', Georgia, serif;
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  margin-bottom: 6px;
+}
+.style-rule p { font-size: 15.5px; color: var(--bone-dim); }
+
+/* ============================================================
+   THE PAGES — panel strip + splash page
+   ============================================================ */
+
+.pages-grid {
+  display: grid;
+  grid-template-columns: 1.6fr 1fr;
+  gap: 26px;
+  align-items: start;
+}
+@media (max-width: 860px) { .pages-grid { grid-template-columns: 1fr; } }
+.page-card { background: var(--abyss-2); border: 1px solid var(--rule); padding: 14px; }
+.page-card img { width: 100%; height: auto; }
+.page-card figcaption {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--bone-muted);
+  padding: 10px 2px 2px;
+  line-height: 1.6;
+}
+
+/* ============================================================
+   EPISODE GUIDE
+   ============================================================ */
+
+.episodes { display: grid; grid-template-columns: repeat(2, 1fr); gap: 22px; }
+@media (max-width: 780px) { .episodes { grid-template-columns: 1fr; } }
+.ep-card {
+  background: var(--abyss-2);
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.ep-card--live { border-color: var(--stone-dim); box-shadow: 0 0 32px rgba(87, 230, 210, 0.08); }
+.ep-card .ep-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--bone-muted);
+}
+.ep-card h3 {
+  font-family: 'Cinzel', Georgia, serif;
+  font-size: 21px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+.ep-card p { font-size: 15.5px; color: var(--bone-dim); flex: 1; }
+.ep-status {
+  align-self: flex-start;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 3px;
+  border: 1px solid var(--rule);
+  color: var(--bone-muted);
+}
+.ep-status--live { border-color: var(--biolum); color: var(--biolum); }
+
+/* ============================================================
+   SOURCES
+   ============================================================ */
+
+.sources { max-width: 860px; }
+.source-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 20px;
+  align-items: baseline;
+  padding: 18px 0;
+  border-bottom: 1px solid var(--rule-soft);
+}
+.source-row:last-child { border-bottom: none; }
+.source-row .what { color: var(--bone-dim); font-size: 17px; }
+.source-row .what strong { color: var(--bone); font-weight: 700; }
+.source-row .why { display: block; font-style: italic; color: var(--bone-muted); font-size: 15.5px; margin-top: 2px; }
+.source-row a.go {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12.5px;
+  color: var(--biolum);
+  white-space: nowrap;
+}
+.source-row a.go:hover { color: var(--bone); }
+@media (max-width: 600px) { .source-row { grid-template-columns: 1fr; gap: 6px; } }
+
+/* ============================================================
+   CTA + FOOTER
+   ============================================================ */
+
+.cta-section { text-align: center; }
+.cta-section .section-heading { margin-left: auto; margin-right: auto; }
+.cta-section p { color: var(--bone-dim); max-width: 640px; margin: 0 auto 30px; }
+
+.footer { padding: 44px 0 52px; }
+.footer-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  flex-wrap: wrap;
+  margin-bottom: 18px;
+}
+.footer-brand { font-family: 'JetBrains Mono', monospace; font-weight: 600; letter-spacing: 0.04em; }
+.footer-brand .dot { color: var(--biolum); margin: 0 4px; }
+.footer-links { display: flex; gap: 22px; font-size: 14px; color: var(--bone-dim); flex-wrap: wrap; }
+.footer-links a { color: var(--bone-dim); }
+.footer-links a:hover { color: var(--bone); }
+.footer-meta { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--bone-muted); line-height: 1.7; }
+</style>
+</head>
+<body>
+
+<!-- ===== NAV ===== -->
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="https://larrydojo.com" class="brand">LARRY<span class="dot">·</span>DOJO</a>
+    <div class="nav-links">
+      <a href="https://larrydojo.com#about">About</a>
+      <a href="https://larrydojo.com#work">Work</a>
+      <a href="https://larrydojo.com#services">Services</a>
+    </div>
+    <a href="https://larrydojo.com#contact" class="nav-cta">Start a Project →</a>
+  </div>
+</nav>
+
+<!-- ===== HERO ===== -->
+<header class="hero">
+  <div class="container">
+    <div class="hero-eyebrow">A Larrydojo Series · Animated Adaptation · Episode 1 Out Now</div>
+    <h1>The Dreams<br>of <em>Cthulhu.</em></h1>
+    <p class="hero-sub">An animated adaptation of H.P. Lovecraft's <em>The Call of Cthulhu</em> — the 1928 story, now in the public domain — drawn as an inked, crosshatched comic that moves. One character, built once, the same in every panel.</p>
+
+    <div class="hero-grid">
+      <div>
+        <div class="hero-video">
+          <span class="hero-video__tag">// EPISODE 1 · THE ARRIVAL</span>
+          <!-- Facade: poster + button; the real youtube-nocookie
+               iframe loads on click. -->
+          <button class="yt-facade" id="yt-facade" aria-label="Play: The Dreams of Cthulhu, Episode 1 — The Arrival">
+            <img src="img/descent-poster.jpg" width="1280" height="720"
+                 alt="The Great Old Ones fall from the stars as burning, winged figures over a young ocean Earth — Episode 1's splash page."
+                 fetchpriority="high">
+            <span class="yt-facade__btn" aria-hidden="true"></span>
+          </button>
+        </div>
+        <div class="video-meta">// Widescreen edition · watch on <a href="https://www.youtube.com/watch?v=u2JA9buYCQo&utm_source=site&utm_medium=cthulhu-player" target="_blank" rel="noopener">YouTube ↗</a></div>
+      </div>
+
+      <div class="hero-aside">
+        <div class="caption-card">
+          He dreams of his race's arrival from the stars… their descent upon this wandering planet, so full of water — and life.
+          <span class="attr">Episode 1 · The Arrival</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-meta">
+      <span><strong>Project</strong> · The Dreams of Cthulhu, animated series</span>
+      <span><strong>Source</strong> · H.P. Lovecraft, "The Call of Cthulhu" (1928) · public domain</span>
+      <span><strong>Method</strong> · Character anchor + plate pipeline, inked comic style</span>
+      <span><strong>Status</strong> · Episode 1 out now · The dreaming continues</span>
+    </div>
+  </div>
+</header>
+
+<!-- ===== THE STORY ===== -->
+<section id="story">
+  <div class="container">
+    <div class="section-label">the story</div>
+    <h2 class="section-heading">Before the oceans had names, <em>something fell into them.</em></h2>
+    <p class="section-lede">Lovecraft told it as a file of documents — a dead professor's notes, a sailor's log, a bas-relief nobody should have carved. The series tells it as the thing the documents circle: <strong>the dreams themselves.</strong></p>
+
+    <div class="prose-grid">
+      <div>
+        <p>Episode 1 goes back before the story's 1920s frame, to the account buried in its third chapter: the Great Old Ones came down from the stars when the Earth was young, raised a stone city in the sea, and when the geometry of the sky changed, sank with it — not dead, but dreaming.</p>
+        <p><strong>"The Call of Cthulhu" entered the public domain</strong> along with the rest of Weird Tales' 1928 run — the same public-domain footing as Dick Tracy Origins. The adaptation owes no license; it owes the text.</p>
+      </div>
+      <div>
+        <p>The visual register is the book, not the blockbuster: dense crosshatching, a muted drowned-green palette, stone that reads as too large and too old, and light that comes only from what glows — runes, deep water, falling fire.</p>
+        <p><strong>The captions carry Lovecraft's cadence</strong> in aged parchment boxes, set in old-style type. The panels move; the page stays a page.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== THE CHARACTER ===== -->
+<section id="character">
+  <div class="container">
+    <div class="section-label">the character</div>
+    <h2 class="section-heading">Built once. <em>The same in every panel.</em></h2>
+    <p class="section-lede">The dreamer himself was designed as a full turnaround before a single scene was drawn — front, three-quarter, and back — then composited into environment plates. That anchor discipline is what keeps a hand-inked style consistent shot to shot, where single-prompt AI drifts.</p>
+
+    <div class="turnaround">
+      <figure class="turn-card">
+        <img src="img/cthulhu-front.jpg" width="1200" height="1607" loading="lazy"
+             alt="Cthulhu character anchor, front view: winged, tentacled figure in muted sea-green, inked with crosshatching on a flat gray plate.">
+        <figcaption><strong>Anchor 01</strong> · Front</figcaption>
+      </figure>
+      <figure class="turn-card">
+        <img src="img/cthulhu-three-quarter.jpg" width="1200" height="1607" loading="lazy"
+             alt="Cthulhu character anchor, three-quarter view: the same figure turned, wings folded, identical proportions and markings.">
+        <figcaption><strong>Anchor 02</strong> · Three-quarter</figcaption>
+      </figure>
+      <figure class="turn-card">
+        <img src="img/cthulhu-back.jpg" width="1200" height="1607" loading="lazy"
+             alt="Cthulhu character anchor, back view: torn wing membranes and scaled shoulders, matching the front and three-quarter sheets.">
+        <figcaption><strong>Anchor 03</strong> · Back</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- ===== THE STYLE ===== -->
+<section id="style">
+  <div class="container">
+    <div class="section-label">the style</div>
+    <h2 class="section-heading">Five rules, <em>inked into every frame.</em></h2>
+
+    <div class="style-grid">
+      <figure class="style-figure">
+        <img src="img/style-panel.jpg" width="896" height="1047" loading="lazy"
+             alt="Annotated style panel: a cyclopean stone city rendered with dense crosshatching, muted palette, glowing runes, and an aged parchment caption box reading 'In ages past, beneath a nameless sky, the Old Ones slept.'">
+        <figcaption>// The style sheet — one panel, annotated. The design system comes from the page.</figcaption>
+      </figure>
+
+      <div class="style-rules">
+        <div class="style-rule">
+          <h3>Dense Crosshatching</h3>
+          <p>Shadow is drawn, not rendered. Every dark carries pen texture, so the frames read as printed plates.</p>
+        </div>
+        <div class="style-rule">
+          <h3>Muted Color Palette</h3>
+          <p>Drowned greens, bone, stone. Saturation is rationed so the glow means something when it comes.</p>
+        </div>
+        <div class="style-rule">
+          <h3>Cyclopean Architecture</h3>
+          <p>Stone at the wrong scale, angles slightly wrong on purpose. The city is a character, and it is too old.</p>
+        </div>
+        <div class="style-rule">
+          <h3>Selective Bioluminescence</h3>
+          <p>Light comes only from what should glow — runes, rifts, deep water. The only saturated color on screen.</p>
+        </div>
+        <div class="style-rule">
+          <h3>Aged Parchment Captions</h3>
+          <p>Narration lives in parchment boxes set in old-style calligraphy — the document register Lovecraft wrote in.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== THE PAGES ===== -->
+<section id="pages" class="section-tight">
+  <div class="container">
+    <div class="section-label">the pages</div>
+    <h2 class="section-heading">A comic <em>that moves.</em></h2>
+
+    <div class="pages-grid">
+      <figure class="page-card">
+        <img src="img/panel-strip.jpg" width="859" height="538" loading="lazy"
+             alt="Four-panel strip: a stone idol's bearded face; drowned ruins with glowing coral; a cyclopean arch before a colossal shadow; a parchment caption reading 'In the shadow of forgotten gods, ancient cosmic horrors stirred…'">
+        <figcaption>// Panel language: idol · ruin · shadow · caption. Ink first, motion after.</figcaption>
+      </figure>
+      <figure class="page-card">
+        <img src="img/descent-page.jpg" width="1200" height="1607" loading="lazy"
+             alt="Full splash page: winged figures fall from space as comets of fire toward a young, storm-wrapped ocean Earth, framed in violet aether.">
+        <figcaption>// The Arrival — Episode 1's splash page, as printed.</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- ===== EPISODE GUIDE ===== -->
+<section id="episodes">
+  <div class="container">
+    <div class="section-label">episode guide</div>
+    <h2 class="section-heading">The dreaming <em>has begun.</em></h2>
+
+    <div class="episodes">
+      <div class="ep-card ep-card--live">
+        <span class="ep-num">Episode 1</span>
+        <h3>The Arrival</h3>
+        <p>Before history: the Great Old Ones descend from the stars upon a wandering planet full of water — and life. A city of stone rises where no city should stand.</p>
+        <a class="ep-status ep-status--live" href="https://www.youtube.com/watch?v=u2JA9buYCQo" target="_blank" rel="noopener">▶ Watch on YouTube ↗</a>
+      </div>
+      <div class="ep-card">
+        <span class="ep-num">Next</span>
+        <h3>The City Sleeps</h3>
+        <p>The stars change, the sea closes over R'lyeh, and the long dream begins. Further episodes are announced as they clear the inks.</p>
+        <span class="ep-status">In development</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SOURCE ===== -->
+<section class="section-tight">
+  <div class="container">
+    <div class="section-label">the source</div>
+    <h2 class="section-heading">The text <em>itself.</em></h2>
+
+    <div class="sources">
+      <div class="source-row">
+        <span class="what"><strong>H.P. Lovecraft, "The Call of Cthulhu"</strong> — Weird Tales, February 1928.
+          <span class="why">The full text, free to read. The series adapts it; the 1928 printing is public domain.</span></span>
+        <a class="go" href="https://www.hplovecraft.com/writings/texts/fiction/cc.aspx?utm_source=site&utm_medium=cthulhu-sources" target="_blank" rel="noopener">hplovecraft.com ↗</a>
+      </div>
+      <div class="source-row">
+        <span class="what"><strong>Weird Tales, Feb. 1928</strong> — the issue, scanned.
+          <span class="why">The story as it first appeared, illustrations and all.</span></span>
+        <a class="go" href="https://archive.org/details/WeirdTalesV11N02192802?utm_source=site&utm_medium=cthulhu-sources" target="_blank" rel="noopener">archive.org ↗</a>
+      </div>
+      <div class="source-row">
+        <span class="what"><strong>The pipeline</strong> — how a character anchor and environment plates hold a style together.
+          <span class="why">Documented in the Dick Tracy Origins case study.</span></span>
+        <a class="go" href="https://larrydojo.com/case-studies/dick-tracy-origins/?utm_source=site&utm_medium=cthulhu-sources">larrydojo.com →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CTA ===== -->
+<section class="cta-section">
+  <div class="container">
+    <div class="section-label" style="display:inline-flex;">work with the studio</div>
+    <h2 class="section-heading">Have a world that needs <em>a consistent hand?</em></h2>
+    <p>Larrydojo builds character-consistent AI animation with a locked visual bible — from public-domain adaptation to original worlds. See the pipeline in the case studies, or start a project.</p>
+    <div class="hero-actions" style="justify-content:center;">
+      <a href="https://larrydojo.com/case-studies/dick-tracy-origins/" class="btn btn-secondary">Dick Tracy Origins →</a>
+      <a href="https://larrydojo.com/1863-a-gold-rush-story/" class="btn btn-secondary">A Gold Rush Story →</a>
+      <a href="https://larrydojo.com#contact" class="btn btn-primary">Start a Project →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-inner">
+      <a href="https://larrydojo.com" class="footer-brand">LARRY<span class="dot">·</span>DOJO</a>
+      <div class="footer-links">
+        <a href="https://www.tiktok.com/@larrydojo_noir" target="_blank" rel="noopener">TikTok ↗</a>
+        <a href="https://www.youtube.com/@larrydojo" target="_blank" rel="noopener">YouTube ↗</a>
+        <a href="https://www.instagram.com/larrydojo/" target="_blank" rel="noopener">Instagram ↗</a>
+        <a href="https://larrydojo.com#contact">Contact</a>
+      </div>
+    </div>
+    <div class="footer-meta">
+      A Larrydojo production · A film by Alec Young. "The Call of Cthulhu" (1928) is in the public domain; series artwork © Larrydojo LLC.<br>
+      © 2026 LARRYDOJO · An AI Studio · Built fast. Hosted on Netlify. Source of truth: GitHub.
+    </div>
+  </div>
+</footer>
+
+<script>
+/* Player facade: swap in the youtube-nocookie iframe on click. */
+(function () {
+  var facade = document.getElementById('yt-facade');
+  if (!facade) return;
+  facade.addEventListener('click', function () {
+    var iframe = document.createElement('iframe');
+    iframe.src = 'https://www.youtube-nocookie.com/embed/u2JA9buYCQo?rel=0&autoplay=1';
+    iframe.title = 'The Dreams of Cthulhu · Episode 1 · The Arrival — a Larrydojo series';
+    iframe.setAttribute('allowfullscreen', '');
+    iframe.setAttribute('allow', 'accelerometer; autoplay; encrypted-media; picture-in-picture');
+    iframe.style.cssText = 'width:100%;aspect-ratio:16/9;border:0;display:block;box-shadow:0 24px 60px rgba(0,0,0,0.6);';
+    facade.replaceWith(iframe);
+  }, { once: true });
+})();
+</script>
+
+</body>
+</html>
