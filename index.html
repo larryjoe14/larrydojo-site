@@ -251,7 +251,7 @@
   @media (min-width: 981px) {
     .hero__copy            { grid-column: 1; grid-row: 1; }
     .pipeline              { grid-column: 2; grid-row: 1 / span 2; }
-    .case-study-callout    { grid-column: 1; grid-row: 2; align-self: start; }
+    .hero-callouts         { grid-column: 1; grid-row: 2; align-self: start; }
   }
   @media (max-width: 980px) {
     .hero__inner {
@@ -261,7 +261,7 @@
     }
     .hero__copy           { order: 1; }
     .pipeline             { order: 2; }
-    .case-study-callout   { order: 3; }
+    .hero-callouts        { order: 3; }
   }
   .eyebrow {
     font-family: 'Caveat', cursive;
@@ -707,6 +707,91 @@
   }
   .case-study-callout__link:hover { transform: translate(-2px, -2px); }
 
+  /* ─── ROBOT THAT CAN THINK teaser variant ─────────────
+     Same chassis as the Dick Tracy callout, rotated the
+     opposite way with a tangerine shadow so the two read
+     as a stacked pair. No video yet (EP 1 is in post), so
+     the media slot holds a recreated July 8, 1958 front
+     page — the one verified-verbatim headline. Only the
+     masthead, date, and headline are legible; everything
+     else is greeked, per the series' accuracy rules. */
+  .case-study-callout--robot {
+    box-shadow: 8px 8px 0 var(--tangerine);
+    transform: rotate(0.7deg);
+  }
+  .case-study-callout--robot .case-study-callout__tag { color: var(--tangerine); }
+  .case-study-callout--robot .case-study-callout__copy h3 em { color: var(--tangerine); }
+  .case-study-callout--robot .case-study-callout__link { background: var(--tangerine); }
+
+  .case-study-callout__paper {
+    position: relative;
+    aspect-ratio: 9 / 16;
+    width: 180px;
+    background: #F1EBDD;
+    border: 2px solid var(--paper);
+    overflow: hidden;
+    padding: 12px 10px;
+    display: flex;
+    flex-direction: column;
+    color: #1A1712;
+    text-align: center;
+  }
+  .paper__masthead {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    white-space: nowrap;
+    border-bottom: 2px solid #1A1712;
+    padding-bottom: 4px;
+  }
+  .paper__dateline {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 6.5px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    padding: 3px 0;
+    border-bottom: 1px solid #1A1712;
+    margin-bottom: 8px;
+  }
+  .paper__headline {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-weight: 700;
+    font-size: 17.5px;
+    line-height: 1.12;
+    text-transform: uppercase;
+    letter-spacing: -0.01em;
+    margin-bottom: 9px;
+  }
+  /* Greeked body copy: text-shaped bars, deliberately illegible. */
+  .paper__cols {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 7px;
+  }
+  .paper__cols span {
+    background: repeating-linear-gradient(
+      to bottom,
+      rgba(26, 23, 18, 0.38) 0 2px,
+      transparent 2px 5px
+    );
+  }
+  .paper__stamp {
+    position: absolute;
+    right: 6px;
+    bottom: 10px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 7px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #8A2B20;
+    border: 1px solid #8A2B20;
+    padding: 2px 5px;
+    transform: rotate(-6deg);
+    background: rgba(241, 235, 221, 0.85);
+  }
+
   @media (max-width: 980px) {
     .case-study-callout {
       max-width: 100%;
@@ -714,7 +799,9 @@
       transform: rotate(-0.4deg);
       margin-top: 24px;
     }
-    .case-study-callout__video { width: 160px; }
+    .case-study-callout--robot { transform: rotate(0.4deg); }
+    .case-study-callout__video,
+    .case-study-callout__paper { width: 160px; }
   }
   @media (max-width: 600px) {
     .case-study-callout {
@@ -722,11 +809,13 @@
       gap: 16px;
       padding: 16px;
     }
-    .case-study-callout__video {
+    .case-study-callout__video,
+    .case-study-callout__paper {
       width: 100%;
       max-width: 220px;
       margin: 0 auto;
     }
+    .case-study-callout__paper { aspect-ratio: 3 / 4; }
     .case-study-callout__copy {
       text-align: center;
     }
@@ -1831,10 +1920,37 @@
 
     </div>
 
+    <!-- HERO CALLOUTS: newest project on top, Dick Tracy below.
+         The wrapper owns the grid placement (col 1, row 2 on
+         desktop; order 3 on mobile) so the two callouts stack. -->
+    <div class="hero-callouts">
+
+    <!-- HERO CALLOUT: ROBOT THAT CAN THINK docu-series.
+         EP 1 is in post, so no embed yet — the media slot holds
+         a recreated Daily Boston Globe front page (July 8, 1958).
+         The headline is the series' one verified-verbatim piece of
+         period type; all other page text stays greeked. Swap this
+         block for a YouTube iframe (same slot) when EP 1 ships. -->
+    <div class="case-study-callout case-study-callout--robot" data-reveal data-hero-step="11">
+      <div class="case-study-callout__paper" role="img" aria-label="Recreated front page of the Daily Boston Globe, July 8, 1958. Headline: Navy's Going to Build Robot That Can Think.">
+        <div class="paper__masthead">Daily Boston Globe</div>
+        <div class="paper__dateline">Tuesday · July 8, 1958</div>
+        <div class="paper__headline">Navy's Going to Build Robot That Can Think</div>
+        <div class="paper__cols" aria-hidden="true"><span></span><span></span><span></span></div>
+        <div class="paper__stamp">Reconstruction</div>
+      </div>
+      <div class="case-study-callout__copy">
+        <div class="case-study-callout__tag">↓ new series · in production</div>
+        <h3>Robot That Can <em>Think.</em></h3>
+        <p>1958: a borrowed IBM 704 learns to tell left from right, and the Navy promises a robot that can think. A four-part reconstruction of the perceptron — the machine that modern AI goes back to.</p>
+        <a href="case-studies/robot-that-can-think/" class="case-study-callout__link">Read the Case Study →</a>
+      </div>
+    </div>
+
     <!-- HERO CALLOUT: Dick Tracy Origins case study.
          Embedded 60-second sequence plays muted on loop; the copy
          links through to the full case study page. -->
-    <div class="case-study-callout" data-reveal data-hero-step="11">
+    <div class="case-study-callout" data-reveal data-hero-step="12">
       <div class="case-study-callout__video">
         <iframe
           src="https://www.youtube.com/embed/ZkABMo72b2A?autoplay=1&mute=1&loop=1&playlist=ZkABMo72b2A&rel=0&modestbranding=1&playsinline=1"
@@ -1845,12 +1961,14 @@
           allowfullscreen></iframe>
       </div>
       <div class="case-study-callout__copy">
-        <div class="case-study-callout__tag">↓ new case study</div>
+        <div class="case-study-callout__tag">↓ case study</div>
         <h3>Dick Tracy <em>Origins.</em></h3>
         <p>How we built character-consistent AI video from a public-domain source. Forty seconds of finished video, four hero frames, $0.37 per second.</p>
         <a href="case-studies/dick-tracy-origins/" class="case-study-callout__link">Read the Case Study →</a>
       </div>
     </div>
+
+    </div><!-- /.hero-callouts -->
 
   </div>
 </header>
