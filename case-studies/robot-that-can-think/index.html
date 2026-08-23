@@ -4,9 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Robot That Can Think · Case Study · LarryDoJo</title>
-<meta name="description" content="A four-part documented reconstruction of Frank Rosenblatt's perceptron — the 1958 press demo that started machine learning. Every scene sourced; no photograph of the event is known to exist. Episode 1 is in post.">
+<meta name="description" content="A four-part documented reconstruction of Frank Rosenblatt's perceptron — the 1958 press demo that started machine learning. Every scene sourced; no photograph of the event is known to exist. Watch Episode 1.">
 <meta property="og:title" content="Robot That Can Think · Case Study">
-<meta property="og:description" content="A four-part reconstruction of the perceptron — the machine modern AI goes back to. Every scene is a documented reconstruction. Episode 1 in post.">
+<meta property="og:description" content="A four-part reconstruction of the perceptron — the machine modern AI goes back to. Every scene is a documented reconstruction. Watch Episode 1.">
+<meta property="og:image" content="https://img.youtube.com/vi/LqVZgBON5kM/maxresdefault.jpg">
 <meta property="og:type" content="article">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -167,13 +168,45 @@ img { max-width: 100%; display: block; }
 
 .hero-grid {
   display: grid;
-  grid-template-columns: 340px 1fr;
+  grid-template-columns: 1.2fr 1fr;
   gap: 56px;
   align-items: center;
   margin-bottom: 48px;
 }
 @media (max-width: 860px) {
   .hero-grid { grid-template-columns: 1fr; gap: 36px; }
+}
+
+/* Episode 1 embed — the headline asset now that it's live. */
+.hero-video {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  background: #000;
+  box-shadow: 0 24px 60px rgba(0,0,0,0.55);
+  border: 1px solid var(--rule);
+}
+.hero-video iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
+}
+.hero-video__tag {
+  position: absolute;
+  top: -30px;
+  left: 0;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  color: var(--accent);
+}
+.video-meta {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11.5px;
+  color: var(--ink-muted);
+  margin-top: 14px;
 }
 
 /* Recreated front page. Only the masthead, dateline, and
@@ -347,6 +380,16 @@ section { padding: 88px 0; border-bottom: 1px solid var(--rule-soft); }
 /* ============================================================
    TIMELINE
    ============================================================ */
+
+.record-grid {
+  display: grid;
+  grid-template-columns: 340px 1fr;
+  gap: 56px;
+  align-items: start;
+}
+@media (max-width: 860px) {
+  .record-grid { grid-template-columns: 1fr; gap: 36px; }
+}
 
 .timeline { max-width: 820px; }
 .timeline-row {
@@ -531,23 +574,23 @@ section { padding: 88px 0; border-bottom: 1px solid var(--rule-soft); }
 
     <div class="hero-grid">
       <div>
-        <!-- Recreated artifact: the one verified-verbatim headline.
-             When EP 1 ships on YouTube, this column can carry the
-             embed and the front page moves to the timeline section. -->
-        <div class="frontpage" role="img" aria-label="Recreated front page of the Daily Boston Globe, July 8, 1958. Headline: Navy's Going to Build Robot That Can Think.">
-          <div class="frontpage__masthead">Daily Boston Globe</div>
-          <div class="frontpage__dateline">Tuesday · July 8, 1958</div>
-          <div class="frontpage__headline">Navy's Going to Build Robot That Can Think</div>
-          <div class="frontpage__cols" aria-hidden="true"><span></span><span></span><span></span></div>
-          <div class="frontpage__stamp">Reconstruction</div>
+        <div class="hero-video">
+          <span class="hero-video__tag">// EPISODE 1 · 62 SECONDS</span>
+          <iframe
+            src="https://www.youtube.com/embed/LqVZgBON5kM?rel=0&modestbranding=1&playsinline=1"
+            title="The Navy's Robot That Can Think (1958) · Episode 1"
+            loading="lazy"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerpolicy="strict-origin-when-cross-origin"
+            allowfullscreen></iframe>
         </div>
-        <p class="frontpage-caption">// Headline verified verbatim — Daily Boston Globe, July 8, 1958. Typesetting recreated; all other page text greeked by rule.</p>
+        <div class="video-meta">// Every scene is a documented reconstruction — the source trail is below.</div>
       </div>
 
       <div class="hero-aside">
         <h2>The morning machine learning <em>made the papers.</em></h2>
         <p>July 7, 1958. In a government computer room in Suitland, Maryland, a 29-year-old psychologist borrows the Weather Bureau's IBM 704 and shows reporters a program that learns from its mistakes. The Navy tells the press the machine's descendants will walk, talk, see, and know they exist.</p>
-        <p>The next morning it runs on page 25 of the New York Times — and on the front of the Boston Globe under the headline above.</p>
+        <p>The next morning it runs on page 25 of the New York Times — and on the front of the Boston Globe as "Navy's Going to Build Robot That Can Think."</p>
         <div class="hero-actions">
           <a href="#story" class="btn btn-primary">Read the Story ↓</a>
           <a href="#episodes" class="btn btn-secondary">Episode Guide ↓</a>
@@ -559,7 +602,7 @@ section { padding: 88px 0; border-bottom: 1px solid var(--rule-soft); }
       <span><strong>Project</strong> · Robot That Can Think, four episodes</span>
       <span><strong>Subject</strong> · Frank Rosenblatt's perceptron, 1957–1960</span>
       <span><strong>Method</strong> · Documented reconstruction, sources public</span>
-      <span><strong>Status</strong> · Episode 1 in post-production</span>
+      <span><strong>Status</strong> · Episode 1 out now · Episodes 2–4 in development</span>
     </div>
   </div>
 </header>
@@ -590,6 +633,19 @@ section { padding: 88px 0; border-bottom: 1px solid var(--rule-soft); }
     <div class="section-label">the record</div>
     <h2 class="section-heading">The machine that learned <em>left from right.</em></h2>
 
+    <div class="record-grid">
+    <div>
+      <!-- Recreated artifact: the one verified-verbatim headline. -->
+      <div class="frontpage" role="img" aria-label="Recreated front page of the Daily Boston Globe, July 8, 1958. Headline: Navy's Going to Build Robot That Can Think.">
+        <div class="frontpage__masthead">Daily Boston Globe</div>
+        <div class="frontpage__dateline">Tuesday · July 8, 1958</div>
+        <div class="frontpage__headline">Navy's Going to Build Robot That Can Think</div>
+        <div class="frontpage__cols" aria-hidden="true"><span></span><span></span><span></span></div>
+        <div class="frontpage__stamp">Reconstruction</div>
+      </div>
+      <p class="frontpage-caption">// Headline verified verbatim — Daily Boston Globe, July 8, 1958. Typesetting recreated; all other page text greeked by rule.</p>
+    </div>
+
     <div class="timeline">
       <div class="timeline-row">
         <div class="timeline-date">1957</div>
@@ -616,6 +672,7 @@ section { padding: 88px 0; border-bottom: 1px solid var(--rule-soft); }
         <div class="timeline-body">Cornell Aeronautical Laboratory shows the Mark I to the press. Its descendants are reading this page.</div>
       </div>
     </div>
+    </div><!-- /.record-grid -->
   </div>
 </section>
 
@@ -667,7 +724,7 @@ section { padding: 88px 0; border-bottom: 1px solid var(--rule-soft); }
         <span class="ep-num">Episode 1</span>
         <h3>The Demonstration</h3>
         <p>July 1958, Suitland, Maryland. A borrowed IBM 704, a stack of punch cards, and the press conference that put "robot that can think" on the front page. The machine learns left from right — and explains, in its own voice, how.</p>
-        <span class="ep-status ep-status--post">In post-production</span>
+        <a class="ep-status ep-status--post" href="https://www.youtube.com/watch?v=LqVZgBON5kM" target="_blank" rel="noopener">▶ Watch on YouTube ↗</a>
       </div>
       <div class="ep-card">
         <span class="ep-num">Episode 2</span>
