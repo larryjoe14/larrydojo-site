@@ -528,7 +528,9 @@ section { padding: 84px 0; border-bottom: 1px solid var(--rule-soft); }
   gap: 26px;
   margin-top: 44px;
 }
-@media (max-width: 820px) { .method-strip { grid-template-columns: 1fr; } }
+/* Mobile: the process pairs are desktop-only — on small screens
+   the section is copy + the finished moving shot. */
+@media (max-width: 820px) { .method-strip { display: none; } }
 
 .pair { border: 1px solid var(--ink); background: var(--parchment); padding: 14px; }
 .pair figure { margin: 0; }
@@ -685,7 +687,7 @@ section { padding: 84px 0; border-bottom: 1px solid var(--rule-soft); }
            loads on click. No YouTube script until then. -->
       <button class="yt-facade" id="yt-facade" aria-label="Play: 1863 — A Gold Rush Story">
         <img src="img/street-poster.jpg" width="1280" height="720"
-             alt="Newcomers with packs and pans stopped in Oroville's bleached main street, 1863 — the film's key frame."
+             alt="Chinese laborers in wide-brimmed hats in Oroville's main street, wagons and mules behind them — a key frame from the film."
              fetchpriority="high">
         <span class="yt-facade__btn" aria-hidden="true"></span>
       </button>
@@ -847,7 +849,8 @@ section { padding: 84px 0; border-bottom: 1px solid var(--rule-soft); }
     </div>
 
     <figure class="method-video">
-      <video src="img/street-loop.mp4" poster="img/street-poster.jpg" autoplay muted loop playsinline preload="metadata" width="1280" height="720"></video>
+      <video src="img/street-loop.mp4" poster="img/street-poster.jpg" autoplay muted loop playsinline preload="metadata" width="1280" height="720"
+             aria-label="Finished shot, moving: the camera pans past Chinese laborers in Oroville's main street."></video>
       <figcaption>// Motion came last — the finished shot, moving</figcaption>
     </figure>
   </div>
