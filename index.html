@@ -125,7 +125,7 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo+Black&family=Caveat:wght@500;700&family=JetBrains+Mono:wght@400;700&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo+Black&family=Caveat:wght@500;700&family=Cinzel:wght@700&family=JetBrains+Mono:wght@400;700&family=Playfair+Display:ital,wght@0,900;1,700&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
 
 <style>
   :root {
@@ -729,6 +729,113 @@
   .case-study-callout--robot .case-study-callout__copy h3 em { color: var(--tangerine); }
   .case-study-callout--robot .case-study-callout__link { background: var(--tangerine); }
 
+  /* ─── A GOLD RUSH STORY variant ───────────────────────
+     Per-film period identity: 1863 country-weekly newsprint.
+     The card inverts to newsprint cream with ink type and a
+     dry-foothill gold shadow — the clipping's own register,
+     deliberately unlike the broadcast-1958 and noir cards.
+     Wide 16:9 media like RTTC, but a LOCAL muted video loop
+     (no YouTube script loads for this callout). */
+  .case-study-callout--goldrush {
+    background: #F1EBDD;
+    color: #1A1712;
+    border-color: #1A1712;
+    box-shadow: 8px 8px 0 #C99A2E;
+    transform: rotate(-0.5deg);
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  .case-study-callout--goldrush .case-study-callout__video--wide {
+    aspect-ratio: 16 / 9;
+    width: 100%;
+    max-width: none;
+    border-color: #1A1712;
+  }
+  .case-study-callout--goldrush .case-study-callout__video video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .case-study-callout--goldrush .case-study-callout__tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #6E5314;
+    margin-bottom: 8px;
+  }
+  .case-study-callout--goldrush .case-study-callout__copy h3 {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-weight: 900;
+    font-size: 22px;
+    letter-spacing: 0.01em;
+    color: #1A1712;
+  }
+  .case-study-callout--goldrush .case-study-callout__copy h3 em {
+    font-style: italic;
+    font-weight: 700;
+    color: #6E5314;
+  }
+  .case-study-callout--goldrush .case-study-callout__copy p {
+    font-family: Georgia, 'Times New Roman', serif;
+    color: #4A443A;
+  }
+  .case-study-callout--goldrush .case-study-callout__link {
+    background: #1A1712;
+    color: #F1EBDD;
+    border-color: #C99A2E;
+  }
+  .case-study-callout--goldrush .case-study-callout__alt {
+    display: inline-block;
+    margin-left: 14px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: #6E5314;
+    border-bottom: 1px solid #C99A2E;
+  }
+  .case-study-callout--goldrush .case-study-callout__alt:hover { color: #1A1712; }
+
+  /* ─── THE DREAMS OF CTHULHU variant ───────────────────
+     Per-series identity: the inked Lovecraft book. Deep
+     green-black abyss card, carved Cinzel title, and a
+     bioluminescent cyan shadow-glow — the only saturated
+     color, per the series' own style rules. */
+  .case-study-callout--cthulhu {
+    background: #0B120F;
+    border-color: #0B120F;
+    box-shadow: 8px 8px 0 #57E6D2, 0 0 34px rgba(87, 230, 210, 0.22);
+    transform: rotate(0.5deg);
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  .case-study-callout--cthulhu .case-study-callout__video--wide {
+    aspect-ratio: 16 / 9;
+    width: 100%;
+    max-width: none;
+    border-color: #7FA695;
+  }
+  .case-study-callout--cthulhu .case-study-callout__tag { color: #57E6D2; }
+  .case-study-callout--cthulhu .case-study-callout__copy h3 {
+    font-family: 'Cinzel', Georgia, serif;
+    font-weight: 700;
+    font-size: 19px;
+    letter-spacing: 0.03em;
+    color: #E8DFC8;
+  }
+  .case-study-callout--cthulhu .case-study-callout__copy h3 em {
+    font-style: normal;
+    color: #57E6D2;
+  }
+  .case-study-callout--cthulhu .case-study-callout__copy p { color: #A9A28D; }
+  .case-study-callout--cthulhu .case-study-callout__link {
+    background: #57E6D2;
+    color: #0B120F;
+    border-color: #7FA695;
+  }
+
   @media (max-width: 980px) {
     .case-study-callout {
       max-width: 100%;
@@ -737,6 +844,8 @@
       margin-top: 24px;
     }
     .case-study-callout--robot { transform: rotate(0.4deg); }
+    .case-study-callout--goldrush { transform: rotate(-0.3deg); }
+    .case-study-callout--cthulhu { transform: rotate(0.3deg); }
     .case-study-callout__video { width: 160px; }
   }
   @media (max-width: 600px) {
@@ -751,6 +860,8 @@
       margin: 0 auto;
     }
     .case-study-callout--robot .case-study-callout__video--wide { max-width: none; }
+    .case-study-callout--goldrush .case-study-callout__video--wide { max-width: none; }
+    .case-study-callout--cthulhu .case-study-callout__video--wide { max-width: none; }
     .case-study-callout__copy {
       text-align: center;
     }
@@ -1855,9 +1966,13 @@
 
     </div>
 
-    <!-- HERO CALLOUTS: newest project on top, Dick Tracy below.
+    <!-- HERO CALLOUTS: Robot That Can Think, then the two new
+         films (A Gold Rush Story, The Dreams of Cthulhu), then
+         Dick Tracy. Each film keeps its own period identity —
+         broadcast-1958, newsprint-1863, inked-Lovecraft, noir —
+         per the handoff spec: the treatments must not blend.
          The wrapper owns the grid placement (col 1, row 2 on
-         desktop; order 3 on mobile) so the two callouts stack. -->
+         desktop; order 3 on mobile) so the callouts stack. -->
     <div class="hero-callouts">
 
     <!-- HERO CALLOUT: ROBOT THAT CAN THINK docu-series.
@@ -1882,10 +1997,53 @@
       </div>
     </div>
 
+    <!-- HERO CALLOUT: A GOLD RUSH STORY short film.
+         1863 newsprint identity — cream card, ink type, gold
+         shadow. The media is a LOCAL muted loop (the film's
+         street shot), not a YouTube embed, so no third-party
+         script loads for this callout. CTA keeps the click
+         on-site: the film splash page, not YouTube. -->
+    <div class="case-study-callout case-study-callout--goldrush" data-reveal data-hero-step="12">
+      <div class="case-study-callout__video case-study-callout__video--wide">
+        <video src="1863-a-gold-rush-story/img/street-loop.mp4"
+               poster="1863-a-gold-rush-story/img/street-poster.jpg"
+               autoplay muted loop playsinline preload="metadata"
+               aria-label="1863: A Gold Rush Story — newcomers stopped in Oroville's main street, looping shot from the film."></video>
+      </div>
+      <div class="case-study-callout__copy">
+        <div class="case-study-callout__tag">Short Film · Oroville, California · 1863</div>
+        <h3>A Gold Rush <em>Story.</em></h3>
+        <p>May 1863. A minister's day ends on a newspaper clipping — the earliest known printing of "smart aleck." The minister is invented. The clipping is real.</p>
+        <a href="1863-a-gold-rush-story/?utm_source=homepage&utm_medium=callout&utm_campaign=grs-1863" class="case-study-callout__link">Watch the film →</a><a href="1863-a-gold-rush-story/?utm_source=homepage&utm_medium=callout&utm_campaign=grs-1863#method" class="case-study-callout__alt">How we recreate history →</a>
+      </div>
+    </div>
+
+    <!-- HERO CALLOUT: THE DREAMS OF CTHULHU animated series.
+         Inked-Lovecraft identity — abyss card, Cinzel title,
+         bioluminescent cyan glow. Episode 1 (widescreen) plays
+         muted on loop; the CTA goes to the series splash page. -->
+    <div class="case-study-callout case-study-callout--cthulhu" data-reveal data-hero-step="13">
+      <div class="case-study-callout__video case-study-callout__video--wide">
+        <iframe
+          src="https://www.youtube.com/embed/u2JA9buYCQo?autoplay=1&mute=1&loop=1&playlist=u2JA9buYCQo&rel=0&modestbranding=1&playsinline=1"
+          title="The Dreams of Cthulhu · Episode 1 · The Arrival"
+          loading="lazy"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          referrerpolicy="strict-origin-when-cross-origin"
+          allowfullscreen></iframe>
+      </div>
+      <div class="case-study-callout__copy">
+        <div class="case-study-callout__tag">↓ new series · ep. 1 · the arrival</div>
+        <h3>The Dreams of <em>Cthulhu.</em></h3>
+        <p>Lovecraft's Great Old Ones fall from the stars in an inked, crosshatched comic that moves. "The Call of Cthulhu" (1928, public domain), adapted panel by panel — one character, built once, the same in every frame.</p>
+        <a href="the-dreams-of-cthulhu/?utm_source=homepage&utm_medium=callout&utm_campaign=cthulhu" class="case-study-callout__link">Enter the Dream →</a>
+      </div>
+    </div>
+
     <!-- HERO CALLOUT: Dick Tracy Origins case study.
          Embedded 60-second sequence plays muted on loop; the copy
          links through to the full case study page. -->
-    <div class="case-study-callout" data-reveal data-hero-step="12">
+    <div class="case-study-callout" data-reveal data-hero-step="14">
       <div class="case-study-callout__video">
         <iframe
           src="https://www.youtube.com/embed/ZkABMo72b2A?autoplay=1&mute=1&loop=1&playlist=ZkABMo72b2A&rel=0&modestbranding=1&playsinline=1"
